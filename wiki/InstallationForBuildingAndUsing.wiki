@@ -1,0 +1,21 @@
+#summary Basic installation instructions.
+
+= Introduction =
+
+You may also want to read the README.txt file for other details.
+
+
+= Details =
+
+We built the project using Eclipse 3.5 on Vaadin 6.3 nightly that also uses GWT 2.0.  These instructions assume you are doing the same.
+
+We have not included the CKEditor 3.1 code.  Please download this directly from http://ckeditor.com/download.  Extract the code so that the directory 'ckeditor' is located in your src/org/vaadin/openesignforms/ckeditor/public folder.
+
+You will then want to do a widgetset compile to generate the GWT-based code that will be put in WebContent/VAADIN/widgetsets.
+
+The JAR file included has CKEditor and the widgetset all compiled and ready to use.  Just drop the JAR file in your Vaadin project's WebContent/WEB-INF/lib and you can use the example application in src/org/vaadin/openesignforms/VaadinCKEditorApplication.java for a quick tip on using it like a Vaadin textarea component.
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
