@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 23 February 2010
+Last updated: 8 March 2010
 
   USING VAADIN CKEDITOR IN YOUR APPLICATION
   =========================================
@@ -35,7 +35,7 @@ src/org/vaadin/openesignforms/ckeditor/public folder.  No changes to CKEditor we
   
  - Nothing immediately pending until we start integrating into our forms and see all the warts
    and missing items.
- - Test on more than just Firefox 3.5 with limited IE8/Chrome4/Safari4 (all on Windows 7).
+ - Test on more than just Firefox 3.5 with limited testing on IE8/Chrome4/Safari4/Opera10 (all on Windows 7).
 
 
   KNOWN ISSUES
@@ -47,29 +47,26 @@ src/org/vaadin/openesignforms/ckeditor/public folder.  No changes to CKEditor we
    
  - It seems that sometimes after you make changes and click 'Hit server' the ValueChangeEvent
    doesn't fire.  But if you click 'Hit server' again, it then shows, like the blur event
-   sometimes is dropped.  Again, IE8 shows this the most, but I've seen it on Chrome and FF.
+   sometimes comes in after the button clicked event.  
+   Again, IE8 shows this the most, but I've seen it on Chrome and FF.
    It appears to be some sort of timing issue where the 'immediate' button info is sent to
    the server before the editor's blur event has queued the updated text.
-   
- - Tried building on top of VTextArea, but while we got CKEditor to appear, the browser events
-   like onchange were not firing -- or at least we never saw a ValueChangeEvent fire.  Maybe the
-   CKEditor was capturing all of its events so they never bubbled up.  Anyway, we ended up using 
-   TinyMCE's scheme of building a <div> and then using the 'blur' event with 'checkDirty' that's
-   built into CKEditor and it seems to work most of the time, but as mentioned above has some issues.
-   Because of this, no browser events are supported, only those emitted by CKEditor itself.
- 
+
  
   IDEAS FOR FUTURE RELEASE
   ========================
   
  - Add ability to define styles.
  - Add ability to define templates.
- - Add ability to use the Save button in CKEditor to trigger sending updates to the server.
-
+ 
 
   CHANGELOG
   =========
  
+0.2 (8 March 2010)
+ - Added save button handling that is always immediate. Added support for blur and focus event listeners 
+   (defined in superclass TextField).
+ - Built using CkEditor 3.2 as downloaded from http://ckeditor.com/download on 26 February 2010.
 0.1 (21 February 2010)
  - Initial take based on the TinyMCEEditor code in the Vaadin incubator SVN on 18 February 2010.
  - Built using CkEditor 3.1 as downloaded from http://ckeditor.com/download on 18 February 2010.
