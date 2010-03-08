@@ -51,16 +51,17 @@ public class VaadinCKEditorApplication extends Application {
 		// The following defines the toolbar to be a custom toolbar, and defines the custom toolbar.
 		ckEditorTextField.setInPageConfig(
 			"{ " +
+				"extraPlugins: 'vaadinsave'," + // add this if using the editor's VaadinSave button
 				"toolbar : 'Custom'," +
 				"toolbar_Custom : [" +
 					"['Styles','Format','Bold','Italic','TextColor','BGColor','-','Font','FontSize','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','Image','Link']," +
 					"'/'," +
-					"['Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo','-','NumberedList','BulletedList','-','Outdent','Indent','-','Table','HorizontalRule','-','Maximize','-','Source','ShowBlocks','-','Save']" +
+					"['Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo','-','NumberedList','BulletedList','-','Outdent','Indent','-','Table','HorizontalRule','-','Maximize','-','Source','ShowBlocks','-','VaadinSave']" +
 								 "]" +
 			" }" 
 				     					);
 		ckEditorTextField.useCompactTags();
-		ckEditorTextField.setImmediate(true);
+		//ckEditorTextField.setImmediate(true);
 		mainWindow.addComponent(ckEditorTextField);
 		
 		ckEditorTextField.setValue("<p>Thanks TinyMCEEditor for getting us started on the CKEditor integration.</p><h1>Like TinyMCEEditor said, &quot;Vaadin rocks!&quot;</h1><h1>And CKEditor is no slouch either.</h1>");
