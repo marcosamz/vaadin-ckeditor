@@ -17,6 +17,7 @@ import com.vaadin.terminal.gwt.client.ApplicationConnection;
 //import com.vaadin.terminal.gwt.client.BrowserInfo;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
+import com.vaadin.terminal.gwt.client.ui.VTextField;
 
 /**
  * Client side CKEditor widget which communicates with the server. Messages from the
@@ -32,6 +33,8 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 
 	/** Reference to the server connection object. */
 	protected ApplicationConnection client;
+	
+	private String dataBeforeEdit = null;
 
 	private boolean immediate;
 
@@ -75,9 +78,11 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 
 		// Save the client side identifier (paintable id) for the widget
 		getElement().setId(paintableId);
+		
+		dataBeforeEdit = uidl.getStringVariable("text");
 
 		if ( ckEditor == null ) {
-			getElement().setInnerHTML(uidl.getStringVariable("text"));
+			getElement().setInnerHTML(dataBeforeEdit);
 			String inPageConfig = uidl.hasAttribute("inPageConfig") ? uidl.getStringAttribute("inPageConfig") : null;
 			
 			// See if we have any writer rules
@@ -98,17 +103,56 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 			
 			ckEditor = (CKEditor)CKEditorService.loadEditor(paintableId, this, inPageConfig);
 		} else {
-			CKEditorService.get(paintableId).setData(uidl.getStringVariable("text"));
+			CKEditorService.get(paintableId).setData(dataBeforeEdit);
 		}
 	}
 
 	// Listener callback
 	@Override
-	public void onChange() {
-		// CKEditor only calls this if it thinks the buffer is dirty, so we can assume it's always changed and ready to be sent
-		// to the server.
-		String data = ckEditor.getData();
-		client.updateVariable(paintableId, "text", data, immediate);
+	public void onSave() {
+		if ( client != null && paintableId != null && ckEditor != null ) {
+			// Called if the user clicks the Save button. 
+			String data = ckEditor.getData();
+			if ( ! data.equals(dataBeforeEdit) ) {
+				client.updateVariable(paintableId, "text", data, true);
+				dataBeforeEdit = data;
+			}
+		}
+	}
+
+	// Listener callback
+	@Override
+	public void onBlur() {
+		if ( client != null && paintableId != null && ckEditor != null ) {
+			boolean sendBlurEvent = false;
+			boolean sendValueChange = false;
+			
+			if ( client.hasEventListeners(this, VTextField.BLUR_EVENT_IDENTIFIER) ) {
+	            sendBlurEvent = true;
+	            client.updateVariable(paintableId, VTextField.BLUR_EVENT_IDENTIFIER, "", false);
+			}
+			
+			String data = ckEditor.getData();
+			if ( ! data.equals(dataBeforeEdit) ) {
+				sendValueChange = immediate;
+				client.updateVariable(paintableId, "text", data, false);
+			}
+			
+	        if (sendBlurEvent || sendValueChange) {
+	            client.sendPendingVariableChanges();
+				dataBeforeEdit = data;
+	        }
+		}
+	}
+
+	// Listener callback
+	@Override
+	public void onFocus() {
+		if ( client != null && paintableId != null ) {
+			if ( client.hasEventListeners(this, VTextField.FOCUS_EVENT_IDENTIFIER) ) {
+	            client.updateVariable(paintableId, VTextField.FOCUS_EVENT_IDENTIFIER, "", true);
+			}
+		}
 	}
 
 	// Listener callback

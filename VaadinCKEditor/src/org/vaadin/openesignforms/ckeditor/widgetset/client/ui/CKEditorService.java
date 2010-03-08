@@ -37,16 +37,20 @@ public class CKEditorService {
 	    	myEditor = $wnd.CKEDITOR.replace( id );
 	 	}
 	 	
-	 	// Whenever we lose focus, if our buffer has changed, we'll update the listener should they want to send it back the server (immediate mode).
-	 	// CKEditor doesn't have an onchange type event. The 'listener' passed to us is used as 'listenerData' for the callback.
+	 	// The 'listener' passed to us is used as 'listenerData' for the callback.
 	 	myEditor.on( 'blur', function( ev ) {
-	 		if ( this.checkDirty() ) { 
-	 			ev.listenerData.@org.vaadin.openesignforms.ckeditor.widgetset.client.ui.CKEditorService.CKEditorListener::onChange()();
-	 			this.resetDirty(); // Not sure if this is a good idea or not, but trying to queue to the server only once per checkDirty()
-	 		}
+ 			ev.listenerData.@org.vaadin.openesignforms.ckeditor.widgetset.client.ui.CKEditorService.CKEditorListener::onBlur()();
     	}, null, listener);
     	
-    	myEditor.on( 'instanceReady', function( ev ) {
+	 	myEditor.on( 'focus', function( ev ) {
+ 			ev.listenerData.@org.vaadin.openesignforms.ckeditor.widgetset.client.ui.CKEditorService.CKEditorListener::onFocus()();
+    	}, null, listener);
+    	
+     	myEditor.on( 'vaadinsave', function( ev ) {
+	 		ev.listenerData.@org.vaadin.openesignforms.ckeditor.widgetset.client.ui.CKEditorService.CKEditorListener::onSave()();
+    	}, null, listener);
+		
+		myEditor.on( 'instanceReady', function( ev ) {
     		ev.listenerData.@org.vaadin.openesignforms.ckeditor.widgetset.client.ui.CKEditorService.CKEditorListener::onInstanceReady()();
 		}, null, listener);
 		
@@ -97,7 +101,9 @@ public class CKEditorService {
 	 */
 	public interface CKEditorListener {
 		public void onInstanceReady();
-		public void onChange();
+		public void onBlur();
+		public void onFocus();
+		public void onSave();
 	}
 
 }
