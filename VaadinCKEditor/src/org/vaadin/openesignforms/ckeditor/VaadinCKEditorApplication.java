@@ -70,7 +70,7 @@ public class VaadinCKEditorApplication extends Application {
 			private static final long serialVersionUID = 54555014513845952L;
 
 			public void valueChange(ValueChangeEvent event) {
-				getMainWindow().showNotification("Content now: " + event.getProperty().toString().replaceAll("<", "&lt;"));
+				getMainWindow().showNotification("CKEditor contents: " + event.getProperty().toString().replaceAll("<", "&lt;"));
 			}
 		});
 		
