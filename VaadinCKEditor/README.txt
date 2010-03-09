@@ -44,13 +44,6 @@ src/org/vaadin/openesignforms/ckeditor/public folder.  No changes to CKEditor we
  - On IE8, if you load the sample application and click the 'Hit server' button immediately, the
    CKEditor disappears.  But if you load the sample application, then hit the browser refresh,
    clicking the 'Hit server' button doesn't cause the problem.
-   
- - It seems that sometimes after you make changes and click 'Hit server' the ValueChangeEvent
-   doesn't fire.  But if you click 'Hit server' again, it then shows, like the blur event
-   sometimes comes in after the button clicked event.  
-   Again, IE8 shows this the most, but I've seen it on Chrome and FF.
-   It appears to be some sort of timing issue where the 'immediate' button info is sent to
-   the server before the editor's blur event has queued the updated text.
 
  
   IDEAS FOR FUTURE RELEASE
@@ -67,6 +60,10 @@ src/org/vaadin/openesignforms/ckeditor/public folder.  No changes to CKEditor we
  - Added save button handling that is always immediate. Added support for blur and focus event listeners 
    (defined in superclass TextField).
  - Built using CkEditor 3.2 as downloaded from http://ckeditor.com/download on 26 February 2010.
+ - Added hack to change blur() to be forceBlur() to avoid 100ms delay that focusmanager.js has for its
+   blur function.  This fixes a bug in which the 'Hit server' button's onclick event would fire before
+   the CKEditor's blur so that it would sometimes seem like you lost an update that wouldn't be seen
+   until you clicked another button.
 0.1 (21 February 2010)
  - Initial take based on the TinyMCEEditor code in the Vaadin incubator SVN on 18 February 2010.
  - Built using CkEditor 3.1 as downloaded from http://ckeditor.com/download on 18 February 2010.
