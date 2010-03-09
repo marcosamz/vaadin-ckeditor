@@ -27,6 +27,8 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	
 	/** Set the CSS class name to allow styling. */
 	public static final String CLASSNAME = "v-ckeditortextfield";
+	
+	private static boolean initializedCKEDITOR = false;
 
 	/** The client side widget identifier */
 	protected String paintableId;
@@ -47,6 +49,13 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	 * then handle any initialization relevant to Vaadin.
 	 */
 	public VCKEditorTextField() {
+		
+		// Any one-time library initializations go here
+		if ( ! initializedCKEDITOR ) {
+			CKEditorService.overrideBlurToForceBlur();
+			initializedCKEDITOR = true;
+		}
+		
 		// CKEditor prefers a textarea, but found too many issues trying to use createTextareaElement() instead of a simple div, 
 		// which is okay in Vaadin where an HTML form won't be used to send the data back and forth.
 		setElement(Document.get().createDivElement());
@@ -73,16 +82,13 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 
 		immediate = uidl.getBooleanAttribute("immediate");
 
-		// Save reference to server connection object to be able to send
-		// user interaction later
-
-		// Save the client side identifier (paintable id) for the widget
-		getElement().setId(paintableId);
-		
 		dataBeforeEdit = uidl.getStringVariable("text");
 
 		if ( ckEditor == null ) {
-			getElement().setInnerHTML(dataBeforeEdit);
+			// Save the client side identifier (paintable id) for the widget
+			getElement().setId(paintableId);	
+			//getElement().setInnerHTML("<p></p>");
+
 			String inPageConfig = uidl.hasAttribute("inPageConfig") ? uidl.getStringAttribute("inPageConfig") : null;
 			
 			// See if we have any writer rules
@@ -102,9 +108,9 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 			}
 			
 			ckEditor = (CKEditor)CKEditorService.loadEditor(paintableId, this, inPageConfig);
-		} else {
-			CKEditorService.get(paintableId).setData(dataBeforeEdit);
 		}
+		
+		ckEditor.setData(dataBeforeEdit);
 	}
 
 	// Listener callback
@@ -136,11 +142,11 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 			if ( ! data.equals(dataBeforeEdit) ) {
 				sendValueChange = immediate;
 				client.updateVariable(paintableId, "text", data, false);
+				dataBeforeEdit = data;
 			}
 			
 	        if (sendBlurEvent || sendValueChange) {
 	            client.sendPendingVariableChanges();
-				dataBeforeEdit = data;
 	        }
 		}
 	}

@@ -10,8 +10,7 @@ package org.vaadin.openesignforms.ckeditor.widgetset.client.ui;
 import com.google.gwt.core.client.JavaScriptObject;
 
 /**
- * GWT wrapper for CKEDITOR. 
- *
+ * GWT wrapper for CKEDITOR for use by our Vaadin-based CKEditorService.
  */
 public class CKEditorService {
 
@@ -59,6 +58,12 @@ public class CKEditorService {
 	}-*/
 	;
 	
+	public native static void overrideBlurToForceBlur()
+	/*-{
+		$wnd.CKEDITOR.focusManager.prototype['blur'] =  $wnd.CKEDITOR.focusManager.prototype['forceBlur'];
+	}-*/;
+	
+
 	/**
 	 * Returns a javascript CKEDITOR.editor instance for given id.
 	 * 
