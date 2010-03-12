@@ -40,7 +40,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					label : editor.lang.save,
 					command : pluginName,
-					icon: "../images/save.jpg"
+					icon: "../images/disk.png"
 				});
 		}
 	});
