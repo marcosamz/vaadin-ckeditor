@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 8 March 2010
+Last updated: 13 April 2010
 
   USING VAADIN CKEDITOR IN YOUR APPLICATION
   =========================================
@@ -29,6 +29,8 @@ CKEditor is required and is licensed separately with details at http://ckeditor.
 The CKEditor code, in full as downloaded from http://ckeditor.com, is present in the 
 src/org/vaadin/openesignforms/ckeditor/public folder.  No changes to CKEditor were made.
 
+Icons are from Fat Cow Free Web Icons (http://www.fatcow.com/free-icons/) which are released 
+under the Creative Commons Attribution 3.0 License.
 
   TODO
   ====
@@ -56,6 +58,11 @@ src/org/vaadin/openesignforms/ckeditor/public folder.  No changes to CKEditor we
   CHANGELOG
   =========
  
+0.3 (13 April 2010)
+ - Vaadin 6.3 nightly resulted in a broken compile because of changes to TextField.  No functional changes made,
+   but did a release to allow for the build to work.
+ - Replaced disk (save) icon from Fat Cow Free Web Icons (http://www.fatcow.com/free-icons/) which are 
+   released under the Creative Commons Attribution 3.0 License.
 0.2 (8 March 2010)
  - Added save button handling that is always immediate. Added support for blur and focus event listeners 
    (defined in superclass TextField).

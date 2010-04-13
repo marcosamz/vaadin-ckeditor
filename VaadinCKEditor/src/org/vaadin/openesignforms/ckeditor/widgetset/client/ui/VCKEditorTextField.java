@@ -15,9 +15,9 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
 //import com.vaadin.terminal.gwt.client.BrowserInfo;
+import com.vaadin.terminal.gwt.client.EventId;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
-import com.vaadin.terminal.gwt.client.ui.VTextField;
 
 /**
  * Client side CKEditor widget which communicates with the server. Messages from the
@@ -133,9 +133,9 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 			boolean sendBlurEvent = false;
 			boolean sendValueChange = false;
 			
-			if ( client.hasEventListeners(this, VTextField.BLUR_EVENT_IDENTIFIER) ) {
+			if ( client.hasEventListeners(this, EventId.BLUR) ) {
 	            sendBlurEvent = true;
-	            client.updateVariable(paintableId, VTextField.BLUR_EVENT_IDENTIFIER, "", false);
+	            client.updateVariable(paintableId, EventId.BLUR, "", false);
 			}
 			
 			String data = ckEditor.getData();
@@ -155,8 +155,8 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	@Override
 	public void onFocus() {
 		if ( client != null && paintableId != null ) {
-			if ( client.hasEventListeners(this, VTextField.FOCUS_EVENT_IDENTIFIER) ) {
-	            client.updateVariable(paintableId, VTextField.FOCUS_EVENT_IDENTIFIER, "", true);
+			if ( client.hasEventListeners(this, EventId.FOCUS) ) {
+	            client.updateVariable(paintableId, EventId.FOCUS, "", true);
 			}
 		}
 	}
