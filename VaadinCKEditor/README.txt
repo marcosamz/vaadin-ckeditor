@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 13 April 2010
+Last updated: 14 April 2010
 
   USING VAADIN CKEDITOR IN YOUR APPLICATION
   =========================================
@@ -58,8 +58,8 @@ under the Creative Commons Attribution 3.0 License.
   CHANGELOG
   =========
  
-0.3 (13 April 2010)
- - Vaadin 6.3 nightly resulted in a broken compile because of changes to TextField.  No functional changes made,
+0.3 (14 April 2010)
+ - Vaadin 6.3.0 resulted in a broken compile because of changes to TextField.  No functional changes made,
    but did a release to allow for the build to work.
  - Replaced disk (save) icon from Fat Cow Free Web Icons (http://www.fatcow.com/free-icons/) which are 
    released under the Creative Commons Attribution 3.0 License.
