@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 14 April 2010
+Last updated: 15 June 2010
 
   USING VAADIN CKEDITOR IN YOUR APPLICATION
   =========================================
@@ -7,6 +7,10 @@ Last updated: 14 April 2010
 Put the pre-built JAR file and in your Vaadin application's WEB-INF/lib. 
 You will need to "Compile Vaadin widgets," which is an icon in the Eclipse menubar.
 Then look at the example application for the basic setup.
+
+NOTE: This widget is compiled using JDK 1.6 / Java 6.  We have been using 1.6
+for years now (it was released December 2006) and see now reason to use such 
+an outdated JDK 1.5 per Vaadin's widget specs.
 
 
   LICENSE
@@ -37,7 +41,7 @@ under the Creative Commons Attribution 3.0 License.
   
  - Nothing immediately pending until we start integrating into our forms and see all the warts
    and missing items.
- - Test on more than just Firefox 3.5 with limited testing on IE8/Chrome4/Safari4/Opera10 (all on Windows 7).
+ - Test on more than just Firefox 3.5 with limited testing on IE8/Chrome5/Safari5/Opera10 (all on Windows 7).
 
 
   KNOWN ISSUES
@@ -58,6 +62,8 @@ under the Creative Commons Attribution 3.0 License.
   CHANGELOG
   =========
  
+0.3 (15 June 2010)
+ - Recompiled with Vaadin 6.3.4.
 0.3 (14 April 2010)
  - Vaadin 6.3.0 resulted in a broken compile because of changes to TextField.  No functional changes made,
    but did a release to allow for the build to work.
