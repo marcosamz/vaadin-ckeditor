@@ -56,9 +56,7 @@ under the Creative Commons Attribution 3.0 License.
   KNOWN ISSUES
   ============
   
- - On IE8, if you load the sample application and click the 'Hit server' button immediately, the
-   CKEditor disappears.  But if you load the sample application, then hit the browser refresh,
-   clicking the 'Hit server' button doesn't cause the problem.
+ - None.
 
  
   IDEAS FOR FUTURE RELEASE
@@ -71,12 +69,19 @@ under the Creative Commons Attribution 3.0 License.
   CHANGELOG
   =========
  
-0.4 (16 June 2010)
+0.4.1 (16 June 2010)
  - Recompiled with Vaadin 6.3.4.
  - Using CKEditor 3.3.1.
  - Fixed issue tracker id #3 with a seeming hack. Resetting the contents of the editor with setData() caused the DIV to lose its "display:none;"
    styling, so we're just forcing it on when we update the editor's data.  A better fix will be to stop that from happening if we
    ever find the root cause.
+ - Fixed issue track id #1 by swapping out the CssLayout for a VerticalLayout in the main window.
+ - While no bad side effects, changed the editor to do more setup only after the 'instanceReady' event is fired as it could
+   be a timing issue perhaps on some browser, though never saw any issue per se.
+ - Added sample theme style.css to show how this can be used if desired.
+ - Use two CKEditors to show that more than one can be done and they are kept separate.
+ - Fixed bug in CKEditor 'VaadinSave' button/plugin handler since Chrome often would do the blur event first and so the save
+   button wouldn't detect any changes and then not sent them when immediate mode was not used.
 0.3 (14 April 2010)
  - Vaadin 6.3.0 resulted in a broken compile because of changes to TextField.  No functional changes made,
    but did a release to allow for the build to work.

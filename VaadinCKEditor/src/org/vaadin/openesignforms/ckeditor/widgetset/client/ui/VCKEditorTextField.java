@@ -41,6 +41,7 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	private boolean immediate;
 
 	private CKEditor ckEditor = null;
+	private boolean ckEditorIsReady = false;
 	
 	private HashMap<String,String> writerRules = null;
 
@@ -107,21 +108,23 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 			}
 			
 			ckEditor = (CKEditor)CKEditorService.loadEditor(paintableId, this, inPageConfig);
-		} else {
+			// editor data is set when the instance is ready....
+		} else if ( ckEditorIsReady ) {
 			// Attempt to fix a bug where the element loses display:none; causing the CKEditor
 			// to be positioned below our placeholder div.
 			getElement().getStyle().setDisplay(com.google.gwt.dom.client.Style.Display.NONE);
+
+			if ( dataBeforeEdit != null ) {
+				ckEditor.setData(dataBeforeEdit);
+			}
 		}
 		
-		if ( dataBeforeEdit != null ) {
-			ckEditor.setData(dataBeforeEdit);
-		}
 	}
 
 	// Listener callback
 	@Override
 	public void onSave() {
-		if ( clientToServer != null && paintableId != null && ckEditor != null ) {
+		if ( ckEditorIsReady ) {
 			// Called if the user clicks the Save button. 
 			String data = ckEditor.getData();
 			if ( ! data.equals(dataBeforeEdit) ) {
@@ -134,7 +137,7 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	// Listener callback
 	@Override
 	public void onBlur() {
-		if ( clientToServer != null && paintableId != null && ckEditor != null ) {
+		if ( ckEditorIsReady ) {
 			boolean sendToServer = false;
 			
 			if ( clientToServer.hasEventListeners(this, EventId.BLUR) ) {
@@ -160,7 +163,7 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	// Listener callback
 	@Override
 	public void onFocus() {
-		if ( clientToServer != null && paintableId != null ) {
+		if ( ckEditorIsReady ) {
 			if ( clientToServer.hasEventListeners(this, EventId.FOCUS) ) {
 	            clientToServer.updateVariable(paintableId, EventId.FOCUS, "", true);
 			}
@@ -170,6 +173,8 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	// Listener callback
 	@Override
 	public void onInstanceReady() {
+		ckEditor.instanceReady(this);
+		
 		if ( writerRules != null ) {
 			Set<String> tagNameSet = writerRules.keySet();
 			for( String tagName : tagNameSet ) {
@@ -177,5 +182,11 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 			}
 			writerRules = null; // don't need them anymore
 		}
+		
+		if ( dataBeforeEdit != null ) {
+			ckEditor.setData(dataBeforeEdit);
+		}
+		
+		ckEditorIsReady = true;
 	}
 }

@@ -12,15 +12,24 @@ import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.TextField;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
 
 public class VaadinCKEditorApplication extends Application {
-	private static final long serialVersionUID = 5644886178209875499L;
+	private static final long serialVersionUID = -3106462237499366300L;
 
 	@Override
 	public void init() {
-		Window mainWindow = new Window("Vaadin CkEditor Application", new CssLayout());
+		setTheme("ckexample"); // not needed, but here to show if you wanted to style the v-ckeditortextfield style defined in VAADIN/themes/ckexample/styles.css
+		
+		// Using CssLayout(), we found IE8 would lose its editors if you clicked any button after initial load.
+		// However, if you loaded, then clicked RELOAD/REFRESH in IE8, it wouldn't happen.
+		// Then we found it doesn't happen at all with VerticalLayout.
+		// Window mainWindow = new Window("Vaadin CKEditor Application", new CssLayout());
+		Window mainWindow = new Window("Vaadin CKEditor Application", new VerticalLayout());
+		mainWindow.setSizeFull();
 		setMainWindow(mainWindow);
 		
 		mainWindow.addComponent(new Button("Hit server"));
@@ -46,6 +55,7 @@ public class VaadinCKEditorApplication extends Application {
 		 */
 		
 		final CKEditorTextField ckEditorTextField1 = new CKEditorTextField();
+		mainWindow.addComponent(ckEditorTextField1);
 		
 		final String editor1InitialValue = 
 			"<p>Thanks TinyMCEEditor for getting us started on the CKEditor integration.</p><h1>Like TinyMCEEditor said, &quot;Vaadin rocks!&quot;</h1><h1>And CKEditor is no slouch either.</h1>";
@@ -68,7 +78,6 @@ public class VaadinCKEditorApplication extends Application {
 
 		ckEditorTextField1.useCompactTags();
 		//ckEditorTextField.setImmediate(true);
-		mainWindow.addComponent(ckEditorTextField1);
 		
 		ckEditorTextField1.setValue(editor1InitialValue);
 		
@@ -98,8 +107,11 @@ public class VaadinCKEditorApplication extends Application {
 
 
 		final CKEditorTextField ckEditorTextField2 = new CKEditorTextField();
+		mainWindow.addComponent(ckEditorTextField2);
+
 		ckEditorTextField2.setInPageConfig(
 				"{ " +
+				    "width: '600px'," +  // example to show you can use CKEditor's width setting too in the config if CSS is not wanted
 				    "extraPlugins: 'vaadinsave'," + // add this if using the editor's VaadinSave button
 					"toolbar : 'Custom'," +
 					"toolbar_Custom : [" +
@@ -108,8 +120,6 @@ public class VaadinCKEditorApplication extends Application {
 				" }" 
 				     					);
 
-		mainWindow.addComponent(ckEditorTextField2);
-		
 		ckEditorTextField2.setValue(editor2InitialValue);
 		
 		ckEditorTextField2.addListener(new Property.ValueChangeListener() {
@@ -132,4 +142,10 @@ public class VaadinCKEditorApplication extends Application {
 		mainWindow.addComponent(resetTextButton2);
 
 	}
+	
+	@Override
+	public String getVersion() {
+		return "0.4.1";
+	}
+
 }

@@ -42,4 +42,20 @@ public class CKEditor extends JavaScriptObject {
 	 	var rule = @org.vaadin.openesignforms.ckeditor.widgetset.client.ui.CKEditorService::convertJavaScriptStringToObject(Ljava/lang/String;)(jsRule);
 		return this.dataProcessor.writer.setRules(tagName, rule);
 	}-*/;
+	
+	public final native void instanceReady(CKEditorService.CKEditorListener listener)
+	/*-{
+	 	// The 'listener' passed to us is used as 'listenerData' for the callback.
+	 	this.on( 'blur', function( ev ) {
+ 			ev.listenerData.@org.vaadin.openesignforms.ckeditor.widgetset.client.ui.CKEditorService.CKEditorListener::onBlur()();
+    	}, null, listener);
+    	
+	 	this.on( 'focus', function( ev ) {
+ 			ev.listenerData.@org.vaadin.openesignforms.ckeditor.widgetset.client.ui.CKEditorService.CKEditorListener::onFocus()();
+    	}, null, listener);
+    	
+     	this.on( 'vaadinsave', function( ev ) {
+	 		ev.listenerData.@org.vaadin.openesignforms.ckeditor.widgetset.client.ui.CKEditorService.CKEditorListener::onSave()();
+    	}, null, listener);
+	}-*/;
 }

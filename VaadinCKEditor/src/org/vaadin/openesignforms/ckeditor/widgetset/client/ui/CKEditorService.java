@@ -37,18 +37,6 @@ public class CKEditorService {
 	 	}
 	 	
 	 	// The 'listener' passed to us is used as 'listenerData' for the callback.
-	 	myEditor.on( 'blur', function( ev ) {
- 			ev.listenerData.@org.vaadin.openesignforms.ckeditor.widgetset.client.ui.CKEditorService.CKEditorListener::onBlur()();
-    	}, null, listener);
-    	
-	 	myEditor.on( 'focus', function( ev ) {
- 			ev.listenerData.@org.vaadin.openesignforms.ckeditor.widgetset.client.ui.CKEditorService.CKEditorListener::onFocus()();
-    	}, null, listener);
-    	
-     	myEditor.on( 'vaadinsave', function( ev ) {
-	 		ev.listenerData.@org.vaadin.openesignforms.ckeditor.widgetset.client.ui.CKEditorService.CKEditorListener::onSave()();
-    	}, null, listener);
-		
 		myEditor.on( 'instanceReady', function( ev ) {
     		ev.listenerData.@org.vaadin.openesignforms.ckeditor.widgetset.client.ui.CKEditorService.CKEditorListener::onInstanceReady()();
 		}, null, listener);
