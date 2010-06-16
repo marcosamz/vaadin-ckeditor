@@ -1,10 +1,11 @@
 File: VaadinCKEditor/README.txt
-Last updated: 15 June 2010
+Last updated: 16 June 2010
 
   USING VAADIN CKEDITOR IN YOUR APPLICATION
   =========================================
 
 Put the pre-built JAR file and in your Vaadin application's WEB-INF/lib. 
+This has everything you need to use it, including a version of CKEditor.
 You will need to "Compile Vaadin widgets," which is an icon in the Eclipse menubar.
 Then look at the example application for the basic setup.
 
@@ -12,6 +13,16 @@ NOTE: This widget is compiled using JDK 1.6 / Java 6.  We have been using 1.6
 for years now (it was released December 2006) and see now reason to use such 
 an outdated JDK 1.5 per Vaadin's widget specs.
 
+The CKEditor code, in full as downloaded from http://ckeditor.com, is present in the 
+src/org/vaadin/openesignforms/ckeditor/public folder.  No changes to CKEditor were made.
+If you are compiling yourself, you will need to install CKEditor code into your project
+as we do not check in the CKEditor code in our source code system.
+1) Download the latest ZIP file from ckeditor.com.
+2) Unzip/extract the contents -- you should have a 'ckeditor' folder.
+3) Copy the 'ckeditor' folder to src/org/vaadin/openesignforms/ckeditor/public.
+4) If you want to use the Vaadin Save button plugin, copy ckeditor/plugins/vaadinsave
+   to src/org/vaadin/openesignforms/ckeditor/public/ckeditor/plugins.
+5) Recompile the widgetset.
 
   LICENSE
   =======
@@ -30,8 +41,6 @@ No changes to TinyMCEEditor were made and this component makes no use of TinyMCE
 Special thanks to TinyMCEEditor for showing a path since it was all fuzzy to us!
 
 CKEditor is required and is licensed separately with details at http://ckeditor.com/license.
-The CKEditor code, in full as downloaded from http://ckeditor.com, is present in the 
-src/org/vaadin/openesignforms/ckeditor/public folder.  No changes to CKEditor were made.
 
 Icons are from Fat Cow Free Web Icons (http://www.fatcow.com/free-icons/) which are released 
 under the Creative Commons Attribution 3.0 License.
@@ -62,8 +71,12 @@ under the Creative Commons Attribution 3.0 License.
   CHANGELOG
   =========
  
-0.3 (15 June 2010)
+0.4 (16 June 2010)
  - Recompiled with Vaadin 6.3.4.
+ - Using CKEditor 3.3.1.
+ - Fixed issue tracker id #3 with a seeming hack. Resetting the contents of the editor with setData() caused the DIV to lose its "display:none;"
+   styling, so we're just forcing it on when we update the editor's data.  A better fix will be to stop that from happening if we
+   ever find the root cause.
 0.3 (14 April 2010)
  - Vaadin 6.3.0 resulted in a broken compile because of changes to TextField.  No functional changes made,
    but did a release to allow for the build to work.

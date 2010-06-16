@@ -34,7 +34,7 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	protected String paintableId;
 
 	/** Reference to the server connection object. */
-	protected ApplicationConnection client;
+	protected ApplicationConnection clientToServer;
 	
 	private String dataBeforeEdit = null;
 
@@ -64,19 +64,19 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 		// style name in DOM tree
 		setStyleName(CLASSNAME);
 	}
-
+	
 	/**
 	 * Called whenever an update is received from the server
 	 */
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client) {
-		this.client = client;
+		clientToServer = client;
 		paintableId = uidl.getId();
 
 		// This call should be made first.
 		// It handles sizes, captions, tooltips, etc. automatically.
-		// If client.updateComponent returns true there have been no changes
+		// If clientToServer.updateComponent returns true there have been no changes
 		// and we do not need to update anything.
-		if ( client.updateComponent(this, uidl, true) ) {
+		if ( clientToServer.updateComponent(this, uidl, true) ) {
 			return;
 		}
 
@@ -87,7 +87,6 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 		if ( ckEditor == null ) {
 			// Save the client side identifier (paintable id) for the widget
 			getElement().setId(paintableId);	
-			//getElement().setInnerHTML("<p></p>");
 
 			String inPageConfig = uidl.hasAttribute("inPageConfig") ? uidl.getStringAttribute("inPageConfig") : null;
 			
@@ -108,20 +107,26 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 			}
 			
 			ckEditor = (CKEditor)CKEditorService.loadEditor(paintableId, this, inPageConfig);
+		} else {
+			// Attempt to fix a bug where the element loses display:none; causing the CKEditor
+			// to be positioned below our placeholder div.
+			getElement().getStyle().setDisplay(com.google.gwt.dom.client.Style.Display.NONE);
 		}
 		
-		ckEditor.setData(dataBeforeEdit);
+		if ( dataBeforeEdit != null ) {
+			ckEditor.setData(dataBeforeEdit);
+		}
 	}
 
 	// Listener callback
 	@Override
 	public void onSave() {
-		if ( client != null && paintableId != null && ckEditor != null ) {
+		if ( clientToServer != null && paintableId != null && ckEditor != null ) {
 			// Called if the user clicks the Save button. 
 			String data = ckEditor.getData();
 			if ( ! data.equals(dataBeforeEdit) ) {
-				client.updateVariable(paintableId, "text", data, true);
-				dataBeforeEdit = data;
+				clientToServer.updateVariable(paintableId, "text", data, true);
+				dataBeforeEdit = data; // update our image since we sent it to the server
 			}
 		}
 	}
@@ -129,24 +134,25 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	// Listener callback
 	@Override
 	public void onBlur() {
-		if ( client != null && paintableId != null && ckEditor != null ) {
-			boolean sendBlurEvent = false;
-			boolean sendValueChange = false;
+		if ( clientToServer != null && paintableId != null && ckEditor != null ) {
+			boolean sendToServer = false;
 			
-			if ( client.hasEventListeners(this, EventId.BLUR) ) {
-	            sendBlurEvent = true;
-	            client.updateVariable(paintableId, EventId.BLUR, "", false);
+			if ( clientToServer.hasEventListeners(this, EventId.BLUR) ) {
+				sendToServer = true;
+	            clientToServer.updateVariable(paintableId, EventId.BLUR, "", false);
 			}
 			
 			String data = ckEditor.getData();
 			if ( ! data.equals(dataBeforeEdit) ) {
-				sendValueChange = immediate;
-				client.updateVariable(paintableId, "text", data, false);
-				dataBeforeEdit = data;
+				clientToServer.updateVariable(paintableId, "text", data, false);
+	            if (immediate) {
+	            	sendToServer = true;
+	            	dataBeforeEdit = data; // let's only update our image if we're going to send new data to the server
+	            }
 			}
 			
-	        if (sendBlurEvent || sendValueChange) {
-	            client.sendPendingVariableChanges();
+	        if (sendToServer) {
+	            clientToServer.sendPendingVariableChanges();
 	        }
 		}
 	}
@@ -154,9 +160,9 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	// Listener callback
 	@Override
 	public void onFocus() {
-		if ( client != null && paintableId != null ) {
-			if ( client.hasEventListeners(this, EventId.FOCUS) ) {
-	            client.updateVariable(paintableId, EventId.FOCUS, "", true);
+		if ( clientToServer != null && paintableId != null ) {
+			if ( clientToServer.hasEventListeners(this, EventId.FOCUS) ) {
+	            clientToServer.updateVariable(paintableId, EventId.FOCUS, "", true);
 			}
 		}
 	}

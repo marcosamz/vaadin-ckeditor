@@ -16,12 +16,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 (function()
 {
-	var saveCmd =
+	var vaadinSaveCmd =
 	{
-		modes : { wysiwyg:1, source:1 },
-
 		exec : function( editor )
 		{
+			// alert("Data: " + editor.getData());
 			editor.fire( 'vaadinsave' );
 		}
 	};
@@ -33,8 +32,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	{
 		init : function( editor )
 		{
-			var command = editor.addCommand( pluginName, saveCmd );
-			command.modes = { wysiwyg:1, source:1 };
+			var command = editor.addCommand( pluginName, vaadinSaveCmd );
 
 			editor.ui.addButton( 'VaadinSave',
 				{

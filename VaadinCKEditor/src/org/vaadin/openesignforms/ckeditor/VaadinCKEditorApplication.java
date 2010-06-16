@@ -13,6 +13,7 @@ import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Window;
+import com.vaadin.ui.Button.ClickEvent;
 
 public class VaadinCKEditorApplication extends Application {
 	private static final long serialVersionUID = 5644886178209875499L;
@@ -23,9 +24,8 @@ public class VaadinCKEditorApplication extends Application {
 		setMainWindow(mainWindow);
 		
 		mainWindow.addComponent(new Button("Hit server"));
-		
-		CKEditorTextField ckEditorTextField = new CKEditorTextField();
-		
+
+
 		/* This is how the default Full toolbar is defined, showing you all the options available for defining your toolbar.
 [
   ['Source','-','Save','NewPage','Preview','-','Templates'],
@@ -45,11 +45,16 @@ public class VaadinCKEditorApplication extends Application {
 ]
 		 */
 		
+		final CKEditorTextField ckEditorTextField1 = new CKEditorTextField();
+		
+		final String editor1InitialValue = 
+			"<p>Thanks TinyMCEEditor for getting us started on the CKEditor integration.</p><h1>Like TinyMCEEditor said, &quot;Vaadin rocks!&quot;</h1><h1>And CKEditor is no slouch either.</h1>";
+
 		// The following sets to the built-in Basic toolbar. 'Full' is the default toolbar.
-		//ckEditorTextField.setInPageConfig("{ toolbar : 'Basic' }");
+		//ckEditorTextField1.setInPageConfig("{ toolbar : 'Basic' }");
 		
 		// The following defines the toolbar to be a custom toolbar, and defines the custom toolbar.
-		ckEditorTextField.setInPageConfig(
+		ckEditorTextField1.setInPageConfig(
 			"{ " +
 				"extraPlugins: 'vaadinsave'," + // add this if using the editor's VaadinSave button
 				"toolbar : 'Custom'," +
@@ -60,19 +65,71 @@ public class VaadinCKEditorApplication extends Application {
 								 "]" +
 			" }" 
 				     					);
-		ckEditorTextField.useCompactTags();
+
+		ckEditorTextField1.useCompactTags();
 		//ckEditorTextField.setImmediate(true);
-		mainWindow.addComponent(ckEditorTextField);
+		mainWindow.addComponent(ckEditorTextField1);
 		
-		ckEditorTextField.setValue("<p>Thanks TinyMCEEditor for getting us started on the CKEditor integration.</p><h1>Like TinyMCEEditor said, &quot;Vaadin rocks!&quot;</h1><h1>And CKEditor is no slouch either.</h1>");
+		ckEditorTextField1.setValue(editor1InitialValue);
 		
-		ckEditorTextField.addListener(new Property.ValueChangeListener() {
+		ckEditorTextField1.addListener(new Property.ValueChangeListener() {
 			private static final long serialVersionUID = 54555014513845952L;
 
 			public void valueChange(ValueChangeEvent event) {
-				getMainWindow().showNotification("CKEditor contents: " + event.getProperty().toString().replaceAll("<", "&lt;"));
+				getMainWindow().showNotification("CKEditor #1 contents: " + event.getProperty().toString().replaceAll("<", "&lt;"));
 			}
 		});
 		
+		Button resetTextButton1 = new Button("Reset editor #1");
+		resetTextButton1.addListener( new Button.ClickListener() {			
+			private static final long serialVersionUID = -5568890922280949248L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				ckEditorTextField1.setValue(editor1InitialValue);
+			}
+		});
+		mainWindow.addComponent(resetTextButton1);
+		
+		
+		// Now add in a second editor....
+		final String editor2InitialValue = 
+			"<p>Here is editor #2.</p><h1>Hope you find this useful in your Vaadin projects.</h1>";
+
+
+		final CKEditorTextField ckEditorTextField2 = new CKEditorTextField();
+		ckEditorTextField2.setInPageConfig(
+				"{ " +
+				    "extraPlugins: 'vaadinsave'," + // add this if using the editor's VaadinSave button
+					"toolbar : 'Custom'," +
+					"toolbar_Custom : [" +
+						"['Styles','-','VaadinSave']" +
+									 "]" +
+				" }" 
+				     					);
+
+		mainWindow.addComponent(ckEditorTextField2);
+		
+		ckEditorTextField2.setValue(editor2InitialValue);
+		
+		ckEditorTextField2.addListener(new Property.ValueChangeListener() {
+			private static final long serialVersionUID = 5261774097251439369L;
+
+			public void valueChange(ValueChangeEvent event) {
+				getMainWindow().showNotification("CKEditor #2 contents: " + event.getProperty().toString().replaceAll("<", "&lt;"));
+			}
+		});
+		
+		Button resetTextButton2 = new Button("Reset editor #2");
+		resetTextButton2.addListener( new Button.ClickListener() {			
+			private static final long serialVersionUID = 918660321808687898L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				ckEditorTextField2.setValue(editor2InitialValue);
+			}
+		});
+		mainWindow.addComponent(resetTextButton2);
+
 	}
 }
