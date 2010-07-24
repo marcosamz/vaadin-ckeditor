@@ -1,4 +1,4 @@
-// Vaadin CKEditor - Widget linkage for using CKEditor within a Vaadin application.
+// CKEditor for Vaadin - Widget linkage for using CKEditor within a Vaadin application.
 // Copyright (C) 2010 Yozons, Inc.
 //
 // This software is released under the Apache License 2.0 <http://www.apache.org/licenses/LICENSE-2.0.html>
@@ -11,8 +11,6 @@ import com.vaadin.Application;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
@@ -54,33 +52,23 @@ public class VaadinCKEditorApplication extends Application {
 ]
 		 */
 		
-		final CKEditorTextField ckEditorTextField1 = new CKEditorTextField();
+		CKEditorConfig config1 = new CKEditorConfig();
+		config1.useCompactTags();
+		config1.disableElementsPath();
+		config1.setResizeDir(CKEditorConfig.RESIZE_DIR.HORIZONTAL);
+		config1.disableSpellChecker();
+		config1.setToolbarCanCollapse(false);
+		config1.addOpenESignFormsCustomToolbar();
+		config1.setWidth("100%");
+		
+		final CKEditorTextField ckEditorTextField1 = new CKEditorTextField(config1);
 		mainWindow.addComponent(ckEditorTextField1);
 		
 		final String editor1InitialValue = 
 			"<p>Thanks TinyMCEEditor for getting us started on the CKEditor integration.</p><h1>Like TinyMCEEditor said, &quot;Vaadin rocks!&quot;</h1><h1>And CKEditor is no slouch either.</h1>";
 
-		// The following sets to the built-in Basic toolbar. 'Full' is the default toolbar.
-		//ckEditorTextField1.setInPageConfig("{ toolbar : 'Basic' }");
-		
-		// The following defines the toolbar to be a custom toolbar, and defines the custom toolbar.
-		ckEditorTextField1.setInPageConfig(
-			"{ " +
-				"extraPlugins: 'vaadinsave'," + // add this if using the editor's VaadinSave button
-				"toolbar : 'Custom'," +
-				"toolbar_Custom : [" +
-					"['Styles','Format','Bold','Italic','TextColor','BGColor','-','Font','FontSize','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','Image','Link']," +
-					"'/'," +
-					"['Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo','-','NumberedList','BulletedList','-','Outdent','Indent','-','Table','HorizontalRule','-','Maximize','-','Source','ShowBlocks','-','VaadinSave']" +
-								 "]" +
-			" }" 
-				     					);
-
-		ckEditorTextField1.useCompactTags();
-		//ckEditorTextField.setImmediate(true);
-		
 		ckEditorTextField1.setValue(editor1InitialValue);
-		
+		//ckEditorTextField1.setReadOnly(true);
 		ckEditorTextField1.addListener(new Property.ValueChangeListener() {
 			private static final long serialVersionUID = 54555014513845952L;
 
@@ -105,21 +93,22 @@ public class VaadinCKEditorApplication extends Application {
 		final String editor2InitialValue = 
 			"<p>Here is editor #2.</p><h1>Hope you find this useful in your Vaadin projects.</h1>";
 
-
 		final CKEditorTextField ckEditorTextField2 = new CKEditorTextField();
 		mainWindow.addComponent(ckEditorTextField2);
-
-		ckEditorTextField2.setInPageConfig(
+		
+		CKEditorConfig config2 = new CKEditorConfig();
+		config2.setInPageConfig(
 				"{ " +
 				    "width: '600px'," +  // example to show you can use CKEditor's width setting too in the config if CSS is not wanted
 				    "extraPlugins: 'vaadinsave'," + // add this if using the editor's VaadinSave button
+				    "removePlugins: 'scayt'," + // use this to remove the built in spell checker
 					"toolbar : 'Custom'," +
 					"toolbar_Custom : [" +
 						"['Styles','-','VaadinSave']" +
 									 "]" +
 				" }" 
-				     					);
-
+				     			);
+		ckEditorTextField2.setConfig(config2);
 		ckEditorTextField2.setValue(editor2InitialValue);
 		
 		ckEditorTextField2.addListener(new Property.ValueChangeListener() {
@@ -137,6 +126,7 @@ public class VaadinCKEditorApplication extends Application {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				ckEditorTextField2.setValue(editor2InitialValue);
+				ckEditorTextField1.setReadOnly( ! ckEditorTextField1.isReadOnly() );
 			}
 		});
 		mainWindow.addComponent(resetTextButton2);
@@ -145,7 +135,7 @@ public class VaadinCKEditorApplication extends Application {
 	
 	@Override
 	public String getVersion() {
-		return "0.4.1";
+		return "0.5";
 	}
 
 }

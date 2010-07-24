@@ -1,72 +1,143 @@
-// Vaadin CKEditor - Widget linkage for using CKEditor within a Vaadin application.
+// CKEditor for Vaadin - Widget linkage for using CKEditor within a Vaadin application.
 // Copyright (C) 2010 Yozons, Inc.
 //
 // This software is released under the Apache License 2.0 <http://www.apache.org/licenses/LICENSE-2.0.html>
 //
 // This software was originally based on the Vaadin incubator component TinyMCEEditor written by Matti Tahvonen.
+// It was later converted to extend AbstractField instead of com.vaadin.ui.TextField, at which time some of the code from TextField was used here.
 //
 package org.vaadin.openesignforms.ckeditor;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
+import com.vaadin.data.Property;
+import com.vaadin.event.FieldEvents;
+import com.vaadin.event.FieldEvents.BlurEvent;
+import com.vaadin.event.FieldEvents.BlurListener;
+import com.vaadin.event.FieldEvents.FocusEvent;
+import com.vaadin.event.FieldEvents.FocusListener;
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
-import com.vaadin.ui.TextField;
+import com.vaadin.ui.AbstractField;
 
 /**
- * Server side component for the VCKEditorTextField widget.
+ * Server side component for the VCKEditorTextField widget.  
+ * 
+ * Currently, this widget doesn't support being read-only because CKEditor doesn't.  But perhaps need the widgets
+ * to only emit a DIV with the HTML code inside if it's read-only.
  */
 @com.vaadin.ui.ClientWidget(org.vaadin.openesignforms.ckeditor.widgetset.client.ui.VCKEditorTextField.class)
-public class CKEditorTextField extends TextField {
-	private static final long serialVersionUID = -4458661128362837752L;
+public class CKEditorTextField extends AbstractField 
+	implements FieldEvents.BlurNotifier, FieldEvents.FocusNotifier  {
 	
-	private String inPageConfig;
-	private HashMap<String,String> writerRules = null;
+	private static final long serialVersionUID = -190815622895391684L;
+
+	private CKEditorConfig config;
 
 	public CKEditorTextField() {
-		super();
-		setWidth("100%");
-		setHeight("280px");
-	}
-
-	public void setInPageConfig(String js) {
-		inPageConfig = js;
+		super.setValue("");
+		setWidth(100,UNITS_PERCENTAGE);
+		setHeight(300,UNITS_PIXELS);
 	}
 	
-	public synchronized void addWriterRules(String tagName, String jsRule) {
-		if ( writerRules == null ) {
-			writerRules = new HashMap<String,String>();
-		}
-		writerRules.put( tagName, jsRule );
+	public CKEditorTextField(CKEditorConfig config) {
+		this();
+		setConfig(config);
 	}
 	
-	// A convenience method to set a bunch of compact HTML rules.
-	public void useCompactTags() {
-		addWriterRules("p",  "{indent : false, breakBeforeOpen : true, breakAfterOpen : false, breakBeforeClose : false, breakAfterClose : true}" );
-		addWriterRules("h1", "{indent : false, breakBeforeOpen : true, breakAfterOpen : false, breakBeforeClose : false, breakAfterClose : true}" );
-		addWriterRules("h2", "{indent : false, breakBeforeOpen : true, breakAfterOpen : false, breakBeforeClose : false, breakAfterClose : true}" );
-		addWriterRules("h3", "{indent : false, breakBeforeOpen : true, breakAfterOpen : false, breakBeforeClose : false, breakAfterClose : true}" );
-		addWriterRules("h4", "{indent : false, breakBeforeOpen : true, breakAfterOpen : false, breakBeforeClose : false, breakAfterClose : true}" );
-		addWriterRules("h5", "{indent : false, breakBeforeOpen : true, breakAfterOpen : false, breakBeforeClose : false, breakAfterClose : true}" );
-		addWriterRules("h6", "{indent : false, breakBeforeOpen : true, breakAfterOpen : false, breakBeforeClose : false, breakAfterClose : true}" );
+	public void setConfig(CKEditorConfig config) {
+		this.config = config;
 	}
-
-
+	
+	@Override
+    public void setValue(Object newValue) throws Property.ReadOnlyException, Property.ConversionException {
+    	if ( newValue == null )
+    		newValue = "";
+    	super.setValue(newValue, false);
+    }
+	
 	@Override
 	public void paintContent(PaintTarget target) throws PaintException {
 		super.paintContent(target);
-		if (inPageConfig != null) {
-			target.addAttribute("inPageConfig", inPageConfig);
-		}
-		if ( writerRules != null ) {
-			int i = 0;
-			Set<String> tagNameSet = writerRules.keySet();
-			for( String tagName : tagNameSet ) {
-				target.addAttribute("writerRules.tagName"+i, tagName);
-				target.addAttribute("writerRules.jsRule"+i, writerRules.get(tagName));
-				++i;
+		
+		target.addVariable(this, "text", getValue().toString());
+
+		target.addAttribute("readonly", isReadOnly());
+		
+		if (config != null) {
+			target.addAttribute("inPageConfig", config.getInPageConfig());
+			
+			if ( config.hasWriterRules() ) {
+				int i = 0;
+				Set<String> tagNameSet = config.getWriterRulesTagNames();
+				for( String tagName : tagNameSet ) {
+					target.addAttribute("writerRules.tagName"+i, tagName);
+					target.addAttribute("writerRules.jsRule"+i, config.getWriterRuleByTagName(tagName));
+					++i;
+				}
 			}
 		}
+	}
+	
+    @Override
+    public void changeVariables(Object source, Map<String, Object> variables) {
+        super.changeVariables(source, variables);
+
+        // Sets the text
+        if (variables.containsKey("text") && !isReadOnly()) {
+
+            // Only do the setting if the string representation of the value
+            // has been updated
+            String newValue = (String)variables.get("text");
+            if ( newValue == null )
+            	newValue = "";
+
+            final String oldValue = getValue().toString();
+            if ( ! newValue.equals(oldValue) ) {
+                boolean wasModified = isModified();
+                setValue(newValue, true);
+
+                // If the modified status changes repaint is needed after all.
+                if (wasModified != isModified()) {
+                    requestRepaint();
+                }
+            }
+        }
+
+        if (variables.containsKey(FocusEvent.EVENT_ID)) {
+            fireEvent(new FocusEvent(this));
+        }
+        if (variables.containsKey(BlurEvent.EVENT_ID)) {
+            fireEvent(new BlurEvent(this));
+        }
+    }
+
+
+	@Override
+	public Class<?> getType() {
+		return String.class;
+	}
+	
+	@Override
+	public void addListener(BlurListener listener) {
+        addListener(BlurEvent.EVENT_ID, BlurEvent.class, listener,
+                BlurListener.blurMethod);
+	}
+
+	@Override
+	public void removeListener(BlurListener listener) {
+        removeListener(BlurEvent.EVENT_ID, BlurEvent.class, listener);
+	}
+
+	@Override
+	public void addListener(FocusListener listener) {
+        addListener(FocusEvent.EVENT_ID, FocusEvent.class, listener,
+                FocusListener.focusMethod);
+	}
+
+	@Override
+	public void removeListener(FocusListener listener) {
+        removeListener(FocusEvent.EVENT_ID, FocusEvent.class, listener);
 	}
 }

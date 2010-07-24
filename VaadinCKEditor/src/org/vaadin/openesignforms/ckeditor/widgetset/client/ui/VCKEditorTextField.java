@@ -1,4 +1,4 @@
-// Vaadin CKEditor - Widget linkage for using CKEditor within a Vaadin application.
+// CKEditor for Vaadin- Widget linkage for using CKEditor within a Vaadin application.
 // Copyright (C) 2010 Yozons, Inc.
 //
 // This software is released under the Apache License 2.0 <http://www.apache.org/licenses/LICENSE-2.0.html>
@@ -11,10 +11,8 @@ import java.util.HashMap;
 import java.util.Set;
 
 import com.google.gwt.dom.client.Document;
-//import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
-//import com.vaadin.terminal.gwt.client.BrowserInfo;
 import com.vaadin.terminal.gwt.client.EventId;
 import com.vaadin.terminal.gwt.client.Paintable;
 import com.vaadin.terminal.gwt.client.UIDL;
@@ -39,7 +37,8 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	private String dataBeforeEdit = null;
 
 	private boolean immediate;
-
+	private boolean readOnly;
+	
 	private CKEditor ckEditor = null;
 	private boolean ckEditorIsReady = false;
 	
@@ -50,13 +49,12 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	 * then handle any initialization relevant to Vaadin.
 	 */
 	public VCKEditorTextField() {
-		
 		// Any one-time library initializations go here
 		if ( ! initializedCKEDITOR ) {
 			CKEditorService.overrideBlurToForceBlur();
 			initializedCKEDITOR = true;
 		}
-		
+
 		// CKEditor prefers a textarea, but found too many issues trying to use createTextareaElement() instead of a simple div, 
 		// which is okay in Vaadin where an HTML form won't be used to send the data back and forth.
 		setElement(Document.get().createDivElement());
@@ -72,7 +70,7 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client) {
 		clientToServer = client;
 		paintableId = uidl.getId();
-
+		
 		// This call should be made first.
 		// It handles sizes, captions, tooltips, etc. automatically.
 		// If clientToServer.updateComponent returns true there have been no changes
@@ -80,15 +78,33 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 		if ( clientToServer.updateComponent(this, uidl, true) ) {
 			return;
 		}
-
-		immediate = uidl.getBooleanAttribute("immediate");
-
-		dataBeforeEdit = uidl.getStringVariable("text");
-
-		if ( ckEditor == null ) {
-			// Save the client side identifier (paintable id) for the widget
-			getElement().setId(paintableId);	
-
+		
+		if ( uidl.hasAttribute("immediate") ) {
+	 		immediate = uidl.getBooleanAttribute("immediate");
+		}
+		if ( uidl.hasAttribute("readonly") ) {
+			readOnly = uidl.getBooleanAttribute("readonly");
+		}
+		if ( uidl.hasVariable("text") ) {
+			dataBeforeEdit = uidl.getStringVariable("text");
+		}
+		
+		// Save the client side identifier (paintable id) for the widget
+		if ( ! paintableId.equals(getElement().getId()) )
+			getElement().setId(paintableId);
+		
+		if ( readOnly ) {
+			if ( ckEditor != null ) {
+				dataBeforeEdit = ckEditor.getData();
+				ckEditor.destroy();
+				ckEditorIsReady = false;
+				ckEditor = null;
+			}
+			getElement().getStyle().setDisplay(com.google.gwt.dom.client.Style.Display.BLOCK);
+			getElement().getStyle().setVisibility(com.google.gwt.dom.client.Style.Visibility.VISIBLE);
+			getElement().setInnerHTML(dataBeforeEdit);
+		}
+		else if ( ckEditor == null ) {
 			String inPageConfig = uidl.hasAttribute("inPageConfig") ? uidl.getStringAttribute("inPageConfig") : null;
 			
 			// See if we have any writer rules
@@ -108,7 +124,8 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 			}
 			
 			ckEditor = (CKEditor)CKEditorService.loadEditor(paintableId, this, inPageConfig);
-			// editor data is set when the instance is ready....
+			
+			// editor data and some options are set when the instance is ready....
 		} else if ( ckEditorIsReady ) {
 			// Attempt to fix a bug where the element loses display:none; causing the CKEditor
 			// to be positioned below our placeholder div.

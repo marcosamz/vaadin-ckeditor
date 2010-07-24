@@ -1,9 +1,7 @@
-// Vaadin CKEditor - Widget linkage for using CKEditor within a Vaadin application.
+// CKEditor for Vaadin - Widget linkage for using CKEditor within a Vaadin application.
 // Copyright (C) 2010 Yozons, Inc.
 //
 // This software is released under the Apache License 2.0 <http://www.apache.org/licenses/LICENSE-2.0.html>
-//
-// This software was originally based on the Vaadin incubator component TinyMCEEditor written by Matti Tahvonen.
 //
 package org.vaadin.openesignforms.ckeditor.widgetset.client.ui;
 
@@ -40,7 +38,7 @@ public class CKEditor extends JavaScriptObject {
 	public final native void setWriterRules(String tagName, String jsRule)
 	/*-{
 	 	var rule = @org.vaadin.openesignforms.ckeditor.widgetset.client.ui.CKEditorService::convertJavaScriptStringToObject(Ljava/lang/String;)(jsRule);
-		return this.dataProcessor.writer.setRules(tagName, rule);
+		this.dataProcessor.writer.setRules(tagName, rule);
 	}-*/;
 	
 	public final native void instanceReady(CKEditorService.CKEditorListener listener)
@@ -57,5 +55,15 @@ public class CKEditor extends JavaScriptObject {
      	this.on( 'vaadinsave', function( ev ) {
 	 		ev.listenerData.@org.vaadin.openesignforms.ckeditor.widgetset.client.ui.CKEditorService.CKEditorListener::onSave()();
     	}, null, listener);
+	}-*/;
+	
+	public final native void destroy(boolean noUpdate)
+	/*-{
+		this.destroy(noUpdate);
+	}-*/;
+	
+	public final native void destroy()
+	/*-{
+		this.destroy();
 	}-*/;
 }

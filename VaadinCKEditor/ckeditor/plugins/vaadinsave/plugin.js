@@ -1,5 +1,5 @@
 /*
-// Vaadin CKEditor - Widget linkage for using CKEditor within a Vaadin application.
+// CKEditor for Vaadin - Widget linkage for using CKEditor within a Vaadin application.
 // Copyright (C) 2010 Yozons, Inc.
 //
 // Adapted from CKEditor 3.2 file _source/plugins/save/plugin.js on 7 March 2010.

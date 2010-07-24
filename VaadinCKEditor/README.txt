@@ -1,8 +1,8 @@
 File: VaadinCKEditor/README.txt
-Last updated: 16 June 2010
+Last updated: 23 June 2010
 
-  USING VAADIN CKEDITOR IN YOUR APPLICATION
-  =========================================
+  USING CKEDITOR FOR VAADIN IN YOUR APPLICATION
+  =============================================
 
 Put the pre-built JAR file and in your Vaadin application's WEB-INF/lib. 
 This has everything you need to use it, including a version of CKEditor.
@@ -56,7 +56,7 @@ under the Creative Commons Attribution 3.0 License.
   KNOWN ISSUES
   ============
   
- - None.
+ - None..
 
  
   IDEAS FOR FUTURE RELEASE
@@ -65,10 +65,28 @@ under the Creative Commons Attribution 3.0 License.
  - Add ability to define styles.
  - Add ability to define templates.
  
-
   CHANGELOG
   =========
- 
+
+0.5 (23 July 2010)
+ - Recompiled with Vaadin 6.4.1
+ - CKEditorTextField now extends AbstractField instead of TextField.
+ - Added LI tag to list of compact tags.
+ - Support setReadOnly(boolean) (default false).  If the editor exists when you setReadOnly(true), the editor instance is destroyed.
+ - Editor is now configured with a new CKEditorConfig class that can help build the configuration, or you can still just use JSON notation.
+ - Ability to add other plugins by name: CKEditorConfig.addToExtraPlugins(String pluginName)
+ - Ability to add the 'vaadinsave' plugin: CKEditorConfig.enableVaadinSavePlugin()
+ - Ability to remove other plugins by name: CKEditorConfig.addToRemovePlugins(String pluginName)
+ - Turn off (default on) HTML nesting levels (elementspath) shown at bottom if desired: CKEditorConfig.disableElementsPath()
+ - Turn off (default on) resizing editor capability if desired: CKEditorConfig.disableResizeEditor()
+ - Turn off (default on) the spell checker (scayt) if desired: CKEditorConfig.disableSpellChecker()
+ - Using JSON notation, build a custom toolbar line-by-line: CKEditorConfig.addCustomToolbarLine(String toolbarLineJS)
+ - Build the Open eSignForms standard custom toolbar: CKEditorConfig.addOpenESignFormsCustomToolbar()
+ - Set whether the toolbar (default can) can be collapsed or not: CKEditorConfig.setToolbarCanCollapse(boolean v)
+ - Set resize editor ability to vertical, horizontal or both (default): CKEditorConfig.setResizeDir(RESIZE_DIR dir)
+ - Set editor width: CKEditorConfig.setWidth(String cssSizeFormat)
+ - Set editor height: CKEditorConfig.setHeight(String cssSizeFormat)
+
 0.4.1 (16 June 2010)
  - Recompiled with Vaadin 6.3.4.
  - Using CKEditor 3.3.1.
@@ -82,11 +100,13 @@ under the Creative Commons Attribution 3.0 License.
  - Use two CKEditors to show that more than one can be done and they are kept separate.
  - Fixed bug in CKEditor 'VaadinSave' button/plugin handler since Chrome often would do the blur event first and so the save
    button wouldn't detect any changes and then not sent them when immediate mode was not used.
+   
 0.3 (14 April 2010)
  - Vaadin 6.3.0 resulted in a broken compile because of changes to TextField.  No functional changes made,
    but did a release to allow for the build to work.
  - Replaced disk (save) icon from Fat Cow Free Web Icons (http://www.fatcow.com/free-icons/) which are 
    released under the Creative Commons Attribution 3.0 License.
+   
 0.2 (8 March 2010)
  - Added save button handling that is always immediate. Added support for blur and focus event listeners 
    (defined in superclass TextField).
@@ -95,6 +115,7 @@ under the Creative Commons Attribution 3.0 License.
    blur function.  This fixes a bug in which the 'Hit server' button's onclick event would fire before
    the CKEditor's blur so that it would sometimes seem like you lost an update that wouldn't be seen
    until you clicked another button.
+   
 0.1 (21 February 2010)
  - Initial take based on the TinyMCEEditor code in the Vaadin incubator SVN on 18 February 2010.
  - Built using CkEditor 3.1 as downloaded from http://ckeditor.com/download on 18 February 2010.

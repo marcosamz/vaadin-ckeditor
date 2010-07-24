@@ -1,4 +1,4 @@
-// Vaadin CKEditor - Widget linkage for using CKEditor within a Vaadin application.
+// CKEditor for Vaadin - Widget linkage for using CKEditor within a Vaadin application.
 // Copyright (C) 2010 Yozons, Inc.
 //
 // This software is released under the Apache License 2.0 <http://www.apache.org/licenses/LICENSE-2.0.html>
@@ -51,7 +51,14 @@ public class CKEditorService {
 		$wnd.CKEDITOR.focusManager.prototype['blur'] =  $wnd.CKEDITOR.focusManager.prototype['forceBlur'];
 	}-*/;
 	
-
+	public native static void remove(String id)
+	/*-{
+	    var theEditor = $wnd.CKEDITOR.instances[ id ];
+	    if ( theEditor ) {
+			$wnd.CKEDITOR.remove( theEditor );
+		}
+	}-*/;
+	
 	/**
 	 * Returns a javascript CKEDITOR.editor instance for given id.
 	 * 
