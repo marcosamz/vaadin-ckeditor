@@ -26,6 +26,13 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	/** Set the CSS class name to allow styling. */
 	public static final String CLASSNAME = "v-ckeditortextfield";
 	
+	public static final String ATTR_IMMEDIATE = "immediate";
+	public static final String ATTR_READONLY = "readonly";
+	public static final String ATTR_INPAGECONFIG = "inPageConfig";
+	public static final String ATTR_WRITERRULES_TAGNAME = "writerRules.tagName";
+	public static final String ATTR_WRITERRULES_JSRULE = "writerRules.jsRule";
+	public static final String VAR_TEXT = "text";
+	
 	private static boolean initializedCKEDITOR = false;
 
 	/** The client side widget identifier */
@@ -79,43 +86,44 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 			return;
 		}
 		
-		if ( uidl.hasAttribute("immediate") ) {
-	 		immediate = uidl.getBooleanAttribute("immediate");
+		if ( uidl.hasAttribute(ATTR_IMMEDIATE) ) {
+	 		immediate = uidl.getBooleanAttribute(ATTR_IMMEDIATE);
 		}
-		if ( uidl.hasAttribute("readonly") ) {
-			readOnly = uidl.getBooleanAttribute("readonly");
+		if ( uidl.hasAttribute(ATTR_READONLY) ) {
+			readOnly = uidl.getBooleanAttribute(ATTR_READONLY);
 		}
-		if ( uidl.hasVariable("text") ) {
-			dataBeforeEdit = uidl.getStringVariable("text");
+		if ( uidl.hasVariable(VAR_TEXT) ) {
+			dataBeforeEdit = uidl.getStringVariable(VAR_TEXT);
 		}
 		
 		// Save the client side identifier (paintable id) for the widget
-		if ( ! paintableId.equals(getElement().getId()) )
+		if ( ! paintableId.equals(getElement().getId()) ) {
 			getElement().setId(paintableId);
+		}
 		
 		if ( readOnly ) {
 			if ( ckEditor != null ) {
 				dataBeforeEdit = ckEditor.getData();
-				ckEditor.destroy();
+				ckEditor.destroy(true);
 				ckEditorIsReady = false;
 				ckEditor = null;
 			}
-			getElement().getStyle().setDisplay(com.google.gwt.dom.client.Style.Display.BLOCK);
-			getElement().getStyle().setVisibility(com.google.gwt.dom.client.Style.Visibility.VISIBLE);
 			getElement().setInnerHTML(dataBeforeEdit);
 		}
 		else if ( ckEditor == null ) {
-			String inPageConfig = uidl.hasAttribute("inPageConfig") ? uidl.getStringAttribute("inPageConfig") : null;
+			getElement().setInnerHTML(""); // in case we put contents in there while in readonly mode
+			
+			String inPageConfig = uidl.hasAttribute(ATTR_INPAGECONFIG) ? uidl.getStringAttribute(ATTR_INPAGECONFIG) : null;
 			
 			// See if we have any writer rules
 			int i = 0;
 			while( true ) {
-				if ( ! uidl.hasAttribute("writerRules.tagName"+i)  ) {
+				if ( ! uidl.hasAttribute(ATTR_WRITERRULES_TAGNAME+i)  ) {
 					break;
 				}
 				// Save the rules until our instance is ready
-				String tagName = uidl.getStringAttribute("writerRules.tagName"+i);
-				String jsRule  = uidl.getStringAttribute("writerRules.jsRule"+i);
+				String tagName = uidl.getStringAttribute(ATTR_WRITERRULES_TAGNAME+i);
+				String jsRule  = uidl.getStringAttribute(ATTR_WRITERRULES_JSRULE+i);
 				if ( writerRules == null ) {
 					writerRules = new HashMap<String,String>();
 				}
@@ -127,10 +135,6 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 			
 			// editor data and some options are set when the instance is ready....
 		} else if ( ckEditorIsReady ) {
-			// Attempt to fix a bug where the element loses display:none; causing the CKEditor
-			// to be positioned below our placeholder div.
-			getElement().getStyle().setDisplay(com.google.gwt.dom.client.Style.Display.NONE);
-
 			if ( dataBeforeEdit != null ) {
 				ckEditor.setData(dataBeforeEdit);
 			}
@@ -145,7 +149,7 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 			// Called if the user clicks the Save button. 
 			String data = ckEditor.getData();
 			if ( ! data.equals(dataBeforeEdit) ) {
-				clientToServer.updateVariable(paintableId, "text", data, true);
+				clientToServer.updateVariable(paintableId, VAR_TEXT, data, true);
 				dataBeforeEdit = data; // update our image since we sent it to the server
 			}
 		}
@@ -164,7 +168,7 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 			
 			String data = ckEditor.getData();
 			if ( ! data.equals(dataBeforeEdit) ) {
-				clientToServer.updateVariable(paintableId, "text", data, false);
+				clientToServer.updateVariable(paintableId, VAR_TEXT, data, false);
 	            if (immediate) {
 	            	sendToServer = true;
 	            	dataBeforeEdit = data; // let's only update our image if we're going to send new data to the server
@@ -206,4 +210,18 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 		
 		ckEditorIsReady = true;
 	}
+	
+	@Override
+	public void setWidth(String width) {
+		super.setWidth(width);
+	}
+	
+	@Override
+	public void setHeight(String height) {
+		if ( height == null || "".equals(height) ) { // such maximized height is not supported by CKEditor, so we go back to our default
+			height = "300px";
+		}
+		super.setHeight(height);
+	}
+
 }

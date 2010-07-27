@@ -27,9 +27,11 @@ public class CKEditorConfig implements java.io.Serializable {
 	private LinkedList<String> removePlugins = null;
 	private LinkedList<String> customToolbarLines = null;
 	private Boolean toolbarCanCollapse = null;
+	private Boolean disableNativeSpellChecker = null;
 	private String resizeDir = null;
 	private String width = null;
 	private String height = null;
+	private String[] contentsCssFiles = null;
 	
 	public CKEditorConfig() {
 	}
@@ -100,6 +102,24 @@ public class CKEditorConfig implements java.io.Serializable {
 		
 		if ( height != null ) {
 			appendJSONConfig(config, "height : '" + height + "'");
+		}
+		
+		if ( contentsCssFiles != null && contentsCssFiles.length > 0 ) {
+			if ( contentsCssFiles.length == 1 ) {
+				appendJSONConfig(config, "contentsCss : '" + contentsCssFiles[0] + "'");
+			} else {
+				StringBuilder buf = new StringBuilder();
+				for( String file : contentsCssFiles ) {
+					if ( buf.length() > 0 )
+						buf.append(",");
+					buf.append("'").append(file).append("'");
+				}
+				appendJSONConfig(config, "contentsCss : [" + buf.toString() + "]");
+			}
+		}
+		
+		if ( disableNativeSpellChecker != null ) {
+			appendJSONConfig(config, "disableNativeSpellChecker : " + disableNativeSpellChecker);
 		}
 		
 		config.append(" }");
@@ -198,6 +218,12 @@ public class CKEditorConfig implements java.io.Serializable {
 		addToRemovePlugins("scayt"); 
 	}
 	
+	public void setDisableNativeSpellChecker(boolean v) {
+		disableNativeSpellChecker = new Boolean(v);
+	}
+
+
+	
 	/**
 	 * If no custom toolbar is defined, it will use the Full toolbar by default (config.toolbar = 'Full').
 	 * 
@@ -232,8 +258,8 @@ public class CKEditorConfig implements java.io.Serializable {
 	 * consistent toolbars in that project which sponsored the development of this project.
 	 */
 	public void addOpenESignFormsCustomToolbar() {
-		addCustomToolbarLine("'Styles','Format','Bold','Italic','Underline','TextColor','BGColor','-','Font','FontSize','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'");
-		addCustomToolbarLine("'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo','-','NumberedList','BulletedList','-','Outdent','Indent','-','Table','HorizontalRule','-','Image','Link','-','Source','ShowBlocks'");
+		addCustomToolbarLine("'Styles','Format','Bold','Italic','Underline','TextColor','BGColor','-','Font','FontSize','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-',''");
+		addCustomToolbarLine("'Cut','Copy','Paste','PasteText','PasteFromWord','-','Find','Replace','-','Undo','Redo','-','NumberedList','BulletedList','-','Outdent','Indent','CreateDiv','-','Table','HorizontalRule','PageBreak','SpecialChar','-','Image','Link','-','Source','ShowBlocks'");
 	}
 	
 	public void setToolbarCanCollapse(boolean v) {
@@ -260,5 +286,19 @@ public class CKEditorConfig implements java.io.Serializable {
 
 	public void setHeight(String cssSize) {
 		height = cssSize;
+	}
+
+	/**
+	 * Sets the file or list of files for the contents to be applied to the editor.  Used to set the styles that will
+	 * be used in the page where the HTML will actually be rendered.
+	 * @param cssFiles the String file or file list.  
+	 * If you want to use 
+	 */
+	public void setContentsCss(String cssFile) {
+		contentsCssFiles = new String[1];
+		contentsCssFiles[0] = cssFile;
+	}
+	public void setContentsCss(String[] cssFiles) {
+		contentsCssFiles = cssFiles;
 	}
 }

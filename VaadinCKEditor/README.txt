@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 23 June 2010
+Last updated: 26 June 2010
 
   USING CKEDITOR FOR VAADIN IN YOUR APPLICATION
   =============================================
@@ -10,7 +10,7 @@ You will need to "Compile Vaadin widgets," which is an icon in the Eclipse menub
 Then look at the example application for the basic setup.
 
 NOTE: This widget is compiled using JDK 1.6 / Java 6.  We have been using 1.6
-for years now (it was released December 2006) and see now reason to use such 
+for years now (it was released December 2006) and see no reason to use such 
 an outdated JDK 1.5 per Vaadin's widget specs.
 
 The CKEditor code, in full as downloaded from http://ckeditor.com, is present in the 
@@ -56,7 +56,7 @@ under the Creative Commons Attribution 3.0 License.
   KNOWN ISSUES
   ============
   
- - None..
+ - Want editor to resize based on its container for % height specs.  CKEditor doesn't support it for height, only width.
 
  
   IDEAS FOR FUTURE RELEASE
@@ -67,6 +67,15 @@ under the Creative Commons Attribution 3.0 License.
  
   CHANGELOG
   =========
+
+0.6 (26 July 2010)
+ - Use CKEDITOR.appendTo instead of CKEDITOR.replace to create the edit instance.  This resolved the bugs associated with the editor moving down
+   and button clicks, as well as allowing the component to fill the space of the DIV from Vaadin's perspective.  Simplified the code as we no longer
+   had to worry about that the DIV we created versus the DIV created for the editor as we switched between readonly and normal modes.  Now the editor
+   places itself inside the DIV we created so we have more natural control over it.
+ - Added ability to set the config contentsCss with either a single file name or an array file files: setContentCss(String file) or setContentCss(String[] files)
+ - Added ability to enable/disable the native spell checker feature: setDisableNativeSpellChecker(boolean)
+ - Added support to CKEditor for editor.execCommand(String cmd) 
 
 0.5 (23 July 2010)
  - Recompiled with Vaadin 6.4.1

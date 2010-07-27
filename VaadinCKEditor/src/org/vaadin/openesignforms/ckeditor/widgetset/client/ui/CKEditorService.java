@@ -31,9 +31,9 @@ public class CKEditorService {
 	 	var myEditor;
 	 	
 	 	if ( inPageConfig ) {
-	    	myEditor = $wnd.CKEDITOR.replace( id, inPageConfig );
+	    	myEditor = $wnd.CKEDITOR.appendTo( id, inPageConfig );
 	 	} else {
-	    	myEditor = $wnd.CKEDITOR.replace( id );
+	    	myEditor = $wnd.CKEDITOR.appendTo( id );
 	 	}
 	 	
 	 	// The 'listener' passed to us is used as 'listenerData' for the callback.
@@ -49,14 +49,6 @@ public class CKEditorService {
 	public native static void overrideBlurToForceBlur()
 	/*-{
 		$wnd.CKEDITOR.focusManager.prototype['blur'] =  $wnd.CKEDITOR.focusManager.prototype['forceBlur'];
-	}-*/;
-	
-	public native static void remove(String id)
-	/*-{
-	    var theEditor = $wnd.CKEDITOR.instances[ id ];
-	    if ( theEditor ) {
-			$wnd.CKEDITOR.remove( theEditor );
-		}
 	}-*/;
 	
 	/**

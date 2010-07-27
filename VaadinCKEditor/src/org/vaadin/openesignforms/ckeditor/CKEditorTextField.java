@@ -11,6 +11,8 @@ package org.vaadin.openesignforms.ckeditor;
 import java.util.Map;
 import java.util.Set;
 
+import org.vaadin.openesignforms.ckeditor.widgetset.client.ui.VCKEditorTextField;
+
 import com.vaadin.data.Property;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.event.FieldEvents.BlurEvent;
@@ -27,11 +29,11 @@ import com.vaadin.ui.AbstractField;
  * Currently, this widget doesn't support being read-only because CKEditor doesn't.  But perhaps need the widgets
  * to only emit a DIV with the HTML code inside if it's read-only.
  */
-@com.vaadin.ui.ClientWidget(org.vaadin.openesignforms.ckeditor.widgetset.client.ui.VCKEditorTextField.class)
+@com.vaadin.ui.ClientWidget(VCKEditorTextField.class)
 public class CKEditorTextField extends AbstractField 
 	implements FieldEvents.BlurNotifier, FieldEvents.FocusNotifier  {
 	
-	private static final long serialVersionUID = -190815622895391684L;
+	private static final long serialVersionUID = 2801471973845411928L;
 
 	private CKEditorConfig config;
 
@@ -61,19 +63,19 @@ public class CKEditorTextField extends AbstractField
 	public void paintContent(PaintTarget target) throws PaintException {
 		super.paintContent(target);
 		
-		target.addVariable(this, "text", getValue().toString());
+		target.addVariable(this, VCKEditorTextField.VAR_TEXT, getValue().toString());
 
-		target.addAttribute("readonly", isReadOnly());
+		target.addAttribute(VCKEditorTextField.ATTR_READONLY, isReadOnly());
 		
 		if (config != null) {
-			target.addAttribute("inPageConfig", config.getInPageConfig());
+			target.addAttribute(VCKEditorTextField.ATTR_INPAGECONFIG, config.getInPageConfig());
 			
 			if ( config.hasWriterRules() ) {
 				int i = 0;
 				Set<String> tagNameSet = config.getWriterRulesTagNames();
 				for( String tagName : tagNameSet ) {
-					target.addAttribute("writerRules.tagName"+i, tagName);
-					target.addAttribute("writerRules.jsRule"+i, config.getWriterRuleByTagName(tagName));
+					target.addAttribute(VCKEditorTextField.ATTR_WRITERRULES_TAGNAME+i, tagName);
+					target.addAttribute(VCKEditorTextField.ATTR_WRITERRULES_JSRULE+i, config.getWriterRuleByTagName(tagName));
 					++i;
 				}
 			}
@@ -85,11 +87,10 @@ public class CKEditorTextField extends AbstractField
         super.changeVariables(source, variables);
 
         // Sets the text
-        if (variables.containsKey("text") && !isReadOnly()) {
-
+        if (variables.containsKey(VCKEditorTextField.VAR_TEXT) && ! isReadOnly()) {
             // Only do the setting if the string representation of the value
             // has been updated
-            String newValue = (String)variables.get("text");
+            String newValue = (String)variables.get(VCKEditorTextField.VAR_TEXT);
             if ( newValue == null )
             	newValue = "";
 
@@ -140,4 +141,15 @@ public class CKEditorTextField extends AbstractField
 	public void removeListener(FocusListener listener) {
         removeListener(FocusEvent.EVENT_ID, FocusEvent.class, listener);
 	}
+	
+	@Override
+    public void setHeight(float height, int unit) {
+		super.setHeight(height,unit);
+	}
+	@Override
+    public void setHeight(String height) {
+		super.setHeight(height);
+	}
+
+	
 }

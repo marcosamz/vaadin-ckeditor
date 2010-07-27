@@ -57,6 +57,16 @@ public class CKEditor extends JavaScriptObject {
     	}, null, listener);
 	}-*/;
 	
+	public final native void execCommand(String cmd)
+	/*-{
+		this.execCommand(cmd);
+	}-*/;
+	
+	public final native void updateElement()
+	/*-{
+		this.updateElement();
+	}-*/;
+	
 	public final native void destroy(boolean noUpdate)
 	/*-{
 		this.destroy(noUpdate);

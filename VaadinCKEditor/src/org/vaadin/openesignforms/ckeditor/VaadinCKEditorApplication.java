@@ -10,6 +10,7 @@ package org.vaadin.openesignforms.ckeditor;
 import com.vaadin.Application;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.terminal.Sizeable;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -59,16 +60,16 @@ public class VaadinCKEditorApplication extends Application {
 		config1.disableSpellChecker();
 		config1.setToolbarCanCollapse(false);
 		config1.addOpenESignFormsCustomToolbar();
-		config1.setWidth("100%");
+		config1.setHeight("300px");
 		
 		final CKEditorTextField ckEditorTextField1 = new CKEditorTextField(config1);
+		ckEditorTextField1.setHeight(410,Sizeable.UNITS_PIXELS); // account for 300px editor plus toolbars
 		mainWindow.addComponent(ckEditorTextField1);
 		
 		final String editor1InitialValue = 
 			"<p>Thanks TinyMCEEditor for getting us started on the CKEditor integration.</p><h1>Like TinyMCEEditor said, &quot;Vaadin rocks!&quot;</h1><h1>And CKEditor is no slouch either.</h1>";
 
 		ckEditorTextField1.setValue(editor1InitialValue);
-		//ckEditorTextField1.setReadOnly(true);
 		ckEditorTextField1.addListener(new Property.ValueChangeListener() {
 			private static final long serialVersionUID = 54555014513845952L;
 
@@ -83,11 +84,24 @@ public class VaadinCKEditorApplication extends Application {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				ckEditorTextField1.setValue(editor1InitialValue);
+				if ( ! ckEditorTextField1.isReadOnly() ) {
+					ckEditorTextField1.setValue(editor1InitialValue);
+				}
 			}
 		});
 		mainWindow.addComponent(resetTextButton1);
 		
+		Button toggleReadOnlyButton1 = new Button("Toggle read-only editor #1");
+		toggleReadOnlyButton1.addListener( new Button.ClickListener() {			
+			private static final long serialVersionUID = -2447367323473949937L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				ckEditorTextField1.setReadOnly( ! ckEditorTextField1.isReadOnly() );
+			}
+		});
+		mainWindow.addComponent(toggleReadOnlyButton1);
+
 		
 		// Now add in a second editor....
 		final String editor2InitialValue = 
@@ -121,21 +135,34 @@ public class VaadinCKEditorApplication extends Application {
 		
 		Button resetTextButton2 = new Button("Reset editor #2");
 		resetTextButton2.addListener( new Button.ClickListener() {			
-			private static final long serialVersionUID = 918660321808687898L;
+			private static final long serialVersionUID = 8516010622125693968L;
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				ckEditorTextField2.setValue(editor2InitialValue);
-				ckEditorTextField1.setReadOnly( ! ckEditorTextField1.isReadOnly() );
+				if ( ! ckEditorTextField2.isReadOnly() ) {
+					ckEditorTextField2.setValue(editor2InitialValue);
+				}
 			}
 		});
 		mainWindow.addComponent(resetTextButton2);
+		
+		Button toggleReadOnlyButton2 = new Button("Toggle read-only editor #2");
+		toggleReadOnlyButton2.addListener( new Button.ClickListener() {			
+			private static final long serialVersionUID = -6120226593606697001L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				ckEditorTextField2.setReadOnly( ! ckEditorTextField2.isReadOnly() );
+			}
+		});
+		mainWindow.addComponent(toggleReadOnlyButton2);
+
 
 	}
 	
 	@Override
 	public String getVersion() {
-		return "0.5";
+		return "0.6";
 	}
 
 }
