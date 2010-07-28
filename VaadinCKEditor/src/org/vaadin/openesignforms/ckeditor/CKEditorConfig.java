@@ -32,6 +32,7 @@ public class CKEditorConfig implements java.io.Serializable {
 	private String width = null;
 	private String height = null;
 	private String[] contentsCssFiles = null;
+	private String stylesCombo_stylesSet = null;
 	
 	public CKEditorConfig() {
 	}
@@ -120,6 +121,10 @@ public class CKEditorConfig implements java.io.Serializable {
 		
 		if ( disableNativeSpellChecker != null ) {
 			appendJSONConfig(config, "disableNativeSpellChecker : " + disableNativeSpellChecker);
+		}
+		
+		if ( stylesCombo_stylesSet != null ) {
+			appendJSONConfig(config, "stylesCombo_stylesSet : '" + stylesCombo_stylesSet + "'");
 		}
 		
 		config.append(" }");
@@ -300,5 +305,16 @@ public class CKEditorConfig implements java.io.Serializable {
 	}
 	public void setContentsCss(String[] cssFiles) {
 		contentsCssFiles = cssFiles;
+	}
+	
+	/**
+	 * Sets the stylesCombo_stylesSet config option, which is the registered style name 
+	 * @param styleSetSpec
+	 */
+	public void setStylesCombo_stylesSet(String styleSetSpec) {
+		stylesCombo_stylesSet = styleSetSpec;
+	}
+	public void setOpenESignFormsStylesCombo_stylesSet(String contextPath) {
+		stylesCombo_stylesSet = "esfStyleSet:" + contextPath + "/static/esf/esfStyleSet.js";
 	}
 }

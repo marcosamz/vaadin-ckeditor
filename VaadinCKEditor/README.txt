@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 26 June 2010
+Last updated: 27 June 2010
 
   USING CKEDITOR FOR VAADIN IN YOUR APPLICATION
   =============================================
@@ -67,6 +67,11 @@ under the Creative Commons Attribution 3.0 License.
  
   CHANGELOG
   =========
+
+0.7 (?? August 2010)
+ - Add ability to configure an external styles definition for the Styles combobox: config.setStylesCombo_stylesSet(String styleSetSpec),
+   including the Open eSignForms standard combobox styles: config.setOpenESignFormsStylesCombo_stylesSet(String contextPath)
+ - Added editor destroy code when the widget is unloaded to hopefully avoid leaks.
 
 0.6 (26 July 2010)
  - Use CKEDITOR.appendTo instead of CKEDITOR.replace to create the edit instance.  This resolved the bugs associated with the editor moving down

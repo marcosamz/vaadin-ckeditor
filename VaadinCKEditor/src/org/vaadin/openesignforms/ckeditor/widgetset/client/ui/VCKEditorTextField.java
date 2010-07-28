@@ -224,4 +224,13 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 		super.setHeight(height);
 	}
 
+	@Override
+	protected void onUnload() {
+		if ( ckEditor != null ) {
+			ckEditor.destroy(true);
+			ckEditor = null;
+		}
+		ckEditorIsReady = false;
+	}
+
 }
