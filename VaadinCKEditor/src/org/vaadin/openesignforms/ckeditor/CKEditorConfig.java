@@ -243,7 +243,7 @@ public class CKEditorConfig implements java.io.Serializable {
 	 * ['Styles','Format','Font','FontSize'],['TextColor','BGColor'],['Maximize', 'ShowBlocks','-','About']
 	 * The above will be on one line, and there will be the 3 banded items (and we use it 'as is').
 	 * 
-	 * Add a custom toolbar line of options.  It is basically a list of features spearated by commas, or '-' for the separator, such as:
+	 * Add a custom toolbar line of options.  It is basically a list of features separated by commas, or '-' for the separator, such as:
 	 * 'Styles','Format','Bold','Italic','TextColor','BGColor','-','Font','FontSize','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','Image','Link'
 	 * 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo','-','NumberedList','BulletedList','-','Outdent','Indent','-','Table','HorizontalRule','-','Maximize','-','Source','ShowBlocks','-','VaadinSave'
 	 * 'Styles','Format','Bold','Italic','-','VaadinSave'
@@ -263,7 +263,7 @@ public class CKEditorConfig implements java.io.Serializable {
 	 * consistent toolbars in that project which sponsored the development of this project.
 	 */
 	public void addOpenESignFormsCustomToolbar() {
-		addCustomToolbarLine("'Styles','Format','Bold','Italic','Underline','TextColor','BGColor','-','Font','FontSize','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-',''");
+		addCustomToolbarLine("'Styles','Format','Bold','Italic','Underline','TextColor','BGColor','-','Font','FontSize','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'");
 		addCustomToolbarLine("'Cut','Copy','Paste','PasteText','PasteFromWord','-','Find','Replace','-','Undo','Redo','-','NumberedList','BulletedList','-','Outdent','Indent','CreateDiv','-','Table','HorizontalRule','PageBreak','SpecialChar','-','Image','Link','-','Source','ShowBlocks'");
 	}
 	
