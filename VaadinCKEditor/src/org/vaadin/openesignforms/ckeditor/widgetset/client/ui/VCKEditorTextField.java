@@ -10,7 +10,9 @@ package org.vaadin.openesignforms.ckeditor.widgetset.client.ui;
 import java.util.HashMap;
 import java.util.Set;
 
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.EventId;
@@ -64,7 +66,9 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 
 		// CKEditor prefers a textarea, but found too many issues trying to use createTextareaElement() instead of a simple div, 
 		// which is okay in Vaadin where an HTML form won't be used to send the data back and forth.
-		setElement(Document.get().createDivElement());
+		DivElement rootDiv = Document.get().createDivElement();
+		rootDiv.getStyle().setOverflow(Overflow.AUTO);
+		setElement(rootDiv);
 
 		// This method call of the Paintable interface sets the component
 		// style name in DOM tree
