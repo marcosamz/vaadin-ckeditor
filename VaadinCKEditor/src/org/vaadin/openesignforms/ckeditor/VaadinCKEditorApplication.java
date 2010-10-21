@@ -59,7 +59,7 @@ public class VaadinCKEditorApplication extends Application {
 		config1.setResizeDir(CKEditorConfig.RESIZE_DIR.HORIZONTAL);
 		config1.disableSpellChecker();
 		config1.setToolbarCanCollapse(false);
-		config1.addOpenESignFormsCustomToolbar();
+		config1.enableTableResizePlugin();
 		config1.setHeight("300px");
 		
 		final CKEditorTextField ckEditorTextField1 = new CKEditorTextField(config1);

@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 27 June 2010
+Last updated: 20 October 2010
 
   USING CKEDITOR FOR VAADIN IN YOUR APPLICATION
   =============================================
@@ -11,7 +11,7 @@ Then look at the example application for the basic setup.
 
 NOTE: This widget is compiled using JDK 1.6 / Java 6.  We have been using 1.6
 for years now (it was released December 2006) and see no reason to use such 
-an outdated JDK 1.5 per Vaadin's widget specs.
+an outdated JDK 1.5 per Vaadin's widget specs. 
 
 The CKEditor code, in full as downloaded from http://ckeditor.com, is present in the 
 src/org/vaadin/openesignforms/ckeditor/public folder.  No changes to CKEditor were made.
@@ -19,9 +19,9 @@ If you are compiling yourself, you will need to install CKEditor code into your 
 as we do not check in the CKEditor code in our source code system.
 1) Download the latest ZIP file from ckeditor.com.
 2) Unzip/extract the contents -- you should have a 'ckeditor' folder.
-3) Copy the 'ckeditor' folder to src/org/vaadin/openesignforms/ckeditor/public.
+3) Copy the 'ckeditor' folder to src/org/vaadin/openesignforms/ckeditor/widgetset/public.
 4) If you want to use the Vaadin Save button plugin, copy ckeditor/plugins/vaadinsave
-   to src/org/vaadin/openesignforms/ckeditor/public/ckeditor/plugins.
+   to src/org/vaadin/openesignforms/ckeditor/widgetset/public/ckeditor/plugins.
 5) Recompile the widgetset.
 
   LICENSE
@@ -68,10 +68,16 @@ under the Creative Commons Attribution 3.0 License.
   CHANGELOG
   =========
 
-0.7 (?? August 2010)
- - Add ability to configure an external styles definition for the Styles combobox: config.setStylesCombo_stylesSet(String styleSetSpec),
-   including the Open eSignForms standard combobox styles: config.setOpenESignFormsStylesCombo_stylesSet(String contextPath)
+0.7 (20 October 2010)
+ - Using CKEditor 3.4.1.
+ - Recompiled with Vaadin 6.4.6.
+ - Add ability to configure an external styles definition for the Styles combobox: config.setStylesCombo_stylesSet(String styleSetSpec)
  - Added editor destroy code when the widget is unloaded to hopefully avoid leaks.
+ - Root DIV for the editor includes overflow:auto so it will show scrollbars if needed (such as in read-only mode when the editor
+   is not present with its scrollbars).
+ - Added method CKEditorConfig.enableTableResizePlugin() to add the optional 'tableresize' plugin since it seems to be generally useful.
+ - Added method CKEDitorConfig.setupForOpenESignForms(String contextPath) to set up the editor in a common way for the Open eSignForms 
+   project and removed the other project-specific API: addOpenESignFormsCustomToolbar().
 
 0.6 (26 July 2010)
  - Use CKEDITOR.appendTo instead of CKEDITOR.replace to create the edit instance.  This resolved the bugs associated with the editor moving down

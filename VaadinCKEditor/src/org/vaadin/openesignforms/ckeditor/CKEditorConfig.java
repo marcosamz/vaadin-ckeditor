@@ -198,6 +198,35 @@ public class CKEditorConfig implements java.io.Serializable {
 	}
 
 	
+	/**
+	 * This enables the 'tableresize' plugin. This is generally useful, so we make it stand out compared to other 
+	 * optional extra plugins.
+	 */
+	public void enableTableResizePlugin() {
+		addToExtraPlugins("tableresize"); 
+	}
+
+	/**
+	 * Convenience method for the Open eSignForms project sponsors to set the plugins and configuration in a common way needed.
+	 */
+	public void setupForOpenESignForms(String contextPath) {
+		addCustomToolbarLine("'Styles','Format','Bold','Italic','Underline','TextColor','BGColor','-','Font','FontSize','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'");
+		addCustomToolbarLine("'Cut','Copy','Paste','PasteText','PasteFromWord','-','Find','Replace','-','Undo','Redo','-','NumberedList','BulletedList','-','Outdent','Indent','CreateDiv','-','Table','HorizontalRule','PageBreak','SpecialChar','-','Image','Link','-','Source','ShowBlocks'");
+		setToolbarCanCollapse(false);
+		
+		enableTableResizePlugin();
+		
+		setHeight("300px");
+		
+		disableSpellChecker();
+		setDisableNativeSpellChecker(false);
+		disableResizeEditor();
+		
+		useCompactTags();
+
+		setStylesCombo_stylesSet("esfStyleSet:" + contextPath + "/static/esf/esfStyleSet.js");
+	}
+	
 	public synchronized void addToRemovePlugins(String pluginName) {
 		if ( removePlugins == null ) {
 			removePlugins = new LinkedList<String>();
@@ -258,15 +287,6 @@ public class CKEditorConfig implements java.io.Serializable {
 		}
 	}
 	
-	/**
-	 * This creates the Open eSignForms custom toolbar used for most HTML editing.  It's just a convenience method for creating
-	 * consistent toolbars in that project which sponsored the development of this project.
-	 */
-	public void addOpenESignFormsCustomToolbar() {
-		addCustomToolbarLine("'Styles','Format','Bold','Italic','Underline','TextColor','BGColor','-','Font','FontSize','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'");
-		addCustomToolbarLine("'Cut','Copy','Paste','PasteText','PasteFromWord','-','Find','Replace','-','Undo','Redo','-','NumberedList','BulletedList','-','Outdent','Indent','CreateDiv','-','Table','HorizontalRule','PageBreak','SpecialChar','-','Image','Link','-','Source','ShowBlocks'");
-	}
-	
 	public void setToolbarCanCollapse(boolean v) {
 		toolbarCanCollapse = new Boolean(v);
 	}
@@ -313,8 +333,5 @@ public class CKEditorConfig implements java.io.Serializable {
 	 */
 	public void setStylesCombo_stylesSet(String styleSetSpec) {
 		stylesCombo_stylesSet = styleSetSpec;
-	}
-	public void setOpenESignFormsStylesCombo_stylesSet(String contextPath) {
-		stylesCombo_stylesSet = "esfStyleSet:" + contextPath + "/static/esf/esfStyleSet.js";
 	}
 }
