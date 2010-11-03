@@ -16,7 +16,7 @@ import java.util.Set;
  * tested/common options, or just set the options using a JavaScript/JSON string as you prefer.
  */
 public class CKEditorConfig implements java.io.Serializable {
-	private static final long serialVersionUID = -1613872489680920327L;
+	private static final long serialVersionUID = -4802907734779700125L;
 
 	// If this is set, we'll just use it and ignore everything else.
 	private String inPageConfig;
@@ -33,6 +33,7 @@ public class CKEditorConfig implements java.io.Serializable {
 	private String height = null;
 	private String[] contentsCssFiles = null;
 	private String stylesCombo_stylesSet = null;
+	private String bodyClass = null;
 	
 	public CKEditorConfig() {
 	}
@@ -119,6 +120,10 @@ public class CKEditorConfig implements java.io.Serializable {
 			}
 		}
 		
+		if ( bodyClass != null ) {
+			appendJSONConfig(config, "bodyClass : '" + bodyClass + "'");
+		}
+		
 		if ( disableNativeSpellChecker != null ) {
 			appendJSONConfig(config, "disableNativeSpellChecker : " + disableNativeSpellChecker);
 		}
@@ -173,7 +178,7 @@ public class CKEditorConfig implements java.io.Serializable {
 		addWriterRules("h4", "{indent : false, breakBeforeOpen : true, breakAfterOpen : false, breakBeforeClose : false, breakAfterClose : true}" );
 		addWriterRules("h5", "{indent : false, breakBeforeOpen : true, breakAfterOpen : false, breakBeforeClose : false, breakAfterClose : true}" );
 		addWriterRules("h6", "{indent : false, breakBeforeOpen : true, breakAfterOpen : false, breakBeforeClose : false, breakAfterClose : true}" );
-		addWriterRules("li",  "{indent : true, breakBeforeOpen : true, breakAfterOpen : false, breakBeforeClose : false, breakAfterClose : true}" );
+		addWriterRules("li", "{indent : true,  breakBeforeOpen : true, breakAfterOpen : false, breakBeforeClose : false, breakAfterClose : true}" );
 	}
 
 	public synchronized void addToExtraPlugins(String pluginName) {
@@ -223,8 +228,12 @@ public class CKEditorConfig implements java.io.Serializable {
 		disableResizeEditor();
 		
 		useCompactTags();
+		addWriterRules("script", "{indent : false, breakBeforeOpen : true, breakAfterOpen : true, breakBeforeClose : true, breakAfterClose : true}" );
+		addWriterRules("style",  "{indent : false, breakBeforeOpen : true, breakAfterOpen : true, breakBeforeClose : true, breakAfterClose : true}" );
 
 		setStylesCombo_stylesSet("esfStyleSet:" + contextPath + "/static/esf/esfStyleSet.js");
+		setContentsCss(contextPath + "/static/esf/esf.css");
+		setBodyClass("esf");
 	}
 	
 	public synchronized void addToRemovePlugins(String pluginName) {
@@ -316,15 +325,20 @@ public class CKEditorConfig implements java.io.Serializable {
 	/**
 	 * Sets the file or list of files for the contents to be applied to the editor.  Used to set the styles that will
 	 * be used in the page where the HTML will actually be rendered.
-	 * @param cssFiles the String file or file list.  
-	 * If you want to use 
+	 * @param cssFiles zero or more String file URL paths -- for same system, starting with context path is recommended: /myapp/path/to/cssfile.css
 	 */
-	public void setContentsCss(String cssFile) {
-		contentsCssFiles = new String[1];
-		contentsCssFiles[0] = cssFile;
-	}
-	public void setContentsCss(String[] cssFiles) {
+	public void setContentsCss(String... cssFiles) {
 		contentsCssFiles = cssFiles;
+	}
+	
+
+	/**
+	 * Sets the body class for the HTML editor, so if you render the results in a body with a given class, you can give it here
+	 * too so that the editor will show the same styles you may have in your contents css.
+	 * @param bc
+	 */
+	public void setBodyClass(String bc) {
+		bodyClass = bc;
 	}
 	
 	/**
