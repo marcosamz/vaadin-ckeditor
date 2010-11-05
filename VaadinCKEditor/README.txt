@@ -68,7 +68,7 @@ under the Creative Commons Attribution 3.0 License.
   CHANGELOG
   =========
 
-0.8 (?? November 2010)
+0.8 (4 November 2010)
  - Using CKEditor 3.4.2.
  - Recompiled with Vaadin 6.4.7.
  - Added setting the root DIV element to be visible so that Firefox will show it on popup windows -- previously, it would only show the editor area
