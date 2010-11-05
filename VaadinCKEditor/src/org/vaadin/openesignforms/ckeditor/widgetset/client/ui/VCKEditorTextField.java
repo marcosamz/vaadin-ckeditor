@@ -13,6 +13,7 @@ import java.util.Set;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Style.Overflow;
+import com.google.gwt.dom.client.Style.Visibility;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.EventId;
@@ -68,6 +69,7 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 		// which is okay in Vaadin where an HTML form won't be used to send the data back and forth.
 		DivElement rootDiv = Document.get().createDivElement();
 		rootDiv.getStyle().setOverflow(Overflow.AUTO);
+		rootDiv.getStyle().setVisibility(Visibility.VISIBLE); // required for FF to show in popup windows repeatedly
 		setElement(rootDiv);
 
 		// This method call of the Paintable interface sets the component
@@ -136,7 +138,6 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 			}
 			
 			ckEditor = (CKEditor)CKEditorService.loadEditor(paintableId, this, inPageConfig);
-			
 			// editor data and some options are set when the instance is ready....
 		} else if ( ckEditorIsReady ) {
 			if ( dataBeforeEdit != null ) {
@@ -231,7 +232,7 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	@Override
 	protected void onUnload() {
 		if ( ckEditor != null ) {
-			ckEditor.destroy(true);
+			ckEditor.destroy();
 			ckEditor = null;
 		}
 		ckEditorIsReady = false;

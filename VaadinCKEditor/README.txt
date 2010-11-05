@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 20 October 2010
+Last updated: 2 November 2010
 
   USING CKEDITOR FOR VAADIN IN YOUR APPLICATION
   =============================================
@@ -50,7 +50,7 @@ under the Creative Commons Attribution 3.0 License.
   
  - Nothing immediately pending until we start integrating into our forms and see all the warts
    and missing items.
- - Test on more than just Firefox 3.5 with limited testing on IE8/Chrome5/Safari5/Opera10 (all on Windows 7).
+ - Test on more than just Firefox 3.6 with limited testing on IE8/Chrome7/Safari5/Opera10 (all on Windows 7).
 
 
   KNOWN ISSUES
@@ -68,6 +68,18 @@ under the Creative Commons Attribution 3.0 License.
   CHANGELOG
   =========
 
+0.8 (?? November 2010)
+ - Using CKEditor 3.4.2.
+ - Recompiled with Vaadin 6.4.7.
+ - Added setting the root DIV element to be visible so that Firefox will show it on popup windows -- previously, it would only show the editor area
+   once in Firefox, and then it would disappear every time after in popup windows, yet would still work in panels off the main window.
+ - Added ability to set the body class CKEditor will use so it renders like how you may show the HTML on another page: config.setBodyClass(String bs)
+   This is particularly useful if you are using config.setContentsCss() to specify a CSS file that should be used in the editor and when rendered.
+ - Added ability to set the baseFloatZIndex: config.setBaseFloatZIndex(int zindex)
+   This can be useful if your editors are opened in popup windows.  Found that the default (10000) wasn't enough and we're using 32000 for Open eSignForms.
+ - Added ability to set another option: config.setPasteFromWordNumberedHeadingToList(boolean) -- testing it out ourselves.
+ - Added ability to set the startupMode to "source": config.setStartupModeSource() 
+
 0.7 (20 October 2010)
  - Using CKEditor 3.4.1.
  - Recompiled with Vaadin 6.4.6.
@@ -84,7 +96,7 @@ under the Creative Commons Attribution 3.0 License.
    and button clicks, as well as allowing the component to fill the space of the DIV from Vaadin's perspective.  Simplified the code as we no longer
    had to worry about that the DIV we created versus the DIV created for the editor as we switched between readonly and normal modes.  Now the editor
    places itself inside the DIV we created so we have more natural control over it.
- - Added ability to set the config contentsCss with either a single file name or an array file files: setContentCss(String file) or setContentCss(String[] files)
+ - Added ability to set the config contentsCss with either a single file name or an array file files: setContentsCss(String file) or setContentsCss(String[] files)
  - Added ability to enable/disable the native spell checker feature: setDisableNativeSpellChecker(boolean)
  - Added support to CKEditor for editor.execCommand(String cmd) 
 

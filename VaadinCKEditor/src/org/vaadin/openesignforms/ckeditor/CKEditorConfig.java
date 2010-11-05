@@ -31,6 +31,9 @@ public class CKEditorConfig implements java.io.Serializable {
 	private String resizeDir = null;
 	private String width = null;
 	private String height = null;
+	private Integer baseFloatZIndex = null;
+	private Boolean pasteFromWordNumberedHeadingToList = null;
+	private String startupMode = null; // either "source" or "wysiwyg" (defaults to wysiwyg, so generally only used if you'd like to startup in source mode)
 	private String[] contentsCssFiles = null;
 	private String stylesCombo_stylesSet = null;
 	private String bodyClass = null;
@@ -104,6 +107,18 @@ public class CKEditorConfig implements java.io.Serializable {
 		
 		if ( height != null ) {
 			appendJSONConfig(config, "height : '" + height + "'");
+		}
+		
+		if ( baseFloatZIndex != null ) {
+			appendJSONConfig(config, "baseFloatZIndex : " + baseFloatZIndex);
+		}
+		
+		if ( pasteFromWordNumberedHeadingToList != null ) {
+			appendJSONConfig(config, "pasteFromWordNumberedHeadingToList : " + pasteFromWordNumberedHeadingToList);
+		}
+		
+		if ( startupMode != null ) {
+			appendJSONConfig(config, "startupMode : '" + startupMode + "'");
 		}
 		
 		if ( contentsCssFiles != null && contentsCssFiles.length > 0 ) {
@@ -222,10 +237,12 @@ public class CKEditorConfig implements java.io.Serializable {
 		enableTableResizePlugin();
 		
 		setHeight("300px");
+		setBaseFloatZIndex(32000);
 		
 		disableSpellChecker();
 		setDisableNativeSpellChecker(false);
 		disableResizeEditor();
+		setPasteFromWordNumberedHeadingToList(true);
 		
 		useCompactTags();
 		addWriterRules("script", "{indent : false, breakBeforeOpen : true, breakAfterOpen : true, breakBeforeClose : true, breakAfterClose : true}" );
@@ -297,7 +314,7 @@ public class CKEditorConfig implements java.io.Serializable {
 	}
 	
 	public void setToolbarCanCollapse(boolean v) {
-		toolbarCanCollapse = new Boolean(v);
+		toolbarCanCollapse = v;
 	}
 
 	public enum RESIZE_DIR { BOTH, VERTICAL, HORIZONTAL }
@@ -321,7 +338,25 @@ public class CKEditorConfig implements java.io.Serializable {
 	public void setHeight(String cssSize) {
 		height = cssSize;
 	}
+	
+	public void setBaseFloatZIndex(int zIndex) {
+		baseFloatZIndex = zIndex;
+	}
+	
+	public void setPasteFromWordNumberedHeadingToList(boolean v)
+	{
+		pasteFromWordNumberedHeadingToList = v;
+	}
 
+	public void setStartupModeSource()
+	{
+		startupMode = "source";
+	}
+	public void setStartupModeWysiwyg()
+	{
+		startupMode = "wysiwyg";
+	}
+	
 	/**
 	 * Sets the file or list of files for the contents to be applied to the editor.  Used to set the styles that will
 	 * be used in the page where the HTML will actually be rendered.

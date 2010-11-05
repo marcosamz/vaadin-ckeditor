@@ -151,5 +151,8 @@ public class CKEditorTextField extends AbstractField
 		super.setHeight(height);
 	}
 
-	
+	@Override
+	public void detach() {
+		super.detach();
+	}
 }
