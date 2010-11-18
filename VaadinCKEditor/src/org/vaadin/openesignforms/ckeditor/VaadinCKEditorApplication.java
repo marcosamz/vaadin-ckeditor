@@ -63,7 +63,7 @@ public class VaadinCKEditorApplication extends Application {
 		config1.setHeight("300px");
 		
 		final CKEditorTextField ckEditorTextField1 = new CKEditorTextField(config1);
-		ckEditorTextField1.setHeight(410,Sizeable.UNITS_PIXELS); // account for 300px editor plus toolbars
+		ckEditorTextField1.setHeight(440,Sizeable.UNITS_PIXELS); // account for 300px editor plus toolbars
 		mainWindow.addComponent(ckEditorTextField1);
 		
 		final String editor1InitialValue = 
