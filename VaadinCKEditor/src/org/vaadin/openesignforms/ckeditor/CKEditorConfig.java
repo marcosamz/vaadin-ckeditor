@@ -229,7 +229,7 @@ public class CKEditorConfig implements java.io.Serializable {
 	/**
 	 * Convenience method for the Open eSignForms project sponsors to set the plugins and configuration in a common way needed.
 	 */
-	public void setupForOpenESignForms(String contextPath) {
+	public void setupForOpenESignForms(String contextPath, String... extraCssFiles) {
 		addCustomToolbarLine("'Styles','Format','Bold','Italic','Underline','TextColor','BGColor','-','Font','FontSize','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'");
 		addCustomToolbarLine("'Cut','Copy','Paste','PasteText','PasteFromWord','-','Find','Replace','-','Undo','Redo','-','NumberedList','BulletedList','-','Outdent','Indent','CreateDiv','-','Table','HorizontalRule','PageBreak','SpecialChar','-','Image','Link','-','Source','ShowBlocks'");
 		setToolbarCanCollapse(false);
@@ -249,7 +249,16 @@ public class CKEditorConfig implements java.io.Serializable {
 		addWriterRules("style",  "{indent : false, breakBeforeOpen : true, breakAfterOpen : true, breakBeforeClose : true, breakAfterClose : true}" );
 
 		setStylesCombo_stylesSet("esfStyleSet:" + contextPath + "/static/esf/esfStyleSet.js");
-		setContentsCss(contextPath + "/static/esf/esf.css");
+		if ( extraCssFiles == null )
+			setContentsCss(contextPath + "/static/esf/esf.css");
+		else
+		{
+			String[] cssFiles = new String[extraCssFiles.length+1];
+			cssFiles[0] = contextPath + "/static/esf/esf.css";
+			for(int i=0; i < extraCssFiles.length; ++i )
+				cssFiles[i+1] = contextPath + extraCssFiles[i];
+			setContentsCss(cssFiles);
+		}
 		setBodyClass("esf");
 	}
 	
