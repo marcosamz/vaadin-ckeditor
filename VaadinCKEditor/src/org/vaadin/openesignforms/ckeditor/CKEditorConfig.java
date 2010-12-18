@@ -16,7 +16,7 @@ import java.util.Set;
  * tested/common options, or just set the options using a JavaScript/JSON string as you prefer.
  */
 public class CKEditorConfig implements java.io.Serializable {
-	private static final long serialVersionUID = -4802907734779700125L;
+	private static final long serialVersionUID = 949725912298712605L;
 
 	// If this is set, we'll just use it and ignore everything else.
 	private String inPageConfig;
@@ -37,6 +37,14 @@ public class CKEditorConfig implements java.io.Serializable {
 	private String[] contentsCssFiles = null;
 	private String stylesCombo_stylesSet = null;
 	private String bodyClass = null;
+	
+	private String filebrowserBrowseUrl = null;
+	private String filebrowserWindowWidth = null; // defaults to 80% width
+	private String filebrowserWindowHeight = null; // defaults to 70% height
+	
+	private String filebrowserImageBrowseUrl = null;
+	private String filebrowserImageWindowWidth = null; // defaults to 80% width
+	private String filebrowserImageWindowHeight = null; // defaults to 70% height
 	
 	public CKEditorConfig() {
 	}
@@ -147,6 +155,26 @@ public class CKEditorConfig implements java.io.Serializable {
 			appendJSONConfig(config, "stylesCombo_stylesSet : '" + stylesCombo_stylesSet + "'");
 		}
 		
+		if ( filebrowserBrowseUrl != null ) {
+			appendJSONConfig(config, "filebrowserBrowseUrl : '" + filebrowserBrowseUrl + "'");
+		}	
+		if ( filebrowserWindowWidth != null ) {
+			appendJSONConfig(config, "filebrowserWindowWidth : '" + filebrowserWindowWidth + "'");
+		}
+		if ( filebrowserWindowHeight != null ) {
+			appendJSONConfig(config, "filebrowserWindowHeight : '" + filebrowserWindowHeight + "'");
+		}
+		
+		if ( filebrowserImageBrowseUrl != null ) {
+			appendJSONConfig(config, "filebrowserImageBrowseUrl : '" + filebrowserImageBrowseUrl + "'");
+		}
+		if ( filebrowserImageWindowWidth != null ) {
+			appendJSONConfig(config, "filebrowserImageWindowWidth : '" + filebrowserImageWindowWidth + "'");
+		}
+		if ( filebrowserImageWindowHeight != null ) {
+			appendJSONConfig(config, "filebrowserImageWindowHeight : '" + filebrowserImageWindowHeight + "'");
+		}
+
 		config.append(" }");
 		return config.toString();
 	}
@@ -260,6 +288,9 @@ public class CKEditorConfig implements java.io.Serializable {
 			setContentsCss(cssFiles);
 		}
 		setBodyClass("esf");
+		setFilebrowserImageBrowseUrl(contextPath + "/ckeditorImageBrowser.jsp");
+		setFilebrowserImageWindowWidth("600");
+		setFilebrowserImageWindowHeight("500");
 	}
 	
 	public synchronized void addToRemovePlugins(String pluginName) {
@@ -392,4 +423,53 @@ public class CKEditorConfig implements java.io.Serializable {
 	public void setStylesCombo_stylesSet(String styleSetSpec) {
 		stylesCombo_stylesSet = styleSetSpec;
 	}
+	
+	/**
+	 * Sets the filebrowserBrowseUrl config option, which is an URL that will list files a user can select from
+	 * @param url
+	 */
+	public void setFilebrowserBrowseUrl(String url) {
+		filebrowserBrowseUrl = url;
+	}
+	
+	/**
+	 * Sets the filebrowserWindowWidth config option, which is a width size spec (like "600" for 600 pixels); CKEditor defaults to 80%
+	 * @param url
+	 */
+	public void setFilebrowserWindowWidth(String size) {
+		filebrowserWindowWidth = size;
+	}
+	
+	/**
+	 * Sets the filebrowserWindowHeight config option, which is a height size spec (like "600" for 600 pixels); CKEditor defaults to 70%
+	 * @param url
+	 */
+	public void setFilebrowserWindowHeight(String size) {
+		filebrowserWindowHeight = size;
+	}
+	
+	/**
+	 * Sets the filebrowserImageBrowseUrl config option, which is an URL that will list images a user can select from
+	 * @param url
+	 */
+	public void setFilebrowserImageBrowseUrl(String url) {
+		filebrowserImageBrowseUrl = url;
+	}
+	
+	/**
+	 * Sets the filebrowserImageWindowWidth config option, which is a width size spec (like "600" for 600 pixels); CKEditor defaults to 80%
+	 * @param url
+	 */
+	public void setFilebrowserImageWindowWidth(String size) {
+		filebrowserImageWindowWidth = size;
+	}
+	
+	/**
+	 * Sets the filebrowserImageWindowHeight config option, which is a height size spec (like "600" for 600 pixels); CKEditor defaults to 70%
+	 * @param url
+	 */
+	public void setFilebrowserImageWindowHeight(String size) {
+		filebrowserImageWindowHeight = size;
+	}
+	
 }
