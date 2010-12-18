@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 2 November 2010
+Last updated: 17 December 2010
 
   USING CKEDITOR FOR VAADIN IN YOUR APPLICATION
   =============================================
@@ -48,25 +48,28 @@ under the Creative Commons Attribution 3.0 License.
   TODO
   ====
   
- - Nothing immediately pending until we start integrating into our forms and see all the warts
-   and missing items.
- - Test on more than just Firefox 3.6 with limited testing on IE8/Chrome7/Safari5/Opera10 (all on Windows 7).
+ - Test on more than just Firefox 3.6 with limited testing on IE8/Chrome8/Safari5/Opera10 (all on Windows 7).
 
 
   KNOWN ISSUES
   ============
   
  - Want editor to resize based on its container for % height specs.  CKEditor doesn't support it for height, only width.
-
+ - Want editor to work in a Vaadin modal window, but it shows trouble when CKEditor opens its own dialogs (unknown competing interest in button clicks).
  
-  IDEAS FOR FUTURE RELEASE
-  ========================
-  
- - Add ability to define styles.
- - Add ability to define templates.
- 
-  CHANGELOG
+   CHANGELOG
   =========
+
+1.0 (17 December 2010)
+ - Using CKEditor 3.5 just released today.
+ - Recompiled with Vaadin 6.4.8.
+ - Allow eSignForms configuration to include the document style's CSS.
+ - Added ability to set a file browser URL to allow a user to select an image from the CKEditor image dialog: config.setFilebrowserImageBrowseUrl(String)
+ - Added ability to set a file browser window width (CKEditor defaults to 80%): config.setFilebrowserWindowWidth(String)
+ - Added ability to set a file browser window height (CKEditor defaults to 70%): config.setFilebrowserWindowHeight(String)
+ - Added ability to set an image browser URL to allow a user to select an image from the CKEditor image dialog: config.setFilebrowserBrowseUrl(String)
+ - Added ability to set an image browser window width (CKEditor defaults to 80%): config.setFilebrowserImageWindowWidth(String)
+ - Added ability to set an image browser window height (CKEditor defaults to 70%): config.setFilebrowserImageWindowHeight(String)
 
 0.8 (4 November 2010)
  - Using CKEditor 3.4.2.
