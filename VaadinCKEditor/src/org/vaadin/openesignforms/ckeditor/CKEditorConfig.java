@@ -257,7 +257,7 @@ public class CKEditorConfig implements java.io.Serializable {
 	/**
 	 * Convenience method for the Open eSignForms project sponsors to set the plugins and configuration in a common way needed.
 	 */
-	public void setupForOpenESignForms(String contextPath, String... extraCssFiles) {
+	public void setupForOpenESignForms(String contextPath, String ckeditorContextIdInSession, String... extraCssFiles) {
 		addCustomToolbarLine("'Styles','Format','Bold','Italic','Underline','TextColor','BGColor','-','Font','FontSize','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'");
 		addCustomToolbarLine("'Cut','Copy','Paste','PasteText','PasteFromWord','-','Find','Replace','-','Undo','Redo','-','NumberedList','BulletedList','-','Outdent','Indent','CreateDiv','-','Table','HorizontalRule','PageBreak','SpecialChar','-','Image','Link','-','Source','ShowBlocks'");
 		setToolbarCanCollapse(false);
@@ -288,7 +288,7 @@ public class CKEditorConfig implements java.io.Serializable {
 			setContentsCss(cssFiles);
 		}
 		setBodyClass("esf");
-		setFilebrowserImageBrowseUrl(contextPath + "/ckeditorImageBrowser.jsp");
+		setFilebrowserImageBrowseUrl(contextPath + "/ckeditorImageBrowser.jsp?ccid="+ckeditorContextIdInSession);
 		setFilebrowserImageWindowWidth("600");
 		setFilebrowserImageWindowHeight("500");
 	}
