@@ -1,5 +1,5 @@
+// Copyright (C) 2010-2011 Yozons, Inc.
 // CKEditor for Vaadin - Widget linkage for using CKEditor within a Vaadin application.
-// Copyright (C) 2010 Yozons, Inc.
 //
 // This software is released under the Apache License 2.0 <http://www.apache.org/licenses/LICENSE-2.0.html>
 //
@@ -16,7 +16,7 @@ import java.util.Set;
  * tested/common options, or just set the options using a JavaScript/JSON string as you prefer.
  */
 public class CKEditorConfig implements java.io.Serializable {
-	private static final long serialVersionUID = 949725912298712605L;
+	private static final long serialVersionUID = -242187376032269855L;
 
 	// If this is set, we'll just use it and ignore everything else.
 	private String inPageConfig;
@@ -257,7 +257,7 @@ public class CKEditorConfig implements java.io.Serializable {
 	/**
 	 * Convenience method for the Open eSignForms project sponsors to set the plugins and configuration in a common way needed.
 	 */
-	public void setupForOpenESignForms(String contextPath, String ckeditorContextIdInSession, String... extraCssFiles) {
+	public void setupForOpenESignForms(String contextPath, String ckeditorContextIdInSession, String bodyCssClass, String... extraCssFiles) {
 		addCustomToolbarLine("'Styles','Format','Bold','Italic','Underline','TextColor','BGColor','-','Font','FontSize','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'");
 		addCustomToolbarLine("'Cut','Copy','Paste','PasteText','PasteFromWord','-','Find','Replace','-','Undo','Redo','-','NumberedList','BulletedList','-','Outdent','Indent','CreateDiv','-','Table','HorizontalRule','PageBreak','SpecialChar','-','Image','Link','-','Source','ShowBlocks'");
 		setToolbarCanCollapse(false);
@@ -287,7 +287,11 @@ public class CKEditorConfig implements java.io.Serializable {
 				cssFiles[i+1] = contextPath + extraCssFiles[i];
 			setContentsCss(cssFiles);
 		}
-		setBodyClass("esf");
+		if ( bodyCssClass == null || "".equals(bodyCssClass) )
+			bodyCssClass = "esf";
+		else
+			bodyCssClass = "esf " + bodyCssClass;
+		setBodyClass(bodyCssClass);
 		setFilebrowserImageBrowseUrl(contextPath + "/ckeditorImageBrowser.jsp?ccid="+ckeditorContextIdInSession);
 		setFilebrowserImageWindowWidth("600");
 		setFilebrowserImageWindowHeight("500");
