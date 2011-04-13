@@ -1,5 +1,5 @@
+// Copyright (C) 2010-2011 Yozons, Inc.
 // CKEditor for Vaadin - Widget linkage for using CKEditor within a Vaadin application.
-// Copyright (C) 2010 Yozons, Inc.
 //
 // This software is released under the Apache License 2.0 <http://www.apache.org/licenses/LICENSE-2.0.html>
 //
@@ -74,7 +74,7 @@ public class VaadinCKEditorApplication extends Application {
 			private static final long serialVersionUID = 54555014513845952L;
 
 			public void valueChange(ValueChangeEvent event) {
-				getMainWindow().showNotification("CKEditor #1 contents: " + event.getProperty().toString().replaceAll("<", "&lt;"));
+				getMainWindow().showNotification("CKEditor v" + ckEditorTextField1.getVersion() + " - #1 contents: " + event.getProperty().toString().replaceAll("<", "&lt;"));
 			}
 		});
 		
@@ -129,7 +129,7 @@ public class VaadinCKEditorApplication extends Application {
 			private static final long serialVersionUID = 5261774097251439369L;
 
 			public void valueChange(ValueChangeEvent event) {
-				getMainWindow().showNotification("CKEditor #2 contents: " + event.getProperty().toString().replaceAll("<", "&lt;"));
+				getMainWindow().showNotification("CKEditor v" + ckEditorTextField2.getVersion() + " - #2 contents: " + event.getProperty().toString().replaceAll("<", "&lt;"));
 			}
 		});
 		
@@ -156,13 +156,11 @@ public class VaadinCKEditorApplication extends Application {
 			}
 		});
 		mainWindow.addComponent(toggleReadOnlyButton2);
-
-
 	}
 	
 	@Override
 	public String getVersion() {
-		return "1.0";
+		return "1.1";
 	}
 
 }

@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 17 December 2010
+Last updated: 12 April 2011
 
   USING CKEDITOR FOR VAADIN IN YOUR APPLICATION
   =============================================
@@ -47,8 +47,6 @@ under the Creative Commons Attribution 3.0 License.
 
   TODO
   ====
-  
- - Test on more than just Firefox 3.6 with limited testing on IE8/Chrome8/Safari5/Opera10 (all on Windows 7).
 
 
   KNOWN ISSUES
@@ -59,6 +57,13 @@ under the Creative Commons Attribution 3.0 License.
  
    CHANGELOG
   =========
+
+1.1 (12 April 2011)
+ - Using CKEditor 3.5.3.
+ - Recompiled with Vaadin 6.5.4, which also uses GWT 2.1.1.
+ - Added ability to retrieve the version of CKEditor (i.e. "3.5.3") in use: CKEditorTextField.getVersion(). Currently this can't be done until after the editor is created
+   and initialized since we don't have any way to pass it back until there's some communications between server and client.
+ - Allow additional body classes to be passed in besides the default of "esf" for Open eSignForms needs. (config.setBodyClass() already allows this generally).
 
 1.0 (17 December 2010)
  - Using CKEditor 3.5 just released today.

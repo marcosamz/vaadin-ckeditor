@@ -1,5 +1,5 @@
+// Copyright (C) 2010-2011 Yozons, Inc.
 // CKEditor for Vaadin - Widget linkage for using CKEditor within a Vaadin application.
-// Copyright (C) 2010 Yozons, Inc.
 //
 // This software is released under the Apache License 2.0 <http://www.apache.org/licenses/LICENSE-2.0.html>
 //
@@ -36,6 +36,7 @@ public class CKEditorTextField extends AbstractField
 	private static final long serialVersionUID = 2801471973845411928L;
 
 	private CKEditorConfig config;
+	private String version = "unknown";
 
 	public CKEditorTextField() {
 		super.setValue("");
@@ -50,6 +51,10 @@ public class CKEditorTextField extends AbstractField
 	
 	public void setConfig(CKEditorConfig config) {
 		this.config = config;
+	}
+	
+	public String getVersion() {
+		return version;
 	}
 	
 	@Override
@@ -106,6 +111,11 @@ public class CKEditorTextField extends AbstractField
             }
         }
 
+        // Sets the CKEditor version
+        if (variables.containsKey(VCKEditorTextField.VAR_VERSION)) {
+        	version = (String)variables.get(VCKEditorTextField.VAR_VERSION);
+        }
+        
         if (variables.containsKey(FocusEvent.EVENT_ID)) {
             fireEvent(new FocusEvent(this));
         }

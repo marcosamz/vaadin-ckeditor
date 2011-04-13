@@ -1,5 +1,5 @@
+// Copyright (C) 2010-2011 Yozons, Inc.
 // CKEditor for Vaadin- Widget linkage for using CKEditor within a Vaadin application.
-// Copyright (C) 2010 Yozons, Inc.
 //
 // This software is released under the Apache License 2.0 <http://www.apache.org/licenses/LICENSE-2.0.html>
 //
@@ -35,8 +35,10 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	public static final String ATTR_WRITERRULES_TAGNAME = "writerRules.tagName";
 	public static final String ATTR_WRITERRULES_JSRULE = "writerRules.jsRule";
 	public static final String VAR_TEXT = "text";
+	public static final String VAR_VERSION = "version";
 	
 	private static boolean initializedCKEDITOR = false;
+	private static String ckeditorVersion;
 
 	/** The client side widget identifier */
 	protected String paintableId;
@@ -45,6 +47,7 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	protected ApplicationConnection clientToServer;
 	
 	private String dataBeforeEdit = null;
+	
 
 	private boolean immediate;
 	private boolean readOnly;
@@ -62,6 +65,7 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 		// Any one-time library initializations go here
 		if ( ! initializedCKEDITOR ) {
 			CKEditorService.overrideBlurToForceBlur();
+			ckeditorVersion = CKEditorService.version();
 			initializedCKEDITOR = true;
 		}
 
@@ -212,6 +216,8 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 		if ( dataBeforeEdit != null ) {
 			ckEditor.setData(dataBeforeEdit);
 		}
+		
+		clientToServer.updateVariable(paintableId, VAR_VERSION, ckeditorVersion, true);
 		
 		ckEditorIsReady = true;
 	}
