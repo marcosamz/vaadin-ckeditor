@@ -59,7 +59,7 @@ under the Creative Commons Attribution 3.0 License.
   =========
 
 1.1 (12 April 2011)
- - Using CKEditor 3.5.3.
+ - Using CKEditor 3.5.3. This has support for IE9 and Firefox 4.
  - Recompiled with Vaadin 6.5.4, which also uses GWT 2.1.1.
  - Added ability to retrieve the version of CKEditor (i.e. "3.5.3") in use: CKEditorTextField.getVersion(). Currently this can't be done until after the editor is created
    and initialized since we don't have any way to pass it back until there's some communications between server and client.
