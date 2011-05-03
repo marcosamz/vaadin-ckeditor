@@ -34,6 +34,7 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	public static final String ATTR_INPAGECONFIG = "inPageConfig";
 	public static final String ATTR_WRITERRULES_TAGNAME = "writerRules.tagName";
 	public static final String ATTR_WRITERRULES_JSRULE = "writerRules.jsRule";
+	public static final String ATTR_WRITER_INDENTATIONCHARS = "writerIndentationChars";
 	public static final String VAR_TEXT = "text";
 	public static final String VAR_VERSION = "version";
 	
@@ -56,6 +57,7 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	private boolean ckEditorIsReady = false;
 	
 	private HashMap<String,String> writerRules = null;
+	private String writerIndentationChars = null;
 
 	/**
 	 * The constructor should first call super() to initialize the component and
@@ -124,6 +126,8 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 			getElement().setInnerHTML(""); // in case we put contents in there while in readonly mode
 			
 			String inPageConfig = uidl.hasAttribute(ATTR_INPAGECONFIG) ? uidl.getStringAttribute(ATTR_INPAGECONFIG) : null;
+			
+			writerIndentationChars = uidl.hasAttribute(ATTR_WRITER_INDENTATIONCHARS) ? uidl.getStringAttribute(ATTR_WRITER_INDENTATIONCHARS) : null;
 			
 			// See if we have any writer rules
 			int i = 0;
@@ -211,6 +215,11 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 				ckEditor.setWriterRules(tagName, writerRules.get(tagName));
 			}
 			writerRules = null; // don't need them anymore
+		}
+		
+		if ( writerIndentationChars != null ) {
+			ckEditor.setWriterIndentationChars(writerIndentationChars);
+			writerIndentationChars = null;
 		}
 		
 		if ( dataBeforeEdit != null ) {

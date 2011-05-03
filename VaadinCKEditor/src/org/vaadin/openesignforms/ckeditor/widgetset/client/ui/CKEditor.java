@@ -41,6 +41,11 @@ public class CKEditor extends JavaScriptObject {
 		this.dataProcessor.writer.setRules(tagName, rule);
 	}-*/;
 	
+	public final native void setWriterIndentationChars(String indentationChars)
+	/*-{
+		this.dataProcessor.writer.indentationChars = indentationChars;
+	}-*/;
+	
 	public final native void instanceReady(CKEditorService.CKEditorListener listener)
 	/*-{
 	 	// The 'listener' passed to us is used as 'listenerData' for the callback.

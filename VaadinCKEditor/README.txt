@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 12 April 2011
+Last updated: 3 May 2011
 
   USING CKEDITOR FOR VAADIN IN YOUR APPLICATION
   =============================================
@@ -57,6 +57,15 @@ under the Creative Commons Attribution 3.0 License.
  
    CHANGELOG
   =========
+
+1.2 (3 May 2011)
+ - Added ability to set the indentation chars (defaults to tab). The Open eSignForms default uses this to change to 4 spaces. (config.setWriterIndentationChars(String))
+ - Working with the project http://sourceforge.net/projects/jckconnector/ added methods to set the following configurations:
+   config.setFilebrowserUploadUrl(String)
+   config.setFilebrowserImageUploadUrl(String)
+   config.setFilebrowserFlashBrowseUrl(String)
+   config.setFilebrowserFlashUploadUrl(String)
+   config.setFilebrowserLinkBrowseUrl(String)
 
 1.1 (12 April 2011)
  - Using CKEditor 3.5.3. This has support for IE9 and Firefox 4.

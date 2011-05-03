@@ -84,6 +84,10 @@ public class CKEditorTextField extends AbstractField
 					++i;
 				}
 			}
+			
+			if ( config.hasWriterIndentationChars() ) {
+				target.addAttribute(VCKEditorTextField.ATTR_WRITER_INDENTATIONCHARS, config.getWriterIndentationChars());
+			}
 		}
 	}
 	

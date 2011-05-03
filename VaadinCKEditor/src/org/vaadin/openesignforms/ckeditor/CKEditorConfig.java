@@ -16,13 +16,14 @@ import java.util.Set;
  * tested/common options, or just set the options using a JavaScript/JSON string as you prefer.
  */
 public class CKEditorConfig implements java.io.Serializable {
-	private static final long serialVersionUID = -242187376032269855L;
+	private static final long serialVersionUID = 4360029660001644525L;
 
 	// If this is set, we'll just use it and ignore everything else.
 	private String inPageConfig;
 
 	// Otherwise, we'll build the config based on settings contained here
 	private HashMap<String,String> writerRules = null;
+	private String writerIndentationChars = null;
 	private LinkedList<String> extraPlugins = null;
 	private LinkedList<String> removePlugins = null;
 	private LinkedList<String> customToolbarLines = null;
@@ -39,12 +40,18 @@ public class CKEditorConfig implements java.io.Serializable {
 	private String bodyClass = null;
 	
 	private String filebrowserBrowseUrl = null;
+	private String filebrowserUploadUrl = null;
 	private String filebrowserWindowWidth = null; // defaults to 80% width
 	private String filebrowserWindowHeight = null; // defaults to 70% height
 	
 	private String filebrowserImageBrowseUrl = null;
+	private String filebrowserImageUploadUrl = null;
 	private String filebrowserImageWindowWidth = null; // defaults to 80% width
 	private String filebrowserImageWindowHeight = null; // defaults to 70% height
+	
+	private String filebrowserFlashBrowseUrl = null;
+	private String filebrowserFlashUploadUrl = null;
+	private String filebrowserLinkBrowseUrl = null;
 	
 	public CKEditorConfig() {
 	}
@@ -158,6 +165,9 @@ public class CKEditorConfig implements java.io.Serializable {
 		if ( filebrowserBrowseUrl != null ) {
 			appendJSONConfig(config, "filebrowserBrowseUrl : '" + filebrowserBrowseUrl + "'");
 		}	
+		if ( filebrowserUploadUrl != null ) {
+			appendJSONConfig(config, "filebrowserUploadUrl : '" + filebrowserUploadUrl + "'");
+		}	
 		if ( filebrowserWindowWidth != null ) {
 			appendJSONConfig(config, "filebrowserWindowWidth : '" + filebrowserWindowWidth + "'");
 		}
@@ -168,11 +178,24 @@ public class CKEditorConfig implements java.io.Serializable {
 		if ( filebrowserImageBrowseUrl != null ) {
 			appendJSONConfig(config, "filebrowserImageBrowseUrl : '" + filebrowserImageBrowseUrl + "'");
 		}
+		if ( filebrowserImageUploadUrl != null ) {
+			appendJSONConfig(config, "filebrowserImageUploadUrl : '" + filebrowserImageUploadUrl + "'");
+		}
 		if ( filebrowserImageWindowWidth != null ) {
 			appendJSONConfig(config, "filebrowserImageWindowWidth : '" + filebrowserImageWindowWidth + "'");
 		}
 		if ( filebrowserImageWindowHeight != null ) {
 			appendJSONConfig(config, "filebrowserImageWindowHeight : '" + filebrowserImageWindowHeight + "'");
+		}
+		
+		if ( filebrowserFlashBrowseUrl != null ) {
+			appendJSONConfig(config, "filebrowserFlashBrowseUrl : '" + filebrowserFlashBrowseUrl + "'");
+		}
+		if ( filebrowserFlashUploadUrl != null ) {
+			appendJSONConfig(config, "filebrowserFlashUploadUrl : '" + filebrowserFlashUploadUrl + "'");
+		}
+		if ( filebrowserLinkBrowseUrl != null ) {
+			appendJSONConfig(config, "filebrowserLinkBrowseUrl : '" + filebrowserLinkBrowseUrl + "'");
 		}
 
 		config.append(" }");
@@ -222,6 +245,16 @@ public class CKEditorConfig implements java.io.Serializable {
 		addWriterRules("h5", "{indent : false, breakBeforeOpen : true, breakAfterOpen : false, breakBeforeClose : false, breakAfterClose : true}" );
 		addWriterRules("h6", "{indent : false, breakBeforeOpen : true, breakAfterOpen : false, breakBeforeClose : false, breakAfterClose : true}" );
 		addWriterRules("li", "{indent : true,  breakBeforeOpen : true, breakAfterOpen : false, breakBeforeClose : false, breakAfterClose : true}" );
+	}
+	
+	public String getWriterIndentationChars() {
+		return writerIndentationChars;
+	}
+	public boolean hasWriterIndentationChars() {
+		return writerIndentationChars != null;
+	}
+	public void setWriterIndentationChars(String v) {
+		writerIndentationChars = v;
 	}
 
 	public synchronized void addToExtraPlugins(String pluginName) {
@@ -275,6 +308,7 @@ public class CKEditorConfig implements java.io.Serializable {
 		useCompactTags();
 		addWriterRules("script", "{indent : false, breakBeforeOpen : true, breakAfterOpen : true, breakBeforeClose : true, breakAfterClose : true}" );
 		addWriterRules("style",  "{indent : false, breakBeforeOpen : true, breakAfterOpen : true, breakBeforeClose : true, breakAfterClose : true}" );
+		setWriterIndentationChars("    ");
 
 		setStylesCombo_stylesSet("esfStyleSet:" + contextPath + "/static/esf/esfStyleSet.js");
 		if ( extraCssFiles == null )
@@ -437,6 +471,14 @@ public class CKEditorConfig implements java.io.Serializable {
 	}
 	
 	/**
+	 * Sets the filebrowserUploadUrl config option, which is an URL that will allow a file to be uploaded
+	 * @param url
+	 */
+	public void setFilebrowserUploadUrl(String url) {
+		filebrowserUploadUrl = url;
+	}
+	
+	/**
 	 * Sets the filebrowserWindowWidth config option, which is a width size spec (like "600" for 600 pixels); CKEditor defaults to 80%
 	 * @param url
 	 */
@@ -461,6 +503,14 @@ public class CKEditorConfig implements java.io.Serializable {
 	}
 	
 	/**
+	 * Sets the filebrowserImageUploadUrl config option, which is an URL that will allow an image file to be uploaded
+	 * @param url
+	 */
+	public void setFilebrowserImageUploadUrl(String url) {
+		filebrowserImageUploadUrl = url;
+	}
+	
+	/**
 	 * Sets the filebrowserImageWindowWidth config option, which is a width size spec (like "600" for 600 pixels); CKEditor defaults to 80%
 	 * @param url
 	 */
@@ -476,4 +526,29 @@ public class CKEditorConfig implements java.io.Serializable {
 		filebrowserImageWindowHeight = size;
 	}
 	
+	
+	/**
+	 * Sets the filebrowserFlashBrowseUrl config option, which is an URL that will allow browsing for Flash
+	 * @param url
+	 */
+	public void setFilebrowserFlashBrowseUrl(String url) {
+		filebrowserFlashBrowseUrl = url;
+	}
+	
+	/**
+	 * Sets the filebrowserFlashUploadUrl config option, which is an URL that will allow a Flash file to be uploaded
+	 * @param url
+	 */
+	public void setFilebrowserFlashUploadUrl(String url) {
+		filebrowserFlashUploadUrl = url;
+	}
+	
+	/**
+	 * Sets the filebrowserLinkBrowseUrl config option, which is an URL that will allow for link browsing
+	 * @param url
+	 */
+	public void setFilebrowserLinkBrowseUrl(String url) {
+		filebrowserLinkBrowseUrl = url;
+	}
+
 }
