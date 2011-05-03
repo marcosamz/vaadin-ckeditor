@@ -62,7 +62,7 @@ public class CKEditorConfig implements java.io.Serializable {
 		}
 		
 		// Build the JSON config
-		StringBuilder config = new StringBuilder(1024);
+		StringBuilder config = new StringBuilder(4096);
 		config.append("{ "); // we assume this is 2 chars in the buffer append routines to know whether anything more has been appended yet
 		
 		if ( customToolbarLines != null ) {
