@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 3 May 2011
+Last updated: 6 May 2011
 
   USING CKEDITOR FOR VAADIN IN YOUR APPLICATION
   =============================================
@@ -15,6 +15,11 @@ an outdated JDK 1.5 per Vaadin's widget specs.
 
 The CKEditor code, in full as downloaded from http://ckeditor.com, is present in the 
 src/org/vaadin/openesignforms/ckeditor/public folder.  No changes to CKEditor were made.
+However, we remove the following files from the standard CKEditor distribution as they are not needed:
+   ckeditor/_source
+   ckeditor/_samples
+   ckeditor/*.asp
+   ckeditor/*.php
 If you are compiling yourself, you will need to install CKEditor code into your project
 as we do not check in the CKEditor code in our source code system.
 1) Download the latest ZIP file from ckeditor.com.
