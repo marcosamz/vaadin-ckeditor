@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 6 May 2011
+Last updated: 3 June 2011
 
   USING CKEDITOR FOR VAADIN IN YOUR APPLICATION
   =============================================
@@ -63,6 +63,11 @@ under the Creative Commons Attribution 3.0 License.
    CHANGELOG
   =========
 
+1.3 (3 June 2011)
+ - Upgraded to Vaadin 6.6.1 with GWT 2.1.0.
+ - Upgraded to CKEditor 3.6.
+ - Added ability to set the tabSpaces config option: config.setTabSpaces(int);
+ 
 1.2 (3 May 2011)
  - Added ability to set the indentation chars (defaults to tab). The Open eSignForms default uses this to change to 4 spaces. (config.setWriterIndentationChars(String))
  - Working with the project http://sourceforge.net/projects/jckconnector/ added methods to set the following configurations:

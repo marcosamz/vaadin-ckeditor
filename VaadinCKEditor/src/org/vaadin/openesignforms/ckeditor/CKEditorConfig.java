@@ -16,7 +16,7 @@ import java.util.Set;
  * tested/common options, or just set the options using a JavaScript/JSON string as you prefer.
  */
 public class CKEditorConfig implements java.io.Serializable {
-	private static final long serialVersionUID = 4360029660001644525L;
+	private static final long serialVersionUID = 6533693751356893302L;
 
 	// If this is set, we'll just use it and ignore everything else.
 	private String inPageConfig;
@@ -33,6 +33,7 @@ public class CKEditorConfig implements java.io.Serializable {
 	private String width = null;
 	private String height = null;
 	private Integer baseFloatZIndex = null;
+	private Integer tabSpaces = null;
 	private Boolean pasteFromWordNumberedHeadingToList = null;
 	private String startupMode = null; // either "source" or "wysiwyg" (defaults to wysiwyg, so generally only used if you'd like to startup in source mode)
 	private String[] contentsCssFiles = null;
@@ -126,6 +127,10 @@ public class CKEditorConfig implements java.io.Serializable {
 		
 		if ( baseFloatZIndex != null ) {
 			appendJSONConfig(config, "baseFloatZIndex : " + baseFloatZIndex);
+		}
+		
+		if ( tabSpaces != null ) {
+			appendJSONConfig(config, "tabSpaces : " + tabSpaces);
 		}
 		
 		if ( pasteFromWordNumberedHeadingToList != null ) {
@@ -299,6 +304,7 @@ public class CKEditorConfig implements java.io.Serializable {
 		
 		setHeight("300px");
 		setBaseFloatZIndex(32000);
+		setTabSpaces(4);
 		
 		disableSpellChecker();
 		setDisableNativeSpellChecker(false);
@@ -419,6 +425,10 @@ public class CKEditorConfig implements java.io.Serializable {
 	
 	public void setBaseFloatZIndex(int zIndex) {
 		baseFloatZIndex = zIndex;
+	}
+	
+	public void setTabSpaces(int numSpaces) {
+		tabSpaces = numSpaces;
 	}
 	
 	public void setPasteFromWordNumberedHeadingToList(boolean v)
