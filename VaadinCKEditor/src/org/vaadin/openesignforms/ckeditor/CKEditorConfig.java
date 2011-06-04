@@ -74,11 +74,7 @@ public class CKEditorConfig implements java.io.Serializable {
 				if ( buf.length() > 0 )
 					buf.append(",'/',");
 				String js = iter.next();
-				if ( js.startsWith("[") ) { // if it has a band, assume fully banded
-					buf.append(js);
-				} else {
-					buf.append("[").append(js).append("]"); // put entire line in one band
-				}
+				buf.append(js);
 			}
 
 			appendJSONConfig(config, "toolbar : 'Custom'");
@@ -296,8 +292,17 @@ public class CKEditorConfig implements java.io.Serializable {
 	 * Convenience method for the Open eSignForms project sponsors to set the plugins and configuration in a common way needed.
 	 */
 	public void setupForOpenESignForms(String contextPath, String ckeditorContextIdInSession, String bodyCssClass, String... extraCssFiles) {
-		addCustomToolbarLine("'Styles','Format','Bold','Italic','Underline','TextColor','BGColor','-','Font','FontSize','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'");
-		addCustomToolbarLine("'Cut','Copy','Paste','PasteText','PasteFromWord','-','Find','Replace','-','Undo','Redo','-','NumberedList','BulletedList','-','Outdent','Indent','CreateDiv','-','Table','HorizontalRule','PageBreak','SpecialChar','-','Image','Link','-','Source','ShowBlocks'");
+		addCustomToolbarLine("{ name: 'styles', items: ['Styles','Format','Bold','Italic','Underline','TextColor','BGColor'] }," +
+				             "{ name: 'fonts', items: ['Font','FontSize'] }," +
+				             "{ name: 'align', items: ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'] }");
+		addCustomToolbarLine("{ name: 'clipboard', items: ['Cut','Copy','Paste','PasteText','PasteFromWord'] }," +
+							 "{ name: 'search', items: ['Find','Replace'] }," +
+							 "{ name: 'undo', items: ['Undo','Redo'] }," +
+							 "{ name: 'lists', items: ['NumberedList','BulletedList'] }," +
+							 "{ name: 'indent', items: ['Outdent','Indent','CreateDiv'] }," +
+							 "{ name: 'table', items: ['Table','HorizontalRule','PageBreak','SpecialChar'] }," +
+							 "{ name: 'links', items: ['Image','Link'] }," +
+							 "{ name: 'source', items: ['Source','ShowBlocks'] }");
 		setToolbarCanCollapse(false);
 		
 		enableTableResizePlugin();
@@ -370,22 +375,11 @@ public class CKEditorConfig implements java.io.Serializable {
 	
 	/**
 	 * If no custom toolbar is defined, it will use the Full toolbar by default (config.toolbar = 'Full').
+	 * The format of the toolbar configuration changed in CKEditor 3.6 (our library 1.3).
 	 * 
 	 * Note that each line is generally one 'band' so that they all appear together.  
 	 * For example:
-	 * 'Styles','Format','Font','FontSize','TextColor','BGColor','Maximize', 'ShowBlocks','-','About'
-	 * we treat this as:
-	 * ['Styles','Format','Font','FontSize','TextColor','BGColor','Maximize', 'ShowBlocks','-','About'] 
-	 * 
-	 * If the toolbarLineJS you add begins with a '[' then we assume you are building your own bands and won't put in any bands.  
-	 * For example: 
-	 * ['Styles','Format','Font','FontSize'],['TextColor','BGColor'],['Maximize', 'ShowBlocks','-','About']
-	 * The above will be on one line, and there will be the 3 banded items (and we use it 'as is').
-	 * 
-	 * Add a custom toolbar line of options.  It is basically a list of features separated by commas, or '-' for the separator, such as:
-	 * 'Styles','Format','Bold','Italic','TextColor','BGColor','-','Font','FontSize','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','Image','Link'
-	 * 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo','-','NumberedList','BulletedList','-','Outdent','Indent','-','Table','HorizontalRule','-','Maximize','-','Source','ShowBlocks','-','VaadinSave'
-	 * 'Styles','Format','Bold','Italic','-','VaadinSave'
+	 * { name: 'styles', items : ['Styles','Format','Font','FontSize','TextColor','BGColor','Maximize', 'ShowBlocks','-','About'] }
 	 * @param toolbarLineJS
 	 */
 	public synchronized void addCustomToolbarLine(String toolbarLineJS) {
