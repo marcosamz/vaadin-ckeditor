@@ -63,9 +63,10 @@ under the Creative Commons Attribution 3.0 License.
    CHANGELOG
   =========
 
-1.3 (3 June 2011)
+1.3.1 (3 June 2011)
  - Upgraded to Vaadin 6.6.1 with GWT 2.1.0.
- - Upgraded to CKEditor 3.6.
+ - Upgraded to CKEditor 3.6. This results in a change to the layout for defining custom toolbars. 
+   You'll want to check your code if it calls config.addCustomToolbarLine(String)
  - Added ability to set the tabSpaces config option: config.setTabSpaces(int);
  
 1.2 (3 May 2011)
