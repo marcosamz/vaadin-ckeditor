@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 3 June 2011
+Last updated: 14 June 2011
 
   USING CKEDITOR FOR VAADIN IN YOUR APPLICATION
   =============================================
@@ -63,6 +63,15 @@ under the Creative Commons Attribution 3.0 License.
    CHANGELOG
   =========
 
+1.4 (14 June 2011)
+ - Changed CKEditorConfig setStylesCombo_stylesSet() to use name setStylesSet() as this was changed back in CKEditor 3.3 apparently. 
+   The old name is deprecated and will be removed shortly.
+ - Added config options from André (google code user zorknika)
+   config.setSkin(String newSkin)
+   config.setFilebrowserFlashBrowseLinkUrl(String url)
+   config.setFilebrowserImageBrowseLinkUrl(String url)
+   config.addTemplatesFiles(String templateURL)
+  
 1.3.1 (3 June 2011)
  - Upgraded to Vaadin 6.6.1 with GWT 2.1.0.
  - Upgraded to CKEditor 3.6. This results in a change to the layout for defining custom toolbars. 

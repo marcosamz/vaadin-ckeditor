@@ -16,7 +16,7 @@ import java.util.Set;
  * tested/common options, or just set the options using a JavaScript/JSON string as you prefer.
  */
 public class CKEditorConfig implements java.io.Serializable {
-	private static final long serialVersionUID = 6533693751356893302L;
+	private static final long serialVersionUID = 449121768911939888L;
 
 	// If this is set, we'll just use it and ignore everything else.
 	private String inPageConfig;
@@ -37,8 +37,11 @@ public class CKEditorConfig implements java.io.Serializable {
 	private Boolean pasteFromWordNumberedHeadingToList = null;
 	private String startupMode = null; // either "source" or "wysiwyg" (defaults to wysiwyg, so generally only used if you'd like to startup in source mode)
 	private String[] contentsCssFiles = null;
-	private String stylesCombo_stylesSet = null;
+	private String stylesSet = null;
 	private String bodyClass = null;
+	private String skin = null;
+	private Boolean toolbarStartupExpanded = null;
+	private LinkedList<String> templates_files = null;
 	
 	private String filebrowserBrowseUrl = null;
 	private String filebrowserUploadUrl = null;
@@ -49,10 +52,14 @@ public class CKEditorConfig implements java.io.Serializable {
 	private String filebrowserImageUploadUrl = null;
 	private String filebrowserImageWindowWidth = null; // defaults to 80% width
 	private String filebrowserImageWindowHeight = null; // defaults to 70% height
+    private String filebrowserImageBrowseLinkUrl = null;
 	
 	private String filebrowserFlashBrowseUrl = null;
 	private String filebrowserFlashUploadUrl = null;
-	private String filebrowserLinkBrowseUrl = null;
+	private String filebrowserFlashBrowseLinkUrl = null; // available? Not in CKEditor JS docs
+
+	private String filebrowserLinkBrowseUrl = null; // available? Not in CKEditor JS docs
+        
 	
 	public CKEditorConfig() {
 	}
@@ -136,7 +143,15 @@ public class CKEditorConfig implements java.io.Serializable {
 		if ( startupMode != null ) {
 			appendJSONConfig(config, "startupMode : '" + startupMode + "'");
 		}
-		
+
+		if ( skin != null ) {
+			appendJSONConfig(config, "skin : '" + skin + "'");
+		}
+                
+		if ( toolbarStartupExpanded != null ) {
+			appendJSONConfig(config, "toolbarStartupExpanded : " + toolbarStartupExpanded );
+		}
+                
 		if ( contentsCssFiles != null && contentsCssFiles.length > 0 ) {
 			if ( contentsCssFiles.length == 1 ) {
 				appendJSONConfig(config, "contentsCss : '" + contentsCssFiles[0] + "'");
@@ -159,8 +174,8 @@ public class CKEditorConfig implements java.io.Serializable {
 			appendJSONConfig(config, "disableNativeSpellChecker : " + disableNativeSpellChecker);
 		}
 		
-		if ( stylesCombo_stylesSet != null ) {
-			appendJSONConfig(config, "stylesCombo_stylesSet : '" + stylesCombo_stylesSet + "'");
+		if ( stylesSet != null ) {
+			appendJSONConfig(config, "stylesSet : '" + stylesSet + "'");
 		}
 		
 		if ( filebrowserBrowseUrl != null ) {
@@ -175,6 +190,9 @@ public class CKEditorConfig implements java.io.Serializable {
 		if ( filebrowserWindowHeight != null ) {
 			appendJSONConfig(config, "filebrowserWindowHeight : '" + filebrowserWindowHeight + "'");
 		}
+		if ( filebrowserLinkBrowseUrl != null ) {
+			appendJSONConfig(config, "filebrowserLinkBrowseUrl : '" + filebrowserLinkBrowseUrl + "'");
+		}
 		
 		if ( filebrowserImageBrowseUrl != null ) {
 			appendJSONConfig(config, "filebrowserImageBrowseUrl : '" + filebrowserImageBrowseUrl + "'");
@@ -188,6 +206,9 @@ public class CKEditorConfig implements java.io.Serializable {
 		if ( filebrowserImageWindowHeight != null ) {
 			appendJSONConfig(config, "filebrowserImageWindowHeight : '" + filebrowserImageWindowHeight + "'");
 		}
+		if ( filebrowserImageBrowseLinkUrl != null ) {
+			appendJSONConfig(config, "filebrowserImageBrowseLinkUrl : '" + filebrowserImageBrowseLinkUrl + "'");
+		}
 		
 		if ( filebrowserFlashBrowseUrl != null ) {
 			appendJSONConfig(config, "filebrowserFlashBrowseUrl : '" + filebrowserFlashBrowseUrl + "'");
@@ -195,10 +216,21 @@ public class CKEditorConfig implements java.io.Serializable {
 		if ( filebrowserFlashUploadUrl != null ) {
 			appendJSONConfig(config, "filebrowserFlashUploadUrl : '" + filebrowserFlashUploadUrl + "'");
 		}
-		if ( filebrowserLinkBrowseUrl != null ) {
-			appendJSONConfig(config, "filebrowserLinkBrowseUrl : '" + filebrowserLinkBrowseUrl + "'");
+		if ( filebrowserFlashBrowseLinkUrl != null ) {
+			appendJSONConfig(config, "filebrowserFlashBrowseLinkUrl : '" + filebrowserFlashBrowseLinkUrl + "'");
 		}
 
+		if ( templates_files != null ) {
+			StringBuilder buf = new StringBuilder();
+			ListIterator<String> iter = templates_files.listIterator();
+			while( iter.hasNext() ) {
+				if ( buf.length() > 0 )
+					buf.append("','");
+				buf.append(iter.next());
+			}
+			appendJSONConfig(config, "templates_files : ['" + buf.toString() + "']");
+		}
+                
 		config.append(" }");
 		return config.toString();
 	}
@@ -321,7 +353,7 @@ public class CKEditorConfig implements java.io.Serializable {
 		addWriterRules("style",  "{indent : false, breakBeforeOpen : true, breakAfterOpen : true, breakBeforeClose : true, breakAfterClose : true}" );
 		setWriterIndentationChars("    ");
 
-		setStylesCombo_stylesSet("esfStyleSet:" + contextPath + "/static/esf/esfStyleSet.js");
+		setStylesSet("esfStyleSet:" + contextPath + "/static/esf/esfStyleSet.js");
 		if ( extraCssFiles == null )
 			setContentsCss(contextPath + "/static/esf/esf.css");
 		else
@@ -395,6 +427,27 @@ public class CKEditorConfig implements java.io.Serializable {
 		toolbarCanCollapse = v;
 	}
 
+    /**
+     * Possible skins:
+     * kama The default skin for CKEditor 3.x
+     * office2003
+     * v2 
+     * 
+     * @param newSkin the skin to set
+     */
+    public void setSkin(String newSkin) 
+    {
+        skin = newSkin;
+    }
+
+    /**
+     * @param newToolbarStartupExpanded the toolbarStartupExpanded status
+     */
+    public void setToolbarStartupExpanded(Boolean newToolbarStartupExpanded) 
+    {
+        toolbarStartupExpanded = newToolbarStartupExpanded;
+    }
+
 	public enum RESIZE_DIR { BOTH, VERTICAL, HORIZONTAL }
 	
 	public void setResizeDir(RESIZE_DIR dir) {
@@ -459,11 +512,18 @@ public class CKEditorConfig implements java.io.Serializable {
 	}
 	
 	/**
-	 * Sets the stylesCombo_stylesSet config option, which is the registered style name 
+	 * Sets the stylesSet config option, which is the registered style name 
 	 * @param styleSetSpec
 	 */
-	public void setStylesCombo_stylesSet(String styleSetSpec) {
-		stylesCombo_stylesSet = styleSetSpec;
+	public void setStylesSet(String styleSetSpec) {
+		stylesSet = styleSetSpec;
+	}
+	@Deprecated 
+	/**
+	 * @see #setStylesSet(String) as the replacement -- this method will be removed in the next release
+	 */
+	public final void setStylesCombo_stylesSet(String spec) {
+		setStylesSet(spec);
 	}
 	
 	/**
@@ -555,4 +615,43 @@ public class CKEditorConfig implements java.io.Serializable {
 		filebrowserLinkBrowseUrl = url;
 	}
 
+
+    /**
+     * Sets the filebrowserFlashBrowseLinkUrl config option, 
+     * which is an URL that will allow for link browsing
+     * in the Flash property dialog
+     * 
+     * @param url the filebrowserFlashBrowseLinkUrl to set
+     */
+    public void setFilebrowserFlashBrowseLinkUrl(String url) 
+    {
+        filebrowserFlashBrowseLinkUrl = url;
+    }
+
+    /**
+     * Sets the filebrowserImageBrowseLinkUrl config option, 
+     * which is an URL that will allow for link browsing
+     * in the Image property dialog
+     * 
+     * @param url the filebrowserImageBrowseLinkUrl to set
+     */
+    public void setFilebrowserImageBrowseLinkUrl(String url) 
+    {
+        filebrowserImageBrowseLinkUrl = url;
+    }
+
+    /**
+     * Add a new template url to the list of templates
+     * 
+     * @param templateURL 
+     */
+    public synchronized void addTemplatesFiles(String templateURL) {
+    	if ( templates_files == null ) {
+    		templates_files = new LinkedList<String>();
+    	}
+    	if ( ! templates_files.contains(templateURL) ) {
+    		templates_files.add(templateURL);
+    	}
+    }
+        
 }
