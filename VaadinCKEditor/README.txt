@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 14 June 2011
+Last updated: 25 June 2011
 
   USING CKEDITOR FOR VAADIN IN YOUR APPLICATION
   =============================================
@@ -27,6 +27,7 @@ as we do not check in the CKEditor code in our source code system.
 3) Copy the 'ckeditor' folder to src/org/vaadin/openesignforms/ckeditor/widgetset/public.
 4) If you want to use the Vaadin Save button plugin, copy ckeditor/plugins/vaadinsave
    to src/org/vaadin/openesignforms/ckeditor/widgetset/public/ckeditor/plugins.
+   This is already done in the released CKEditor code.
 5) Recompile the widgetset.
 
   LICENSE
@@ -62,6 +63,9 @@ under the Creative Commons Attribution 3.0 License.
  
    CHANGELOG
   =========
+
+1.4.1 (25 June 2011)
+ - Upgraded to CKEditor 3.6.1 and Vaadin 6.6.2.
 
 1.4 (14 June 2011)
  - Changed CKEditorConfig setStylesCombo_stylesSet() to use name setStylesSet() as this was changed back in CKEditor 3.3 apparently. 
