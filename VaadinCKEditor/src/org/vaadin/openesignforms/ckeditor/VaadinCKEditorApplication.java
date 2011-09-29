@@ -15,6 +15,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 
 public class VaadinCKEditorApplication extends Application {
 	private static final long serialVersionUID = -3106462237499366300L;
@@ -156,11 +157,66 @@ public class VaadinCKEditorApplication extends Application {
 			}
 		});
 		mainWindow.addComponent(toggleReadOnlyButton2);
+
+        mainWindow.addComponent(new Button("Open Modal Subwindow (Demo BUG)", new ClickListener() {                      
+ 			private static final long serialVersionUID = 11893019141203575L;
+
+			@Override
+            public void buttonClick(ClickEvent event) {
+                    Window sub = new Window("Subwindow modal - Demo Bug if you open a CKEditor image dialog or other related editor-modal dialog");
+                    
+                    CKEditorConfig config = new CKEditorConfig();
+                    config.useCompactTags();
+                    config.disableElementsPath();
+                    config.disableSpellChecker();
+                    config.enableVaadinSavePlugin();
+                    config.setHeight("150px");
+                    //config.setWidth("100%");
+                    
+                    final CKEditorTextField ckEditorTextField = new CKEditorTextField(config);
+                    
+                    sub.addComponent(ckEditorTextField);
+                    
+                    sub.setWidth("80%");
+                    sub.center();
+                    sub.setModal(true);
+                    
+                    event.getButton().getWindow().addWindow(sub);
+            }
+        }));
+
+        mainWindow.addComponent(new Button("Open Non-Modal Subwindow", new ClickListener() {                      
+			private static final long serialVersionUID = -5307249244055251999L;
+
+			@Override
+	        public void buttonClick(ClickEvent event) {
+	                Window sub = new Window("Subwindow non-modal");
+	                
+	                CKEditorConfig config = new CKEditorConfig();
+	                config.useCompactTags();
+	                config.disableElementsPath();
+	                config.disableSpellChecker();
+	                config.enableVaadinSavePlugin();
+                    config.setHeight("150px");
+	                //config.setWidth("100%");
+	                //config.setBaseFloatZIndex(10001);
+	                
+	                final CKEditorTextField ckEditorTextField = new CKEditorTextField(config);
+	                
+	                sub.addComponent(ckEditorTextField);
+	                
+	                sub.setWidth("80%");
+	                sub.center();
+	                //sub.setModal(false);
+	                
+	                event.getButton().getWindow().addWindow(sub);
+	        }
+        }));
 	}
 	
 	@Override
 	public String getVersion() {
-		return "1.4.1";
+		return "1.4.2";
 	}
 
 }

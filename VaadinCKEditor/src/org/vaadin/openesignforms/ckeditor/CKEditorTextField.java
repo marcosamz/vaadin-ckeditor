@@ -68,7 +68,8 @@ public class CKEditorTextField extends AbstractField
 	public void paintContent(PaintTarget target) throws PaintException {
 		super.paintContent(target);
 		
-		target.addVariable(this, VCKEditorTextField.VAR_TEXT, getValue().toString());
+		Object currValueObject = getValue();
+		target.addVariable(this, VCKEditorTextField.VAR_TEXT, currValueObject == null ? "" : currValueObject.toString());
 
 		target.addAttribute(VCKEditorTextField.ATTR_READONLY, isReadOnly());
 		
@@ -97,13 +98,12 @@ public class CKEditorTextField extends AbstractField
 
         // Sets the text
         if (variables.containsKey(VCKEditorTextField.VAR_TEXT) && ! isReadOnly()) {
-            // Only do the setting if the string representation of the value
-            // has been updated
-            String newValue = (String)variables.get(VCKEditorTextField.VAR_TEXT);
-            if ( newValue == null )
-            	newValue = "";
+            // Only do the setting if the string representation of the value has been updated
+        	Object newVarTextObject = variables.get(VCKEditorTextField.VAR_TEXT);
+            String newValue = newVarTextObject == null ? "" : newVarTextObject.toString();
 
-            final String oldValue = getValue().toString();
+            Object currValueObject = getValue();
+            final String oldValue = currValueObject == null ? "" : currValueObject.toString();
             if ( ! newValue.equals(oldValue) ) {
                 boolean wasModified = isModified();
                 setValue(newValue, true);
