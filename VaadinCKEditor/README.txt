@@ -65,7 +65,7 @@ under the Creative Commons Attribution 3.0 License.
   =========
 
 1.4.2 (29 September 2011)
- - Upgraded to Vaadin 6.6.7.
+ - Upgraded to CKEditor 3.6.2 and Vaadin 6.6.7.
  - Fixes in case someone is abusing the widget and passing in non-String values for the HTML editor.
  - Incorporated modal dialog bug example so we have it documented until (if ever?!) it's fixed.
 
