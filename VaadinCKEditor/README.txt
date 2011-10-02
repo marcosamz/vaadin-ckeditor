@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 29 September 2011
+Last updated: 2 October 2011
 
   USING CKEDITOR FOR VAADIN IN YOUR APPLICATION
   =============================================
@@ -63,6 +63,10 @@ under the Creative Commons Attribution 3.0 License.
  
    CHANGELOG
   =========
+
+1.4.3 (2 October 2011)
+ - Fix setValue(Object) to handle the oddball case of someone passing in a non-String value. This was
+   missed in the 1.4.2 release.
 
 1.4.2 (29 September 2011)
  - Upgraded to CKEditor 3.6.2 and Vaadin 6.6.7.
