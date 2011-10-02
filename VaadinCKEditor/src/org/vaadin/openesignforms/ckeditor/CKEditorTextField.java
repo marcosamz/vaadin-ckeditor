@@ -61,7 +61,7 @@ public class CKEditorTextField extends AbstractField
     public void setValue(Object newValue) throws Property.ReadOnlyException, Property.ConversionException {
     	if ( newValue == null )
     		newValue = "";
-    	super.setValue(newValue, false);
+    	super.setValue(newValue.toString(), false);
     }
 	
 	@Override
