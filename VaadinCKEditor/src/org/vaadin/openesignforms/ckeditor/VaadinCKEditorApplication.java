@@ -174,6 +174,13 @@ public class VaadinCKEditorApplication extends Application {
                     //config.setWidth("100%");
                     
                     final CKEditorTextField ckEditorTextField = new CKEditorTextField(config);
+	                ckEditorTextField.addListener(new Property.ValueChangeListener() {
+						private static final long serialVersionUID = 3363878288276305352L;
+
+						public void valueChange(ValueChangeEvent event) {
+	        				getMainWindow().showNotification("CKEditor v" + ckEditorTextField2.getVersion() + " - POPUP MODAL contents: " + event.getProperty().toString().replaceAll("<", "&lt;"));
+	        			}
+	        		});
                     
                     sub.addComponent(ckEditorTextField);
                     
@@ -202,6 +209,13 @@ public class VaadinCKEditorApplication extends Application {
 	                //config.setBaseFloatZIndex(10001);
 	                
 	                final CKEditorTextField ckEditorTextField = new CKEditorTextField(config);
+	                ckEditorTextField.addListener(new Property.ValueChangeListener() {
+						private static final long serialVersionUID = 8232630568806322179L;
+
+						public void valueChange(ValueChangeEvent event) {
+	        				getMainWindow().showNotification("CKEditor v" + ckEditorTextField2.getVersion() + " - POPUP NON-MODAL contents: " + event.getProperty().toString().replaceAll("<", "&lt;"));
+	        			}
+	        		});
 	                
 	                sub.addComponent(ckEditorTextField);
 	                
