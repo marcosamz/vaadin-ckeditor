@@ -43,8 +43,7 @@ public class CKEditorService {
 		
 		return myEditor;
 
-	}-*/
-	;
+	}-*/;
 	
 	public native static String version()
 	/*-{
@@ -98,6 +97,7 @@ public class CKEditorService {
 	 */
 	public interface CKEditorListener {
 		public void onInstanceReady();
+		public void onChange();
 		public void onBlur();
 		public void onFocus();
 		public void onSave();

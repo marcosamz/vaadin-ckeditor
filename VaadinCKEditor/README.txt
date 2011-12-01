@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 2 October 2011
+Last updated: 1 December 2011
 
   USING CKEDITOR FOR VAADIN IN YOUR APPLICATION
   =============================================
@@ -63,6 +63,21 @@ under the Creative Commons Attribution 3.0 License.
  
    CHANGELOG
   =========
+
+1.5.0 (1 December 2011)
+ - Upgraded to Vaadin 6.7.2.
+ - Removed Config.setStylesCombo_stylesSet() method as it was previously deprecated. Use Config.setStylesSet() instead.
+ *** All of the following feature upgrades in this release were contributed by Stefan Meiﬂner, davengo GmbH (Thanks!) ***
+ - Focus and TabIndex (implementing Focusable)
+ - CKEditorField.insertHtml (insert html at the current selection)
+ - CKEditorField.insertText (insert text at the current selection)
+ - Detect more Content Changes (Undo, Redo, Snapshot, Source-View changes)
+ - EnterMode and ShiftEnterMode (@Config)
+ - Added to Config:
+   * Language
+   * templates_replaceContent
+   * forcePasteAsPlainText
+   * forceEnterMode
 
 1.4.3 (2 October 2011)
  - Fix setValue(Object) to handle the oddball case of someone passing in a non-String value. This was

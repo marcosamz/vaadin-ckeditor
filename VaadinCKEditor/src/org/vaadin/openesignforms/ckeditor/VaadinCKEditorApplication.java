@@ -12,6 +12,7 @@ import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.terminal.Sizeable;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
@@ -216,8 +217,17 @@ public class VaadinCKEditorApplication extends Application {
 	        				getMainWindow().showNotification("CKEditor v" + ckEditorTextField2.getVersion() + " - POPUP NON-MODAL contents: " + event.getProperty().toString().replaceAll("<", "&lt;"));
 	        			}
 	        		});
-	                
 	                sub.addComponent(ckEditorTextField);
+	                
+	                final TextField textField = new TextField("TextField");
+	                textField.addListener(new Property.ValueChangeListener() {
+						private static final long serialVersionUID = -8819755603233116234L;
+
+						public void valueChange(ValueChangeEvent event) {
+	        				getMainWindow().showNotification("TextField - POPUP NON-MODAL contents: " + event.getProperty().toString());
+	        			}
+	        		});
+	                sub.addComponent(textField);
 	                
 	                sub.setWidth("80%");
 	                sub.center();
@@ -230,7 +240,7 @@ public class VaadinCKEditorApplication extends Application {
 	
 	@Override
 	public String getVersion() {
-		return "1.4.3";
+		return "1.5.0";
 	}
 
 }

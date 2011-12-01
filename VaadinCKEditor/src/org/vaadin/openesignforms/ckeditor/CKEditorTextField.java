@@ -37,6 +37,8 @@ public class CKEditorTextField extends AbstractField
 
 	private CKEditorConfig config;
 	private String version = "unknown";
+	private String insertText = null;
+	private String insertHtml = null;
 
 	public CKEditorTextField() {
 		super.setValue("");
@@ -62,6 +64,7 @@ public class CKEditorTextField extends AbstractField
     	if ( newValue == null )
     		newValue = "";
     	super.setValue(newValue.toString(), false);
+    	requestRepaint();
     }
 	
 	@Override
@@ -89,6 +92,15 @@ public class CKEditorTextField extends AbstractField
 			if ( config.hasWriterIndentationChars() ) {
 				target.addAttribute(VCKEditorTextField.ATTR_WRITER_INDENTATIONCHARS, config.getWriterIndentationChars());
 			}
+		}
+		
+		if (insertHtml != null) {
+			target.addAttribute(VCKEditorTextField.ATTR_INSERT_HTML, insertHtml);
+			insertHtml = null;
+		}
+		if (insertText != null) {
+			target.addAttribute(VCKEditorTextField.ATTR_INSERT_TEXT, insertText);
+			insertText = null;
 		}
 	}
 	
@@ -168,5 +180,21 @@ public class CKEditorTextField extends AbstractField
 	@Override
 	public void detach() {
 		super.detach();
+	}
+	
+	public void insertHtml(String html) {
+		if (insertHtml == null) 
+			insertHtml = html;
+		else 
+			insertHtml += html;
+		requestRepaint();
+	}
+	
+	public void insertText(String text) {
+		if (insertText == null) 
+			insertText = text;
+		else 
+			insertText += text;
+		requestRepaint();
 	}
 }

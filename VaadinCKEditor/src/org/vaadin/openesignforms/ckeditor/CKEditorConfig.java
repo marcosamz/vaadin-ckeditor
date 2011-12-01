@@ -16,7 +16,7 @@ import java.util.Set;
  * tested/common options, or just set the options using a JavaScript/JSON string as you prefer.
  */
 public class CKEditorConfig implements java.io.Serializable {
-	private static final long serialVersionUID = 449121768911939888L;
+	private static final long serialVersionUID = -3705906894815253382L;
 
 	// If this is set, we'll just use it and ignore everything else.
 	private String inPageConfig;
@@ -42,6 +42,7 @@ public class CKEditorConfig implements java.io.Serializable {
 	private String skin = null;
 	private Boolean toolbarStartupExpanded = null;
 	private LinkedList<String> templates_files = null;
+	private Boolean templates_replaceContent = null;
 	
 	private String filebrowserBrowseUrl = null;
 	private String filebrowserUploadUrl = null;
@@ -59,6 +60,13 @@ public class CKEditorConfig implements java.io.Serializable {
 	private String filebrowserFlashBrowseLinkUrl = null; // available? Not in CKEditor JS docs
 
 	private String filebrowserLinkBrowseUrl = null; // available? Not in CKEditor JS docs
+	
+	private Integer enterMode = null;
+	private Integer shiftEnterMode = null;
+	private Boolean forceEnterMode = null;
+	private Boolean forcePasteAsPlainText = null;
+	
+	private String language = null;
         
 	
 	public CKEditorConfig() {
@@ -127,7 +135,7 @@ public class CKEditorConfig implements java.io.Serializable {
 		if ( height != null ) {
 			appendJSONConfig(config, "height : '" + height + "'");
 		}
-		
+				
 		if ( baseFloatZIndex != null ) {
 			appendJSONConfig(config, "baseFloatZIndex : " + baseFloatZIndex);
 		}
@@ -229,6 +237,30 @@ public class CKEditorConfig implements java.io.Serializable {
 				buf.append(iter.next());
 			}
 			appendJSONConfig(config, "templates_files : ['" + buf.toString() + "']");
+		}
+		
+		if (templates_replaceContent != null) {
+			appendJSONConfig(config, "templates_replaceContent : "+ templates_replaceContent);
+		}
+		
+		if (enterMode != null) {
+			appendJSONConfig(config, "enterMode : " + enterMode);
+		}
+		
+		if (shiftEnterMode != null) {
+			appendJSONConfig(config, "shiftEnterMode : " + shiftEnterMode);
+		}
+		
+		if (forceEnterMode != null) {
+			appendJSONConfig(config, "forceEnterMode : " + forceEnterMode);
+		}
+
+		if (forcePasteAsPlainText != null) {
+			appendJSONConfig(config, "forcePasteAsPlainText : " + forcePasteAsPlainText);
+		}
+		
+		if (language != null) {
+			appendJSONConfig(config, "language : '" + language.toLowerCase() + "'");
 		}
                 
 		config.append(" }");
@@ -400,7 +432,7 @@ public class CKEditorConfig implements java.io.Serializable {
 	}
 	
 	public void setDisableNativeSpellChecker(boolean v) {
-		disableNativeSpellChecker = new Boolean(v);
+		disableNativeSpellChecker = v;
 	}
 
 
@@ -517,13 +549,6 @@ public class CKEditorConfig implements java.io.Serializable {
 	 */
 	public void setStylesSet(String styleSetSpec) {
 		stylesSet = styleSetSpec;
-	}
-	@Deprecated 
-	/**
-	 * @see #setStylesSet(String) as the replacement -- this method will be removed in the next release
-	 */
-	public final void setStylesCombo_stylesSet(String spec) {
-		setStylesSet(spec);
 	}
 	
 	/**
@@ -653,5 +678,55 @@ public class CKEditorConfig implements java.io.Serializable {
     		templates_files.add(templateURL);
     	}
     }
+
+    /**
+     * Sets 'enterMode' such that "P" will be 1, "BR" will be 2 and "DIV" will be 3. Any other value will set it to 1.
+     * @param enterMode string code
+     * @see #setEnterMode(int) to just set by integer value
+     */
+	public void setEnterMode(String enterMode) {
+		if ("BR".equalsIgnoreCase(enterMode)) 
+			this.enterMode = 2;
+		else if ("DIV".equalsIgnoreCase(enterMode)) 
+			this.enterMode = 3;
+		else
+			this.enterMode = 1;
+	}
+	public void setEnterMode(int enterMode) {
+		this.enterMode = enterMode;
+	}
+
+    /**
+     * Sets 'shiftEnterMode' such that "P" will be 1, "BR" will be 2 and "DIV" will be 3. Any other value will set it to 1.
+     * @param shiftEnterMode string code
+     * @see #setShiftEnterMode(int) to just set by integer value
+     */
+	public void setShiftEnterMode(String shiftEnterMode) {
+		if ("BR".equalsIgnoreCase(shiftEnterMode)) 
+			this.shiftEnterMode = 2;
+		else if ("DIV".equalsIgnoreCase(shiftEnterMode)) 
+			this.shiftEnterMode = 3;
+		else
+			this.shiftEnterMode = 1;
+	}
+	public void setShiftEnterMode(int shiftEnterMode) {
+		this.shiftEnterMode = shiftEnterMode;
+	}
+
+	public void setForceEnterMode(Boolean forceEnterMode) {
+		this.forceEnterMode = forceEnterMode;
+	}
+
+	public void setForcePasteAsPlainText(Boolean forcePasteAsPlainText) {
+		this.forcePasteAsPlainText = forcePasteAsPlainText;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+
+	public void setTemplatesReplaceContent(Boolean templatesReplaceContent) {
+		this.templates_replaceContent = templatesReplaceContent;
+	}
         
 }

@@ -60,6 +60,26 @@ public class CKEditor extends JavaScriptObject {
      	this.on( 'vaadinsave', function( ev ) {
 	 		ev.listenerData.@org.vaadin.openesignforms.ckeditor.widgetset.client.ui.CKEditorService.CKEditorListener::onSave()();
     	}, null, listener);
+    	
+    	// hook into the change events for ckEditor
+		this.on('saveSnapshot', function(ev) { 
+			ev.listenerData.@org.vaadin.openesignforms.ckeditor.widgetset.client.ui.CKEditorService.CKEditorListener::onChange()(); 
+		}, null, listener);
+		this.on('mode', function(ev) { 
+			ev.listenerData.@org.vaadin.openesignforms.ckeditor.widgetset.client.ui.CKEditorService.CKEditorListener::onChange()(); 
+		}, null, listener);
+		this.getCommand('undo').on( 'afterUndo', function(ev) { 
+			ev.listenerData.@org.vaadin.openesignforms.ckeditor.widgetset.client.ui.CKEditorService.CKEditorListener::onChange()(); 
+		}, null, listener);
+		this.getCommand('redo').on( 'afterRedo', function(ev) { 
+			ev.listenerData.@org.vaadin.openesignforms.ckeditor.widgetset.client.ui.CKEditorService.CKEditorListener::onChange()(); 
+		}, null, listener);
+		this.on('afterCommandExec', function( ev ) { 
+			if ( ev.data.command.canUndo !== false ) { 
+				ev.listenerData.@org.vaadin.openesignforms.ckeditor.widgetset.client.ui.CKEditorService.CKEditorListener::onChange()(); 
+			} 
+		}, null, listener);
+		
 	}-*/;
 	
 	public final native void execCommand(String cmd)
@@ -80,5 +100,40 @@ public class CKEditor extends JavaScriptObject {
 	public final native void destroy()
 	/*-{
 		this.destroy();
+	}-*/;
+	
+	public final native void resize(int width, int height)
+	/*-{
+	 	this.resize(width, height);
+	}-*/;
+	
+	public final native String getId()
+	/*-{
+	 	return this.id;
+	}-*/;
+	
+	public final native void focus()
+	/*-{
+	 	this.focus();
+	}-*/;
+	
+	public final native int getTabIndex()
+	/*-{
+	 	return this.tabIndex;
+	}-*/;
+	
+	public final native void setTabIndex(int tabIndex)
+	/*-{
+	 	this.tabIndex = tabIndex;
+	}-*/;
+	
+	public final native void insertHtml(String data)
+	/*-{
+	 	this.insertHtml(data);
+	}-*/;
+	
+	public final native void insertText(String data)
+	/*-{
+	 	this.insertText(data);
 	}-*/;
 }

@@ -14,6 +14,7 @@ import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.dom.client.Style.Visibility;
+import com.google.gwt.user.client.ui.Focusable;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.terminal.gwt.client.ApplicationConnection;
 import com.vaadin.terminal.gwt.client.EventId;
@@ -24,7 +25,7 @@ import com.vaadin.terminal.gwt.client.UIDL;
  * Client side CKEditor widget which communicates with the server. Messages from the
  * server are shown as HTML and mouse clicks are sent to the server.
  */
-public class VCKEditorTextField extends Widget implements Paintable, CKEditorService.CKEditorListener {
+public class VCKEditorTextField extends Widget implements Paintable, CKEditorService.CKEditorListener, Focusable {
 	
 	/** Set the CSS class name to allow styling. */
 	public static final String CLASSNAME = "v-ckeditortextfield";
@@ -35,6 +36,8 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	public static final String ATTR_WRITERRULES_TAGNAME = "writerRules.tagName";
 	public static final String ATTR_WRITERRULES_JSRULE = "writerRules.jsRule";
 	public static final String ATTR_WRITER_INDENTATIONCHARS = "writerIndentationChars";
+	public static final String ATTR_INSERT_HTML = "insert_html";
+	public static final String ATTR_INSERT_TEXT = "insert_text";
 	public static final String VAR_TEXT = "text";
 	public static final String VAR_VERSION = "version";
 	
@@ -58,7 +61,10 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	
 	private HashMap<String,String> writerRules = null;
 	private String writerIndentationChars = null;
-
+	
+	private int tabIndex;
+	private boolean setFocusAfterReady;
+	
 	/**
 	 * The constructor should first call super() to initialize the component and
 	 * then handle any initialization relevant to Vaadin.
@@ -89,6 +95,7 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	public void updateFromUIDL(UIDL uidl, ApplicationConnection client) {
 		clientToServer = client;
 		paintableId = uidl.getId();
+		boolean needsDataUpdate = false;
 		
 		// This call should be made first.
 		// It handles sizes, captions, tooltips, etc. automatically.
@@ -105,7 +112,9 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 			readOnly = uidl.getBooleanAttribute(ATTR_READONLY);
 		}
 		if ( uidl.hasVariable(VAR_TEXT) ) {
-			dataBeforeEdit = uidl.getStringVariable(VAR_TEXT);
+			String data = uidl.getStringVariable(VAR_TEXT);
+			needsDataUpdate = !data.equals(dataBeforeEdit);
+			dataBeforeEdit = data;
 		}
 		
 		// Save the client side identifier (paintable id) for the widget
@@ -148,8 +157,16 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 			ckEditor = (CKEditor)CKEditorService.loadEditor(paintableId, this, inPageConfig);
 			// editor data and some options are set when the instance is ready....
 		} else if ( ckEditorIsReady ) {
-			if ( dataBeforeEdit != null ) {
+			if ( needsDataUpdate ) {
 				ckEditor.setData(dataBeforeEdit);
+			}
+			
+			if (uidl.hasAttribute(ATTR_INSERT_HTML)) {
+				ckEditor.insertHtml(uidl.getStringAttribute(ATTR_INSERT_HTML));
+			}
+			
+			if (uidl.hasAttribute(ATTR_INSERT_TEXT)) {
+				ckEditor.insertText(uidl.getStringAttribute(ATTR_INSERT_TEXT));
 			}
 		}
 		
@@ -225,23 +242,34 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 		if ( dataBeforeEdit != null ) {
 			ckEditor.setData(dataBeforeEdit);
 		}
+				
+		ckEditorIsReady = true;
+		
+		if (setFocusAfterReady) {
+			ckEditor.focus();
+		}
+		
+		doResize();
 		
 		clientToServer.updateVariable(paintableId, VAR_VERSION, ckeditorVersion, true);
-		
-		ckEditorIsReady = true;
 	}
 	
 	@Override
 	public void setWidth(String width) {
 		super.setWidth(width);
+		doResize();
 	}
 	
 	@Override
 	public void setHeight(String height) {
-		if ( height == null || "".equals(height) ) { // such maximized height is not supported by CKEditor, so we go back to our default
-			height = "300px";
-		}
 		super.setHeight(height);
+		doResize();
+	}
+	
+	protected void doResize() {
+		if (ckEditorIsReady) {
+			ckEditor.resize(super.getOffsetWidth(), super.getOffsetHeight());
+		}
 	}
 
 	@Override
@@ -251,6 +279,51 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 			ckEditor = null;
 		}
 		ckEditorIsReady = false;
+	}
+
+	@Override
+	public void onChange() {
+		if ( ckEditor != null ) {
+			String data = ckEditor.getData();
+			if ( ! data.equals(dataBeforeEdit) ) {
+				clientToServer.updateVariable(paintableId, VAR_TEXT, data, false);
+	            if (immediate) {
+	            	dataBeforeEdit = data; // let's only update our image if we're going to send new data to the server
+	            }
+			}
+		}
+	}
+
+	@Override
+	public int getTabIndex() {
+		if (ckEditorIsReady) {
+			return ckEditor.getTabIndex();
+		} else {
+			return tabIndex;
+		}
+	}
+
+	@Override
+	public void setAccessKey(char arg0) {
+		return;
+	}
+
+	@Override
+	public void setFocus(boolean arg0) {
+		if (arg0) {
+			if (ckEditorIsReady)
+				ckEditor.focus();
+			else
+				setFocusAfterReady = true;
+		}
+	}
+
+	@Override
+	public void setTabIndex(int tabIndex) {
+		if (ckEditorIsReady) {
+			ckEditor.setTabIndex(tabIndex);
+		} 
+		this.tabIndex = tabIndex;
 	}
 
 }
