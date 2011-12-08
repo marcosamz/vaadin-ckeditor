@@ -66,7 +66,10 @@ public class CKEditor extends JavaScriptObject {
 			ev.listenerData.@org.vaadin.openesignforms.ckeditor.widgetset.client.ui.CKEditorService.CKEditorListener::onChange()(); 
 		}, null, listener);
 		this.on('mode', function(ev) { 
-			ev.listenerData.@org.vaadin.openesignforms.ckeditor.widgetset.client.ui.CKEditorService.CKEditorListener::onChange()(); 
+			ev.listenerData.@org.vaadin.openesignforms.ckeditor.widgetset.client.ui.CKEditorService.CKEditorListener::onModeChange(Ljava/lang/String;)(ev.editor.mode); 
+		}, null, listener);
+		this.on('dataReady', function(ev) { 
+			ev.listenerData.@org.vaadin.openesignforms.ckeditor.widgetset.client.ui.CKEditorService.CKEditorListener::onDataReady()(); 
 		}, null, listener);
 		this.getCommand('undo').on( 'afterUndo', function(ev) { 
 			ev.listenerData.@org.vaadin.openesignforms.ckeditor.widgetset.client.ui.CKEditorService.CKEditorListener::onChange()(); 
@@ -135,5 +138,14 @@ public class CKEditor extends JavaScriptObject {
 	public final native void insertText(String data)
 	/*-{
 	 	this.insertText(data);
+	}-*/;
+	
+	public final native void protectBody(boolean protectBody)
+	/*-{
+	 	if (this.document) {
+	 		if (this.document.getBody()) {
+	 			this.document.getBody().$.contentEditable = !protectBody;
+	 		}
+	 	}
 	}-*/;
 }

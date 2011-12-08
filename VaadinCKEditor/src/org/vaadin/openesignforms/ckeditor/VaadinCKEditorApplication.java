@@ -193,23 +193,27 @@ public class VaadinCKEditorApplication extends Application {
             }
         }));
 
-        mainWindow.addComponent(new Button("Open Non-Modal Subwindow", new ClickListener() {                      
+        mainWindow.addComponent(new Button("Open Non-Modal Subwindow with 100% Height", new ClickListener() {                      
 			private static final long serialVersionUID = -5307249244055251999L;
 
 			@Override
 	        public void buttonClick(ClickEvent event) {
 	                Window sub = new Window("Subwindow non-modal");
+	                sub.setWidth("80%");
+	                sub.setHeight(500, Sizeable.UNITS_PIXELS);
+
+	                VerticalLayout layout = (VerticalLayout)sub.getContent();
+	                layout.setSizeFull();
 	                
 	                CKEditorConfig config = new CKEditorConfig();
 	                config.useCompactTags();
 	                config.disableElementsPath();
 	                config.disableSpellChecker();
 	                config.enableVaadinSavePlugin();
-                    config.setHeight("150px");
-	                //config.setWidth("100%");
 	                //config.setBaseFloatZIndex(10001);
 	                
 	                final CKEditorTextField ckEditorTextField = new CKEditorTextField(config);
+	                ckEditorTextField.setHeight(100, Sizeable.UNITS_PERCENTAGE);
 	                ckEditorTextField.addListener(new Property.ValueChangeListener() {
 						private static final long serialVersionUID = 8232630568806322179L;
 
@@ -217,7 +221,8 @@ public class VaadinCKEditorApplication extends Application {
 	        				getMainWindow().showNotification("CKEditor v" + ckEditorTextField2.getVersion() + " - POPUP NON-MODAL contents: " + event.getProperty().toString().replaceAll("<", "&lt;"));
 	        			}
 	        		});
-	                sub.addComponent(ckEditorTextField);
+	                layout.addComponent(ckEditorTextField);
+	                layout.setExpandRatio(ckEditorTextField,10);
 	                
 	                final TextField textField = new TextField("TextField");
 	                textField.addListener(new Property.ValueChangeListener() {
@@ -227,9 +232,8 @@ public class VaadinCKEditorApplication extends Application {
 	        				getMainWindow().showNotification("TextField - POPUP NON-MODAL contents: " + event.getProperty().toString());
 	        			}
 	        		});
-	                sub.addComponent(textField);
+	                layout.addComponent(textField);
 	                
-	                sub.setWidth("80%");
 	                sub.center();
 	                //sub.setModal(false);
 	                
@@ -240,7 +244,7 @@ public class VaadinCKEditorApplication extends Application {
 	
 	@Override
 	public String getVersion() {
-		return "1.5.0";
+		return "1.6.0";
 	}
 
 }

@@ -39,6 +39,7 @@ public class CKEditorTextField extends AbstractField
 	private String version = "unknown";
 	private String insertText = null;
 	private String insertHtml = null;
+	private boolean protectedBody = false;
 
 	public CKEditorTextField() {
 		super.setValue("");
@@ -94,6 +95,8 @@ public class CKEditorTextField extends AbstractField
 			}
 		}
 		
+		target.addAttribute(VCKEditorTextField.ATTR_PROTECTED_BODY, protectedBody);
+		
 		if (insertHtml != null) {
 			target.addAttribute(VCKEditorTextField.ATTR_INSERT_HTML, insertHtml);
 			insertHtml = null;
@@ -101,7 +104,7 @@ public class CKEditorTextField extends AbstractField
 		if (insertText != null) {
 			target.addAttribute(VCKEditorTextField.ATTR_INSERT_TEXT, insertText);
 			insertText = null;
-		}
+		}	
 	}
 	
     @Override
@@ -196,5 +199,14 @@ public class CKEditorTextField extends AbstractField
 		else 
 			insertText += text;
 		requestRepaint();
+	}
+
+	public void setProtectedBody(boolean protectedBody) {
+		this.protectedBody = protectedBody;
+		requestRepaint();
+	}
+
+	public boolean isProtectedBody() {
+		return protectedBody;
 	}
 }

@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 1 December 2011
+Last updated: 8 December 2011
 
   USING CKEDITOR FOR VAADIN IN YOUR APPLICATION
   =============================================
@@ -58,11 +58,24 @@ under the Creative Commons Attribution 3.0 License.
   KNOWN ISSUES
   ============
   
- - Want editor to resize based on its container for % height specs.  CKEditor doesn't support it for height, only width.
  - Want editor to work in a Vaadin modal window, but it shows trouble when CKEditor opens its own dialogs (unknown competing interest in button clicks).
  
    CHANGELOG
   =========
+
+1.6.0 (8 December 2011)
+ - Updated the sample application to show the 100% height fixed by Stefan.
+ *** All of the following feature upgrades in this release were contributed by Stefan Meiﬂner, davengo GmbH (Thanks again!) ***
+ - Correct sizing of the component using component.setWidth(..., ...) and component.setHeight(..., ...). 
+   Vaadin layouts do all the calculations of 100% height and widths and so on and give you the correct sizes.
+ - Adds the width and the height to the inPage configuration, if it is not set yet so the component is rendered 
+   immediately with the correct height and width. To get around scrollbars which can appear because of borders and margins 
+   within css, the overflow of the components root element is now set to HIDDEN.
+ - Added dynamic loading of the (300kb) ckeditor.js file to your component. ckeditor.js will now only get loaded when the 
+   first CKEditorTextField is rendered. this saves traffic and time when the vaadin app is loaded.
+ - Added support for fullPage (config)
+ - Added support for protectedBody: sets contenteditable=false on the body element of the wysiwyg editor. 
+   Only parts of the document can be changed. e.g. <div contenteditable="true">change me</div>.
 
 1.5.0 (1 December 2011)
  - Upgraded to Vaadin 6.7.2.

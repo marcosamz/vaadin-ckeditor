@@ -10,6 +10,8 @@ package org.vaadin.openesignforms.ckeditor.widgetset.client.ui;
 import java.util.HashMap;
 import java.util.Set;
 
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Style.Overflow;
@@ -38,10 +40,10 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	public static final String ATTR_WRITER_INDENTATIONCHARS = "writerIndentationChars";
 	public static final String ATTR_INSERT_HTML = "insert_html";
 	public static final String ATTR_INSERT_TEXT = "insert_text";
+	public static final String ATTR_PROTECTED_BODY = "protected_body";
 	public static final String VAR_TEXT = "text";
 	public static final String VAR_VERSION = "version";
 	
-	private static boolean initializedCKEDITOR = false;
 	private static String ckeditorVersion;
 
 	/** The client side widget identifier */
@@ -52,9 +54,9 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	
 	private String dataBeforeEdit = null;
 	
-
 	private boolean immediate;
 	private boolean readOnly;
+	private boolean protectedBody;
 	
 	private CKEditor ckEditor = null;
 	private boolean ckEditorIsReady = false;
@@ -70,17 +72,10 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	 * then handle any initialization relevant to Vaadin.
 	 */
 	public VCKEditorTextField() {
-		// Any one-time library initializations go here
-		if ( ! initializedCKEDITOR ) {
-			CKEditorService.overrideBlurToForceBlur();
-			ckeditorVersion = CKEditorService.version();
-			initializedCKEDITOR = true;
-		}
-
 		// CKEditor prefers a textarea, but found too many issues trying to use createTextareaElement() instead of a simple div, 
 		// which is okay in Vaadin where an HTML form won't be used to send the data back and forth.
 		DivElement rootDiv = Document.get().createDivElement();
-		rootDiv.getStyle().setOverflow(Overflow.AUTO);
+		rootDiv.getStyle().setOverflow(Overflow.HIDDEN);
 		rootDiv.getStyle().setVisibility(Visibility.VISIBLE); // required for FF to show in popup windows repeatedly
 		setElement(rootDiv);
 
@@ -96,6 +91,7 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 		clientToServer = client;
 		paintableId = uidl.getId();
 		boolean needsDataUpdate = false;
+		boolean needsProtectedBodyUpdate = false;
 		
 		// This call should be made first.
 		// It handles sizes, captions, tooltips, etc. automatically.
@@ -110,6 +106,13 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 		}
 		if ( uidl.hasAttribute(ATTR_READONLY) ) {
 			readOnly = uidl.getBooleanAttribute(ATTR_READONLY);
+		}
+		if ( uidl.hasAttribute(ATTR_PROTECTED_BODY) ) {
+			boolean state = uidl.getBooleanAttribute(ATTR_PROTECTED_BODY);
+			if (protectedBody != state) {
+				protectedBody = state ;
+				needsProtectedBodyUpdate = true;
+			}
 		}
 		if ( uidl.hasVariable(VAR_TEXT) ) {
 			String data = uidl.getStringVariable(VAR_TEXT);
@@ -134,7 +137,7 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 		else if ( ckEditor == null ) {
 			getElement().setInnerHTML(""); // in case we put contents in there while in readonly mode
 			
-			String inPageConfig = uidl.hasAttribute(ATTR_INPAGECONFIG) ? uidl.getStringAttribute(ATTR_INPAGECONFIG) : null;
+			final String inPageConfig = uidl.hasAttribute(ATTR_INPAGECONFIG) ? uidl.getStringAttribute(ATTR_INPAGECONFIG) : null;
 			
 			writerIndentationChars = uidl.hasAttribute(ATTR_WRITER_INDENTATIONCHARS) ? uidl.getStringAttribute(ATTR_WRITER_INDENTATIONCHARS) : null;
 			
@@ -154,11 +157,29 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 				++i;
 			}
 			
-			ckEditor = (CKEditor)CKEditorService.loadEditor(paintableId, this, inPageConfig);
+			ScheduledCommand scE = new ScheduledCommand() {
+				@Override
+				public void execute() {
+					ckEditor = (CKEditor)CKEditorService.loadEditor(paintableId,
+							VCKEditorTextField.this,
+							inPageConfig,
+							VCKEditorTextField.super.getOffsetWidth(),
+							VCKEditorTextField.super.getOffsetHeight());
+					
+				}
+			};
+			
+			CKEditorService.loadLibrary(scE);
+			
+			
 			// editor data and some options are set when the instance is ready....
 		} else if ( ckEditorIsReady ) {
 			if ( needsDataUpdate ) {
 				ckEditor.setData(dataBeforeEdit);
+			}
+			
+			if ( needsProtectedBodyUpdate ) {
+				ckEditor.protectBody(protectedBody);
 			}
 			
 			if (uidl.hasAttribute(ATTR_INSERT_HTML)) {
@@ -251,6 +272,10 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 		
 		doResize();
 		
+		if (protectedBody) {
+			ckEditor.protectBody(protectedBody);
+		}
+		ckeditorVersion = CKEditorService.version();
 		clientToServer.updateVariable(paintableId, VAR_VERSION, ckeditorVersion, true);
 	}
 	
@@ -268,7 +293,12 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	
 	protected void doResize() {
 		if (ckEditorIsReady) {
-			ckEditor.resize(super.getOffsetWidth(), super.getOffsetHeight());
+			Scheduler.get().scheduleDeferred(new ScheduledCommand() {				
+				@Override
+				public void execute() {
+					ckEditor.resize(VCKEditorTextField.super.getOffsetWidth(), VCKEditorTextField.super.getOffsetHeight());
+				}
+			});
 		}
 	}
 
@@ -291,6 +321,30 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	            	dataBeforeEdit = data; // let's only update our image if we're going to send new data to the server
 	            }
 			}
+		}
+	}
+	
+	@Override
+	public void onModeChange(String mode) {
+		if ( ckEditor != null ) {
+			String data = ckEditor.getData();
+			if ( ! data.equals(dataBeforeEdit) ) {
+				clientToServer.updateVariable(paintableId, VAR_TEXT, data, false);
+	            if (immediate) {
+	            	dataBeforeEdit = data; // let's only update our image if we're going to send new data to the server
+	            }
+			}
+			
+			if ("wysiwyg".equals(mode)) {
+				ckEditor.protectBody(protectedBody);
+			}
+		}
+	}
+	
+	@Override
+	public void onDataReady() {
+		if ( ckEditor != null ) {
+			ckEditor.protectBody(protectedBody);
 		}
 	}
 

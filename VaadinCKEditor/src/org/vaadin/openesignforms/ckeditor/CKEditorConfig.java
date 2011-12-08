@@ -66,6 +66,8 @@ public class CKEditorConfig implements java.io.Serializable {
 	private Boolean forceEnterMode = null;
 	private Boolean forcePasteAsPlainText = null;
 	
+	private Boolean fullPage = null;
+	
 	private String language = null;
         
 	
@@ -261,6 +263,10 @@ public class CKEditorConfig implements java.io.Serializable {
 		
 		if (language != null) {
 			appendJSONConfig(config, "language : '" + language.toLowerCase() + "'");
+		}
+		
+		if (fullPage != null) {
+			appendJSONConfig(config, "fullPage : " + fullPage);
 		}
                 
 		config.append(" }");
@@ -727,6 +733,10 @@ public class CKEditorConfig implements java.io.Serializable {
 
 	public void setTemplatesReplaceContent(Boolean templatesReplaceContent) {
 		this.templates_replaceContent = templatesReplaceContent;
+	}
+
+	public void setFullPage(Boolean fullPage) {
+		this.fullPage = fullPage;
 	}
         
 }
