@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2011 Yozons, Inc.
+// Copyright (C) 2010-2012 Yozons, Inc.
 // CKEditor for Vaadin- Widget linkage for using CKEditor within a Vaadin application.
 //
 // This software is released under the Apache License 2.0 <http://www.apache.org/licenses/LICENSE-2.0.html>
@@ -116,7 +116,7 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 		}
 		if ( uidl.hasVariable(VAR_TEXT) ) {
 			String data = uidl.getStringVariable(VAR_TEXT);
-			needsDataUpdate = !data.equals(dataBeforeEdit);
+			needsDataUpdate = ! data.equals(dataBeforeEdit);
 			dataBeforeEdit = data;
 		}
 		
@@ -127,7 +127,10 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 		
 		if ( readOnly ) {
 			if ( ckEditor != null ) {
-				dataBeforeEdit = ckEditor.getData();
+				// may update the data and change to readonly at the same time 
+				if ( ! needsDataUpdate ) {
+					dataBeforeEdit = ckEditor.getData();
+				}
 				ckEditor.destroy(true);
 				ckEditorIsReady = false;
 				ckEditor = null;
