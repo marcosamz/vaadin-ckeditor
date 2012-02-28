@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 8 December 2011
+Last updated: 27 February 2012
 
   USING CKEDITOR FOR VAADIN IN YOUR APPLICATION
   =============================================
@@ -62,6 +62,12 @@ under the Creative Commons Attribution 3.0 License.
  
    CHANGELOG
   =========
+
+1.6.1 (27 February 2012)
+ - Added ability to set the font_names configuration option for the Fonts drop down list: config.setFontNames(). Also added some
+   convenience methods like: getFontNameList() and addFontName(String newFontNameSpec).
+ - Bug fix if the editor has its data change and readonly set together. Thanks for the bug find and fix by sascha.broich76.
+ - Upgraded to Vaadin 6.7.5.
 
 1.6.0 (8 December 2011)
  - Updated the sample application to show the 100% height fixed by Stefan.
