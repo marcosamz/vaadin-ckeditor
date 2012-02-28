@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2011 Yozons, Inc.
+// Copyright (C) 2010-2012 Yozons, Inc.
 // CKEditor for Vaadin - Widget linkage for using CKEditor within a Vaadin application.
 //
 // This software is released under the Apache License 2.0 <http://www.apache.org/licenses/LICENSE-2.0.html>
@@ -8,6 +8,7 @@ package org.vaadin.openesignforms.ckeditor;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 
@@ -16,7 +17,7 @@ import java.util.Set;
  * tested/common options, or just set the options using a JavaScript/JSON string as you prefer.
  */
 public class CKEditorConfig implements java.io.Serializable {
-	private static final long serialVersionUID = -3705906894815253382L;
+	private static final long serialVersionUID = -3139532363976304503L;
 
 	// If this is set, we'll just use it and ignore everything else.
 	private String inPageConfig;
@@ -37,6 +38,7 @@ public class CKEditorConfig implements java.io.Serializable {
 	private Boolean pasteFromWordNumberedHeadingToList = null;
 	private String startupMode = null; // either "source" or "wysiwyg" (defaults to wysiwyg, so generally only used if you'd like to startup in source mode)
 	private String[] contentsCssFiles = null;
+	private String fontNames = null;
 	private String stylesSet = null;
 	private String bodyClass = null;
 	private String skin = null;
@@ -182,6 +184,10 @@ public class CKEditorConfig implements java.io.Serializable {
 		
 		if ( disableNativeSpellChecker != null ) {
 			appendJSONConfig(config, "disableNativeSpellChecker : " + disableNativeSpellChecker);
+		}
+		
+		if ( fontNames != null ) {
+			appendJSONConfig(config, "font_names : '" + fontNames + "'");
 		}
 		
 		if ( stylesSet != null ) {
@@ -391,6 +397,8 @@ public class CKEditorConfig implements java.io.Serializable {
 		addWriterRules("style",  "{indent : false, breakBeforeOpen : true, breakAfterOpen : true, breakBeforeClose : true, breakAfterClose : true}" );
 		setWriterIndentationChars("    ");
 
+		addFontName("Calibri/Calibri, Arial, Helvetica, sans-serif");
+		
 		setStylesSet("esfStyleSet:" + contextPath + "/static/esf/esfStyleSet.js");
 		if ( extraCssFiles == null )
 			setContentsCss(contextPath + "/static/esf/esf.css");
@@ -547,6 +555,59 @@ public class CKEditorConfig implements java.io.Serializable {
 	 */
 	public void setBodyClass(String bc) {
 		bodyClass = bc;
+	}
+	
+	/**
+	 * Sets the font_names config option, which is the registered style name 
+	 * @param fontNamesSpec the new font names to use.
+	 * @see #CKEDITOR_DEFAULT_FONT_NAMES for a string that shows the built-in fonts.
+	 * @see #getCkeditorDefaultFontNameList() to get a list of the fonts so you can insert easily if you want and then set with #setFontNames(List<String> fontNamesSpec) or addFontName(String newFontName)
+	 * 
+	 */
+	public static final String CKEDITOR_DEFAULT_FONT_NAMES = /* as of CKEditor 3.6.2 */
+		"Arial/Arial, Helvetica, sans-serif;Comic Sans MS/Comic Sans MS, cursive;Courier New/Courier New, Courier, monospace;Georgia/Georgia, serif;Lucida Sans Unicode/Lucida Sans Unicode, Lucida Grande, sans-serif;Tahoma/Tahoma, Geneva, sans-serif;Times New Roman/Times New Roman, Times, serif;Trebuchet MS/Trebuchet MS, Helvetica, sans-serif;Verdana/Verdana, Geneva, sans-serif";
+	public List<String> getCkeditorDefaultFontNameList()
+	{
+		LinkedList<String> list = new LinkedList<String>();
+		for( String fontName : CKEDITOR_DEFAULT_FONT_NAMES.split(";") )
+			list.add(fontName);
+		return list;
+	}
+	public List<String> getFontNameList()
+	{
+		if ( fontNames == null )
+			return getCkeditorDefaultFontNameList();
+		LinkedList<String> list = new LinkedList<String>();
+		for( String fontName : fontNames.split(";") )
+			list.add(fontName);
+		return list;
+	}
+	public void setFontNames(List<String> fontNamesSpec) {
+		if ( fontNamesSpec != null && fontNamesSpec.size() > 0 ) {
+			StringBuilder buf = new StringBuilder( (fontNamesSpec.size()+1) * 80);
+			for( String spec : fontNamesSpec ) {
+				if ( buf.length() > 0 ) {
+					buf.append(';');
+				}
+				buf.append(spec);
+			}
+			setFontNames(buf.toString());
+		}
+	}
+	public void addFontName(String newFontNameSpec) {
+		LinkedList<String> newFontNames = new LinkedList<String>();
+		boolean fontNeedsInsert = true;
+		for( String fontName : getFontNameList() ) {
+			if ( fontName.compareTo(newFontNameSpec) > 0 && fontNeedsInsert ) {
+				newFontNames.add(newFontNameSpec);
+				fontNeedsInsert = false;
+			}
+			newFontNames.add(fontName);
+		}
+		setFontNames(newFontNames);
+	}
+	public void setFontNames(String fontNamesSpec) {
+		fontNames = fontNamesSpec;
 	}
 	
 	/**
