@@ -415,6 +415,7 @@ public class CKEditorConfig implements java.io.Serializable {
 		else
 			bodyCssClass = "esf " + bodyCssClass;
 		setBodyClass(bodyCssClass);
+		setFilebrowserBrowseUrl(contextPath + "/ckeditorFileBrowser.jsp?ccid="+ckeditorContextIdInSession);
 		setFilebrowserImageBrowseUrl(contextPath + "/ckeditorImageBrowser.jsp?ccid="+ckeditorContextIdInSession);
 		setFilebrowserImageWindowWidth("600");
 		setFilebrowserImageWindowHeight("500");

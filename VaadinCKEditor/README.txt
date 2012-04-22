@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 27 February 2012
+Last updated: 21 April 2012
 
   USING CKEDITOR FOR VAADIN IN YOUR APPLICATION
   =============================================
@@ -62,6 +62,11 @@ under the Creative Commons Attribution 3.0 License.
  
    CHANGELOG
   =========
+
+1.6.2 (21 April 2012)
+ - Change for Open eSignForms to set the file browser URL.
+ - Upgraded to CKEditor 3.6.3.
+ - Upgraded to Vaadin 6.7.6.
 
 1.6.1 (27 February 2012)
  - Added ability to set the font_names configuration option for the Fonts drop down list: config.setFontNames(). Also added some
