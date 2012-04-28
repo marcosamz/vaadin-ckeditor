@@ -17,10 +17,16 @@ import java.util.Set;
  * tested/common options, or just set the options using a JavaScript/JSON string as you prefer.
  */
 public class CKEditorConfig implements java.io.Serializable {
-	private static final long serialVersionUID = -3139532363976304503L;
+	private static final long serialVersionUID = 4614301100972085135L;
 
 	// If this is set, we'll just use it and ignore everything else.
 	private String inPageConfig;
+	
+	// Hack to allow a caller to add any line to the inPageConfig. Of course, if they specify it wrong or overwrite our API standard ones
+	// that will just be their own issue. This is not recommended and we prefer that if you have an option to set, let us know and
+	// we'll get it added to the API. We know most CKEDITOR.config options are never set by regular users, but those that are, we'd like
+	// to document them as part of the API.
+	private LinkedList<String> extraConfigLines = null;
 
 	// Otherwise, we'll build the config based on settings contained here
 	private HashMap<String,String> writerRules = null;
@@ -274,6 +280,13 @@ public class CKEditorConfig implements java.io.Serializable {
 		if (fullPage != null) {
 			appendJSONConfig(config, "fullPage : " + fullPage);
 		}
+		
+		// These are the hack extra options for setting options we don't support in our API
+		if ( extraConfigLines != null ) {
+			for( String extra : extraConfigLines ) {
+				appendJSONConfig(config, extra);
+			}
+		}
                 
 		config.append(" }");
 		return config.toString();
@@ -294,6 +307,20 @@ public class CKEditorConfig implements java.io.Serializable {
 	 */
 	public void setInPageConfig(String js) {
 		inPageConfig = js;
+	}
+	
+	/**
+	 * Allows you to add any CKEDITOR.config option line to the in page configuration. This is considered a hack, but may be
+	 * necessary if you are setting an option not supported by the API of this class. We recommend that you request the API
+	 * be changed when you find you need to use this, but it'll keep you going while you await the API-based scheme.
+	 * The resulting will be to add a JSON line to the in-page config like: <code>extraConfigName : extraConfigValue<code>
+	 * @param extraConfigName the String CKEDITOR.config name to set
+	 * @param extraConfigValue the String value
+	 */
+	public void addExtraConfig(String extraConfigName, String extraConfigValue ) {
+		if ( extraConfigLines == null )
+			extraConfigLines = new LinkedList<String>();
+		extraConfigLines.add(extraConfigName + " : " + extraConfigValue);
 	}
 	
 	public boolean hasWriterRules() {
@@ -416,6 +443,8 @@ public class CKEditorConfig implements java.io.Serializable {
 			bodyCssClass = "esf " + bodyCssClass;
 		setBodyClass(bodyCssClass);
 		setFilebrowserBrowseUrl(contextPath + "/ckeditorFileBrowser.jsp?ccid="+ckeditorContextIdInSession);
+		setFilebrowserWindowWidth("500"); // 4/27/2012 believe there's a bug for any value less than 640 being ignored
+		setFilebrowserWindowHeight("500");
 		setFilebrowserImageBrowseUrl(contextPath + "/ckeditorImageBrowser.jsp?ccid="+ckeditorContextIdInSession);
 		setFilebrowserImageWindowWidth("600");
 		setFilebrowserImageWindowHeight("500");

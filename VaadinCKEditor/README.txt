@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 21 April 2012
+Last updated: 27 April 2012
 
   USING CKEDITOR FOR VAADIN IN YOUR APPLICATION
   =============================================
@@ -62,6 +62,13 @@ under the Creative Commons Attribution 3.0 License.
  
    CHANGELOG
   =========
+
+1.6.3 (27 April 2012)
+ - Added ability to set any CKEDITOR.config option when no API is available to do it: config.addExtraConfig(String extraConfigName, String extraConfigValue )
+   that will result in adding this line to the in-page config:  extraConfigName : extraConfigValue
+   If you think it's a generally useful option to set, please let us know and we'll add it to the API to call it out for others to use as well.
+ - Change for Open eSignForms to set the file browser window size.
+ - Upgraded to Vaadin 6.7.8.
 
 1.6.2 (21 April 2012)
  - Change for Open eSignForms to set the file browser URL.
