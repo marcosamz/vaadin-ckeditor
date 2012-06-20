@@ -63,7 +63,7 @@ under the Creative Commons Attribution 3.0 License.
    CHANGELOG
   =========
 
-1.6.4 (?? June 2012)
+1.6.4 (20 June 2012)
  - Added modal window fix. Thanks for the fix by Tien Tran.
  - Upgraded to Vaadin 6.8.0.
 
