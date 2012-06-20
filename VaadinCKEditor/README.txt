@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 27 April 2012
+Last updated: 20 June 2012
 
   USING CKEDITOR FOR VAADIN IN YOUR APPLICATION
   =============================================
@@ -62,6 +62,10 @@ under the Creative Commons Attribution 3.0 License.
  
    CHANGELOG
   =========
+
+1.6.4 (?? June 2012)
+ - Added modal window fix. Thanks for the fix by Tien Tran.
+ - Upgraded to Vaadin 6.8.0.
 
 1.6.3 (27 April 2012)
  - Added ability to set any CKEDITOR.config option when no API is available to do it: config.addExtraConfig(String extraConfigName, String extraConfigValue )

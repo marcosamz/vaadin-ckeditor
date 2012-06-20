@@ -159,12 +159,12 @@ public class VaadinCKEditorApplication extends Application {
 		});
 		mainWindow.addComponent(toggleReadOnlyButton2);
 
-        mainWindow.addComponent(new Button("Open Modal Subwindow (Demo BUG)", new ClickListener() {                      
+        mainWindow.addComponent(new Button("Open Modal Subwindow", new ClickListener() {                      
  			private static final long serialVersionUID = 11893019141203575L;
 
 			@Override
             public void buttonClick(ClickEvent event) {
-                    Window sub = new Window("Subwindow modal - Demo Bug if you open a CKEditor image dialog or other related editor-modal dialog");
+                    Window sub = new Window("Subwindow modal");
                     
                     CKEditorConfig config = new CKEditorConfig();
                     config.useCompactTags();
@@ -244,7 +244,7 @@ public class VaadinCKEditorApplication extends Application {
 	
 	@Override
 	public String getVersion() {
-		return "1.6.3";
+		return "1.6.4";
 	}
 
 }
