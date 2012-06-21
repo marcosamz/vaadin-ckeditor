@@ -244,7 +244,7 @@ public class VaadinCKEditorApplication extends Application {
 	
 	@Override
 	public String getVersion() {
-		return "1.6.4";
+		return "1.6.5";
 	}
 
 }

@@ -17,7 +17,7 @@ import java.util.Set;
  * tested/common options, or just set the options using a JavaScript/JSON string as you prefer.
  */
 public class CKEditorConfig implements java.io.Serializable {
-	private static final long serialVersionUID = 4614301100972085135L;
+	private static final long serialVersionUID = -6136104425400244039L;
 
 	// If this is set, we'll just use it and ignore everything else.
 	private String inPageConfig;
@@ -36,7 +36,12 @@ public class CKEditorConfig implements java.io.Serializable {
 	private LinkedList<String> customToolbarLines = null;
 	private Boolean toolbarCanCollapse = null;
 	private Boolean disableNativeSpellChecker = null;
+	private Boolean resizeEnabled = null;
 	private String resizeDir = null;
+	private Integer resizeMinWidth = null;
+	private Integer resizeMaxWidth = null;
+	private Integer resizeMinHeight = null;
+	private Integer resizeMaxHeight = null;
 	private String width = null;
 	private String height = null;
 	private Integer baseFloatZIndex = null;
@@ -110,8 +115,25 @@ public class CKEditorConfig implements java.io.Serializable {
 			appendJSONConfig(config, "toolbarCanCollapse : " + toolbarCanCollapse);
 		}
 		
+		if ( resizeEnabled != null ) {
+			appendJSONConfig(config, "resize_enabled : " + resizeEnabled);
+		}
+
 		if ( resizeDir != null ) {
 			appendJSONConfig(config, "resize_dir : '" + resizeDir + "'");
+		}
+		
+		if ( resizeMinWidth != null ) {
+			appendJSONConfig(config, "resize_minWidth : " + resizeMinWidth);
+		}	
+		if ( resizeMaxWidth != null ) {
+			appendJSONConfig(config, "resize_maxWidth : " + resizeMaxWidth);
+		}
+		if ( resizeMinHeight != null ) {
+			appendJSONConfig(config, "resize_minHeight : " + resizeMinHeight);
+		}
+		if ( resizeMaxHeight != null ) {
+			appendJSONConfig(config, "resize_maxHeight : " + resizeMaxHeight);
 		}
 		
 		if ( extraPlugins != null ) {
@@ -317,7 +339,7 @@ public class CKEditorConfig implements java.io.Serializable {
 	 * @param extraConfigName the String CKEDITOR.config name to set
 	 * @param extraConfigValue the String value
 	 */
-	public void addExtraConfig(String extraConfigName, String extraConfigValue ) {
+	public void addExtraConfig(String extraConfigName, String extraConfigValue) {
 		if ( extraConfigLines == null )
 			extraConfigLines = new LinkedList<String>();
 		extraConfigLines.add(extraConfigName + " : " + extraConfigValue);
@@ -524,6 +546,10 @@ public class CKEditorConfig implements java.io.Serializable {
         toolbarStartupExpanded = newToolbarStartupExpanded;
     }
 
+	public void setResizeEnabled(boolean v) {
+		resizeEnabled = v;
+	}
+
 	public enum RESIZE_DIR { BOTH, VERTICAL, HORIZONTAL }
 	
 	public void setResizeDir(RESIZE_DIR dir) {
@@ -536,6 +562,22 @@ public class CKEditorConfig implements java.io.Serializable {
 		} else {
 			resizeDir = null; // won't set it since it's not what we expect
 		}
+	}
+
+	public void setResizeMinWidth(int pixels) {
+		resizeMinWidth = pixels;
+	}
+
+	public void setResizeMaxWidth(int pixels) {
+		resizeMaxWidth = pixels;
+	}
+
+	public void setResizeMinHeight(int pixels) {
+		resizeMinHeight = pixels;
+	}
+
+	public void setResizeMaxHeight(int pixels) {
+		resizeMaxHeight = pixels;
 	}
 
 	public void setWidth(String cssSize) {
