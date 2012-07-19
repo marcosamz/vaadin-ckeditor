@@ -54,13 +54,10 @@ under the Creative Commons Attribution 3.0 License.
   TODO
   ====
 
-
   KNOWN ISSUES
   ============
   
- - Want editor to work in a Vaadin modal window, but it shows trouble when CKEditor opens its own dialogs (unknown competing interest in button clicks).
- 
-   CHANGELOG
+  CHANGELOG
   =========
   
 1.6.6 (19 July 2012)
