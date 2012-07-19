@@ -11,9 +11,17 @@ The JAR file included has CKEditor and the widgetset all compiled and ready to u
 
 To build your own, please note the following:
 
-We built the project using Eclipse Helios on Vaadin 6.7.2 that also uses GWT 2.3.  These instructions assume you are doing the same.
+We built the project using Eclipse Helios on Vaadin 6.8.1 that also uses GWT 2.3.  These instructions assume you are doing the same.
 
 We have not included the CKEditor code in the source code repository.  Please download this directly from http://ckeditor.com/download.  Extract the code so that the directory 'ckeditor' is located in your src/org/vaadin/openesignforms/widgetset/public folder.
+
+Our distribution removes the following from the standard CKEditor code:
+{{{
+   ckeditor/_samples
+   ckeditor/_source
+   ckeditor/*.asp
+   ckeditor/*.php
+}}}
 
 To use the Save button inside the editor, after you've installed ckeditor in the public folder above, you will need to copy the ckeditor/plugins/vaadinsave folder into the src/org/vaadin/openesignforms/widgetset/public/ckeditor/plugins folder.
 
