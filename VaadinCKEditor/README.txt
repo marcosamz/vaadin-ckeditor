@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 20 June 2012
+Last updated: 19 July 2012
 
   USING CKEDITOR FOR VAADIN IN YOUR APPLICATION
   =============================================
@@ -16,8 +16,8 @@ an outdated JDK 1.5 per Vaadin's widget specs.
 The CKEditor code, in full as downloaded from http://ckeditor.com, is present in the 
 src/org/vaadin/openesignforms/ckeditor/public folder.  No changes to CKEditor were made.
 However, we remove the following files from the standard CKEditor distribution as they are not needed:
-   ckeditor/_source
    ckeditor/_samples
+   ckeditor/_source
    ckeditor/*.asp
    ckeditor/*.php
 If you are compiling yourself, you will need to install CKEditor code into your project
@@ -62,6 +62,11 @@ under the Creative Commons Attribution 3.0 License.
  
    CHANGELOG
   =========
+  
+1.6.6 (19 July 2012)
+- Added ability to add protectedSource regular expressions: config.addProtectedSource(String regex)
+- Upgraded to CKEditor 3.6.4.
+- Upgraded to Vaadin 6.8.1.
 
 1.6.5 (20 June 2012)
  - Added the following operations to CKEditorConfig:

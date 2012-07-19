@@ -17,7 +17,7 @@ import java.util.Set;
  * tested/common options, or just set the options using a JavaScript/JSON string as you prefer.
  */
 public class CKEditorConfig implements java.io.Serializable {
-	private static final long serialVersionUID = -6136104425400244039L;
+	private static final long serialVersionUID = -5370810062495172963L;
 
 	// If this is set, we'll just use it and ignore everything else.
 	private String inPageConfig;
@@ -54,6 +54,7 @@ public class CKEditorConfig implements java.io.Serializable {
 	private String bodyClass = null;
 	private String skin = null;
 	private Boolean toolbarStartupExpanded = null;
+	private LinkedList<String> protectedSource = null;
 	private LinkedList<String> templates_files = null;
 	private Boolean templates_replaceContent = null;
 	
@@ -310,6 +311,17 @@ public class CKEditorConfig implements java.io.Serializable {
 			}
 		}
                 
+		if ( protectedSource != null ) {
+			StringBuilder buf = new StringBuilder();
+			ListIterator<String> iter = protectedSource.listIterator();
+			while( iter.hasNext() ) {
+				if ( buf.length() > 0 )
+					buf.append(" , ");
+				buf.append(iter.next());
+			}
+			appendJSONConfig(config, "protectedSource : [ " + buf.toString() + " ]");
+		}
+
 		config.append(" }");
 		return config.toString();
 	}
@@ -470,6 +482,8 @@ public class CKEditorConfig implements java.io.Serializable {
 		setFilebrowserImageBrowseUrl(contextPath + "/ckeditorImageBrowser.jsp?ccid="+ckeditorContextIdInSession);
 		setFilebrowserImageWindowWidth("600");
 		setFilebrowserImageWindowHeight("500");
+		addProtectedSource("/<%.*%>/g"); // allow JSP code like <%=(new java.util.Date())%> or <% any java code you want %>
+		addProtectedSource("/<[a-z]*:.*\\/>/g"); // allow JSP tags like <esf:out value="Test"/>
 	}
 	
 	public synchronized void addToRemovePlugins(String pluginName) {
@@ -872,4 +886,25 @@ public class CKEditorConfig implements java.io.Serializable {
 		this.fullPage = fullPage;
 	}
         
+    /**
+     * Add a protected source regular express to the list
+     * 
+     * Typical values are regular expressions like: /<%.*%>/g
+     * 
+     * If you don't start with a '/', a leading '/' and a trailing '/g' will be added automatically. 
+     * 
+     * @param regex the String regular expression of the protected source 
+     */
+    public synchronized void addProtectedSource(String regex) {
+    	if ( protectedSource == null ) {
+    		protectedSource = new LinkedList<String>();
+    	}
+    	if ( ! regex.startsWith("/") ) {
+    		regex = "/" + regex + "/g";
+    	}
+    	if ( ! protectedSource.contains(regex) ) {
+    		protectedSource.add(regex);
+    	}
+    }
+
 }
