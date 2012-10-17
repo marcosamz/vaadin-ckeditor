@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 19 July 2012
+Last updated: 16 October 2012
 
   USING CKEDITOR FOR VAADIN IN YOUR APPLICATION
   =============================================
@@ -60,6 +60,10 @@ under the Creative Commons Attribution 3.0 License.
   CHANGELOG
   =========
   
+1.6.7 (16 October 2012)
+- Upgraded to CKEditor 3.6.5.
+- Upgraded to Vaadin 6.8.5.
+
 1.6.6 (19 July 2012)
 - Added ability to add protectedSource regular expressions: config.addProtectedSource(String regex)
 - Upgraded to CKEditor 3.6.4.
