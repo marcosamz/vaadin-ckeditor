@@ -60,8 +60,6 @@ public class VaadinCKEditorApplication extends Application {
 		config1.disableElementsPath();
 		config1.setResizeDir(CKEditorConfig.RESIZE_DIR.HORIZONTAL);
 		config1.disableSpellChecker();
-		config1.setToolbarCanCollapse(false);
-		config1.enableTableResizePlugin();
 		config1.setHeight("300px");
 		
 		final CKEditorTextField ckEditorTextField1 = new CKEditorTextField(config1);
@@ -104,6 +102,17 @@ public class VaadinCKEditorApplication extends Application {
 		});
 		mainWindow.addComponent(toggleReadOnlyButton1);
 
+		Button toggleViewWithoutEditorButton1 = new Button("Toggle view-without-editor #1");
+		toggleViewWithoutEditorButton1.addListener( new Button.ClickListener() {			
+			private static final long serialVersionUID = -2921679712379393004L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				ckEditorTextField1.setViewWithoutEditor( ! ckEditorTextField1.isViewWithoutEditor() );
+			}
+		});
+		mainWindow.addComponent(toggleViewWithoutEditorButton1);
+
 		
 		// Now add in a second editor....
 		final String editor2InitialValue = 
@@ -120,7 +129,7 @@ public class VaadinCKEditorApplication extends Application {
 				    "removePlugins: 'scayt'," + // use this to remove the built in spell checker
 					"toolbar : 'Custom'," +
 					"toolbar_Custom : [" +
-						"['Styles','-','VaadinSave']" +
+						"['Source','Styles','-','VaadinSave']" +
 									 "]" +
 				" }" 
 				     			);
@@ -159,7 +168,18 @@ public class VaadinCKEditorApplication extends Application {
 		});
 		mainWindow.addComponent(toggleReadOnlyButton2);
 
-        mainWindow.addComponent(new Button("Open Modal Subwindow", new ClickListener() {                      
+		Button toggleViewWithoutEditorButton2 = new Button("Toggle view-without-editor #2");
+		toggleViewWithoutEditorButton2.addListener( new Button.ClickListener() {			
+			private static final long serialVersionUID = 5213329273386193909L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				ckEditorTextField2.setViewWithoutEditor( ! ckEditorTextField2.isViewWithoutEditor() );
+			}
+		});
+		mainWindow.addComponent(toggleViewWithoutEditorButton2);
+
+		mainWindow.addComponent(new Button("Open Modal Subwindow", new ClickListener() {                      
  			private static final long serialVersionUID = 11893019141203575L;
 
 			@Override
@@ -172,7 +192,6 @@ public class VaadinCKEditorApplication extends Application {
                     config.disableSpellChecker();
                     config.enableVaadinSavePlugin();
                     config.setHeight("150px");
-                    //config.setWidth("100%");
                     
                     final CKEditorTextField ckEditorTextField = new CKEditorTextField(config);
 	                ckEditorTextField.addListener(new Property.ValueChangeListener() {
@@ -210,7 +229,6 @@ public class VaadinCKEditorApplication extends Application {
 	                config.disableElementsPath();
 	                config.disableSpellChecker();
 	                config.enableVaadinSavePlugin();
-	                //config.setBaseFloatZIndex(10001);
 	                
 	                final CKEditorTextField ckEditorTextField = new CKEditorTextField(config);
 	                ckEditorTextField.setHeight(100, Sizeable.UNITS_PERCENTAGE);
@@ -235,7 +253,6 @@ public class VaadinCKEditorApplication extends Application {
 	                layout.addComponent(textField);
 	                
 	                sub.center();
-	                //sub.setModal(false);
 	                
 	                event.getButton().getWindow().addWindow(sub);
 	        }
@@ -244,7 +261,7 @@ public class VaadinCKEditorApplication extends Application {
 	
 	@Override
 	public String getVersion() {
-		return "1.6.7";
+		return "1.7.0";
 	}
 
 }

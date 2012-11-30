@@ -34,6 +34,7 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	
 	public static final String ATTR_IMMEDIATE = "immediate";
 	public static final String ATTR_READONLY = "readonly";
+	public static final String ATTR_VIEW_WITHOUT_EDITOR = "viewWithoutEditor";
 	public static final String ATTR_INPAGECONFIG = "inPageConfig";
 	public static final String ATTR_WRITERRULES_TAGNAME = "writerRules.tagName";
 	public static final String ATTR_WRITERRULES_JSRULE = "writerRules.jsRule";
@@ -56,6 +57,7 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	
 	private boolean immediate;
 	private boolean readOnly;
+	private boolean viewWithoutEditor; // 11/19/2012 - New mode to simulate original readOnly before CKEditor had support for being a read-only editor. Set to true and the editor will not be displayed, just the contents.
 	private boolean protectedBody;
 	
 	private CKEditor ckEditor = null;
@@ -92,6 +94,7 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 		paintableId = uidl.getId();
 		boolean needsDataUpdate = false;
 		boolean needsProtectedBodyUpdate = false;
+		boolean readOnlyModeChanged = false;
 		
 		// This call should be made first.
 		// It handles sizes, captions, tooltips, etc. automatically.
@@ -100,12 +103,17 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 		if ( clientToServer.updateComponent(this, uidl, true) ) {
 			return;
 		}
-		
+			
 		if ( uidl.hasAttribute(ATTR_IMMEDIATE) ) {
 	 		immediate = uidl.getBooleanAttribute(ATTR_IMMEDIATE);
 		}
 		if ( uidl.hasAttribute(ATTR_READONLY) ) {
-			readOnly = uidl.getBooleanAttribute(ATTR_READONLY);
+			boolean newReadOnly = uidl.getBooleanAttribute(ATTR_READONLY);
+			readOnlyModeChanged = newReadOnly != readOnly;
+			readOnly = newReadOnly;
+		}
+		if ( uidl.hasAttribute(ATTR_VIEW_WITHOUT_EDITOR) ) {
+			viewWithoutEditor = uidl.getBooleanAttribute(ATTR_VIEW_WITHOUT_EDITOR);
 		}
 		if ( uidl.hasAttribute(ATTR_PROTECTED_BODY) ) {
 			boolean state = uidl.getBooleanAttribute(ATTR_PROTECTED_BODY);
@@ -116,6 +124,8 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 		}
 		if ( uidl.hasVariable(VAR_TEXT) ) {
 			String data = uidl.getStringVariable(VAR_TEXT);
+			if ( ckEditor != null )
+				dataBeforeEdit = ckEditor.getData();
 			needsDataUpdate = ! data.equals(dataBeforeEdit);
 			dataBeforeEdit = data;
 		}
@@ -125,9 +135,9 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 			getElement().setId(paintableId);
 		}
 		
-		if ( readOnly ) {
+		if ( viewWithoutEditor ) {
 			if ( ckEditor != null ) {
-				// may update the data and change to readonly at the same time 
+				// may update the data and change to viewWithoutEditor at the same time 
 				if ( ! needsDataUpdate ) {
 					dataBeforeEdit = ckEditor.getData();
 				}
@@ -138,7 +148,7 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 			getElement().setInnerHTML(dataBeforeEdit);
 		}
 		else if ( ckEditor == null ) {
-			getElement().setInnerHTML(""); // in case we put contents in there while in readonly mode
+			getElement().setInnerHTML(""); // in case we put contents in there while in viewWithoutEditor mode
 			
 			final String inPageConfig = uidl.hasAttribute(ATTR_INPAGECONFIG) ? uidl.getStringAttribute(ATTR_INPAGECONFIG) : null;
 			
@@ -174,9 +184,13 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 			
 			CKEditorService.loadLibrary(scE);
 			
-			
 			// editor data and some options are set when the instance is ready....
 		} else if ( ckEditorIsReady ) {
+			
+			if ( readOnlyModeChanged ) {
+				ckEditor.setReadOnly(readOnly);
+			}
+			
 			if ( needsDataUpdate ) {
 				ckEditor.setData(dataBeforeEdit);
 			}
@@ -268,6 +282,7 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 		}
 				
 		ckEditorIsReady = true;
+		ckEditor.setReadOnly(readOnly);
 		
 		if (setFocusAfterReady) {
 			ckEditor.focus();

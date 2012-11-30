@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2011 Yozons, Inc.
+// Copyright (C) 2010-2012 Yozons, Inc.
 // CKEditor for Vaadin - Widget linkage for using CKEditor within a Vaadin application.
 //
 // This software is released under the Apache License 2.0 <http://www.apache.org/licenses/LICENSE-2.0.html>
@@ -25,21 +25,19 @@ import com.vaadin.ui.AbstractField;
 
 /**
  * Server side component for the VCKEditorTextField widget.  
- * 
- * Currently, this widget doesn't support being read-only because CKEditor doesn't.  But perhaps need the widgets
- * to only emit a DIV with the HTML code inside if it's read-only.
  */
 @com.vaadin.ui.ClientWidget(VCKEditorTextField.class)
 public class CKEditorTextField extends AbstractField 
 	implements FieldEvents.BlurNotifier, FieldEvents.FocusNotifier  {
 	
-	private static final long serialVersionUID = 2801471973845411928L;
+	private static final long serialVersionUID = -7046683247580097506L;
 
 	private CKEditorConfig config;
 	private String version = "unknown";
 	private String insertText = null;
 	private String insertHtml = null;
 	private boolean protectedBody = false;
+	private boolean viewWithoutEditor = false;
 
 	public CKEditorTextField() {
 		super.setValue("");
@@ -76,6 +74,7 @@ public class CKEditorTextField extends AbstractField
 		target.addVariable(this, VCKEditorTextField.VAR_TEXT, currValueObject == null ? "" : currValueObject.toString());
 
 		target.addAttribute(VCKEditorTextField.ATTR_READONLY, isReadOnly());
+		target.addAttribute(VCKEditorTextField.ATTR_VIEW_WITHOUT_EDITOR, isViewWithoutEditor());
 		
 		if (config != null) {
 			target.addAttribute(VCKEditorTextField.ATTR_INPAGECONFIG, config.getInPageConfig());
@@ -183,6 +182,14 @@ public class CKEditorTextField extends AbstractField
 	@Override
 	public void detach() {
 		super.detach();
+	}
+	
+	public boolean isViewWithoutEditor() {
+		return viewWithoutEditor;
+	}
+	public void setViewWithoutEditor(boolean v) {
+		viewWithoutEditor = v;
+		requestRepaint();
 	}
 	
 	public void insertHtml(String html) {

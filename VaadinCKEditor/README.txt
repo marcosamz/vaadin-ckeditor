@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 16 October 2012
+Last updated: 29 November 2012
 
   USING CKEDITOR FOR VAADIN IN YOUR APPLICATION
   =============================================
@@ -16,10 +16,7 @@ an outdated JDK 1.5 per Vaadin's widget specs.
 The CKEditor code, in full as downloaded from http://ckeditor.com, is present in the 
 src/org/vaadin/openesignforms/ckeditor/public folder.  No changes to CKEditor were made.
 However, we remove the following files from the standard CKEditor distribution as they are not needed:
-   ckeditor/_samples
-   ckeditor/_source
-   ckeditor/*.asp
-   ckeditor/*.php
+   ckeditor/samples
 If you are compiling yourself, you will need to install CKEditor code into your project
 as we do not check in the CKEditor code in our source code system.
 1) Download the latest ZIP file from ckeditor.com.
@@ -60,6 +57,20 @@ under the Creative Commons Attribution 3.0 License.
   CHANGELOG
   =========
   
+1.7.0 (20 November 2012)
+- Upgraded to CKEditor 4.0, full package.
+- Reworked VaadinSave plugin for 4.0.
+- Because CKEditor 4.0 doesn't have the 'tableresize' plugin anymore, we removed CKEditorConfig.enableTableResizePlugin().
+- Changed setReadOnly(true) to set/clear CKEditor's readOnly flag, a feature introduced in CKEditor 3.6. 
+  Previously, read-only mode was not part of the editor itself, so we just displayed the HTML without the editor.
+  Sadly, CKEditor has a bug that still allows the WYSIWYG mode to be changed (when CKEditor is appended to a DIV
+  element rather than replacing a TEXTAREA element) even though it's in read-only mode (as seen by the buttons being
+  disabled), while SOURCE mode blocks correctly. When the editor is returned to write mode, the last real contents
+  are reset so changes made in read-only mode are not noted. 
+  Bug tracked at: https://code.google.com/p/vaadin-ckeditor/issues/detail?id=21
+- Related, the new method setViewWithoutEditor(true) will do what setReadOnly(true) previously did, showing the HTML
+  contents without the editor.
+
 1.6.7 (16 October 2012)
 - Upgraded to CKEditor 3.6.5.
 - Upgraded to Vaadin 6.8.5.

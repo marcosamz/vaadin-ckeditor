@@ -17,7 +17,7 @@ import java.util.Set;
  * tested/common options, or just set the options using a JavaScript/JSON string as you prefer.
  */
 public class CKEditorConfig implements java.io.Serializable {
-	private static final long serialVersionUID = -5370810062495172963L;
+	private static final long serialVersionUID = -721851144834993002L;
 
 	// If this is set, we'll just use it and ignore everything else.
 	private String inPageConfig;
@@ -310,7 +310,7 @@ public class CKEditorConfig implements java.io.Serializable {
 				appendJSONConfig(config, extra);
 			}
 		}
-                
+
 		if ( protectedSource != null ) {
 			StringBuilder buf = new StringBuilder();
 			ListIterator<String> iter = protectedSource.listIterator();
@@ -418,14 +418,6 @@ public class CKEditorConfig implements java.io.Serializable {
 
 	
 	/**
-	 * This enables the 'tableresize' plugin. This is generally useful, so we make it stand out compared to other 
-	 * optional extra plugins.
-	 */
-	public void enableTableResizePlugin() {
-		addToExtraPlugins("tableresize"); 
-	}
-
-	/**
 	 * Convenience method for the Open eSignForms project sponsors to set the plugins and configuration in a common way needed.
 	 */
 	public void setupForOpenESignForms(String contextPath, String ckeditorContextIdInSession, String bodyCssClass, String... extraCssFiles) {
@@ -440,9 +432,6 @@ public class CKEditorConfig implements java.io.Serializable {
 							 "{ name: 'table', items: ['Table','HorizontalRule','PageBreak','SpecialChar'] }," +
 							 "{ name: 'links', items: ['Image','Link'] }," +
 							 "{ name: 'source', items: ['Source','ShowBlocks'] }");
-		setToolbarCanCollapse(false);
-		
-		enableTableResizePlugin();
 		
 		setHeight("300px");
 		setBaseFloatZIndex(32000);
@@ -482,8 +471,8 @@ public class CKEditorConfig implements java.io.Serializable {
 		setFilebrowserImageBrowseUrl(contextPath + "/ckeditorImageBrowser.jsp?ccid="+ckeditorContextIdInSession);
 		setFilebrowserImageWindowWidth("600");
 		setFilebrowserImageWindowHeight("500");
-		addProtectedSource("/<%.*%>/g"); // allow JSP code like <%=(new java.util.Date())%> or <% any java code you want %>
-		addProtectedSource("/<[a-z]*:.*\\/>/g"); // allow JSP tags like <esf:out value="Test"/>
+		//addProtectedSource("/<%.*%>/g"); // allow JSP code like <%=(new java.util.Date())%> or <% any java code you want %>
+		//addProtectedSource("/<[a-z]*:.*\\/>/g"); // allow JSP tags like <esf:out value="Test"/>
 	}
 	
 	public synchronized void addToRemovePlugins(String pluginName) {
@@ -541,6 +530,7 @@ public class CKEditorConfig implements java.io.Serializable {
 
     /**
      * Possible skins:
+     * moono The default skin for CKEditor 4.x
      * kama The default skin for CKEditor 3.x
      * office2003
      * v2 
