@@ -64,11 +64,6 @@ under the Creative Commons Attribution 3.0 License.
 - Because CKEditor 4.0 doesn't have the 'tableresize' plugin anymore, we removed CKEditorConfig.enableTableResizePlugin().
 - Changed setReadOnly(true) to set/clear CKEditor's readOnly flag, a feature introduced in CKEditor 3.6. 
   Previously, read-only mode was not part of the editor itself, so we just displayed the HTML without the editor.
-  Sadly, CKEditor has a bug that still allows the WYSIWYG mode to be changed (when CKEditor is appended to a DIV
-  element rather than replacing a TEXTAREA element) even though it's in read-only mode (as seen by the buttons being
-  disabled), while SOURCE mode blocks correctly. When the editor is returned to write mode, the last real contents
-  are reset so changes made in read-only mode are not noted. 
-  Bug tracked at: https://code.google.com/p/vaadin-ckeditor/issues/detail?id=21
 - Related, the new method setViewWithoutEditor(true) will do what setReadOnly(true) previously did, showing the HTML
   contents without the editor.
 
