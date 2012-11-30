@@ -8,6 +8,7 @@
 package org.vaadin.openesignforms.ckeditor.widgetset.client.ui;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Set;
 
 import com.google.gwt.core.client.Scheduler;
@@ -36,6 +37,7 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	public static final String ATTR_READONLY = "readonly";
 	public static final String ATTR_VIEW_WITHOUT_EDITOR = "viewWithoutEditor";
 	public static final String ATTR_INPAGECONFIG = "inPageConfig";
+	public static final String ATTR_PROTECTED_SOURCE = "protectedSource";
 	public static final String ATTR_WRITERRULES_TAGNAME = "writerRules.tagName";
 	public static final String ATTR_WRITERRULES_JSRULE = "writerRules.jsRule";
 	public static final String ATTR_WRITER_INDENTATIONCHARS = "writerIndentationChars";
@@ -63,6 +65,7 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	private CKEditor ckEditor = null;
 	private boolean ckEditorIsReady = false;
 	
+	private LinkedList<String> protectedSourceList = null;
 	private HashMap<String,String> writerRules = null;
 	private String writerIndentationChars = null;
 	
@@ -167,6 +170,21 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 					writerRules = new HashMap<String,String>();
 				}
 				writerRules.put(tagName, jsRule);
+				++i;
+			}
+			
+			// See if we have any protected source regexs
+			i = 0;
+			while( true ) {
+				if ( ! uidl.hasAttribute(ATTR_PROTECTED_SOURCE+i)  ) {
+					break;
+				}
+				// Save the regex until our instance is ready
+				String regex = uidl.getStringAttribute(ATTR_PROTECTED_SOURCE+i);
+				if ( protectedSourceList == null ) {
+					protectedSourceList = new LinkedList<String>();
+				}
+				protectedSourceList.add(regex);
 				++i;
 			}
 			
@@ -275,6 +293,13 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 		if ( writerIndentationChars != null ) {
 			ckEditor.setWriterIndentationChars(writerIndentationChars);
 			writerIndentationChars = null;
+		}
+		
+		if ( protectedSourceList != null ) {
+			for( String regex : protectedSourceList ) {
+				ckEditor.pushProtectedSource(regex);
+			}
+			protectedSourceList = null;
 		}
 		
 		if ( dataBeforeEdit != null ) {

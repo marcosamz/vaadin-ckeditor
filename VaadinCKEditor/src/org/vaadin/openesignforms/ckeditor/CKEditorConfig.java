@@ -17,7 +17,7 @@ import java.util.Set;
  * tested/common options, or just set the options using a JavaScript/JSON string as you prefer.
  */
 public class CKEditorConfig implements java.io.Serializable {
-	private static final long serialVersionUID = -721851144834993002L;
+	private static final long serialVersionUID = 5966138001983585432L;
 
 	// If this is set, we'll just use it and ignore everything else.
 	private String inPageConfig;
@@ -54,7 +54,6 @@ public class CKEditorConfig implements java.io.Serializable {
 	private String bodyClass = null;
 	private String skin = null;
 	private Boolean toolbarStartupExpanded = null;
-	private LinkedList<String> protectedSource = null;
 	private LinkedList<String> templates_files = null;
 	private Boolean templates_replaceContent = null;
 	
@@ -83,7 +82,10 @@ public class CKEditorConfig implements java.io.Serializable {
 	private Boolean fullPage = null;
 	
 	private String language = null;
-        
+	
+	// Sent separately since cannot make it work with inPageConfig
+	private LinkedList<String> protectedSource = null;
+
 	
 	public CKEditorConfig() {
 	}
@@ -311,17 +313,6 @@ public class CKEditorConfig implements java.io.Serializable {
 			}
 		}
 
-		if ( protectedSource != null ) {
-			StringBuilder buf = new StringBuilder();
-			ListIterator<String> iter = protectedSource.listIterator();
-			while( iter.hasNext() ) {
-				if ( buf.length() > 0 )
-					buf.append(" , ");
-				buf.append(iter.next());
-			}
-			appendJSONConfig(config, "protectedSource : [ " + buf.toString() + " ]");
-		}
-
 		config.append(" }");
 		return config.toString();
 	}
@@ -471,8 +462,8 @@ public class CKEditorConfig implements java.io.Serializable {
 		setFilebrowserImageBrowseUrl(contextPath + "/ckeditorImageBrowser.jsp?ccid="+ckeditorContextIdInSession);
 		setFilebrowserImageWindowWidth("600");
 		setFilebrowserImageWindowHeight("500");
-		//addProtectedSource("/<%.*%>/g"); // allow JSP code like <%=(new java.util.Date())%> or <% any java code you want %>
-		//addProtectedSource("/<[a-z]*:.*\\/>/g"); // allow JSP tags like <esf:out value="Test"/>
+		addProtectedSource("/<%.*%>/g"); // allow JSP code like <%=(new java.util.Date())%> or <% any java code you want %>
+		addProtectedSource("/<[a-z]*:.*\\/>/g"); // allow JSP tags like <esf:out value="Test"/>
 	}
 	
 	public synchronized void addToRemovePlugins(String pluginName) {
@@ -895,6 +886,14 @@ public class CKEditorConfig implements java.io.Serializable {
     	if ( ! protectedSource.contains(regex) ) {
     		protectedSource.add(regex);
     	}
+    }
+    
+    public boolean hasProtectedSource() {
+    	return protectedSource != null && protectedSource.size() > 0;
+    }
+    
+    public List<String> getProtectedSource() {
+		return protectedSource;
     }
 
 }

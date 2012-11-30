@@ -60,6 +60,7 @@ under the Creative Commons Attribution 3.0 License.
 1.7.0 (29 November 2012)
 - Upgraded to CKEditor 4.0, full package.
 - Reworked VaadinSave plugin for 4.0.
+- Reworked config.protectedSource to no longer be part of the inPageConfig.
 - Because CKEditor 4.0 doesn't have the 'tableresize' plugin anymore, we removed CKEditorConfig.enableTableResizePlugin().
 - Changed setReadOnly(true) to set/clear CKEditor's readOnly flag, a feature introduced in CKEditor 3.6. 
   Previously, read-only mode was not part of the editor itself, so we just displayed the HTML without the editor.

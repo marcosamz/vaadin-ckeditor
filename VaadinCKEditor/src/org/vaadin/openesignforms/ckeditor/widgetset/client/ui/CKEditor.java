@@ -51,6 +51,12 @@ public class CKEditor extends JavaScriptObject {
 		this.dataProcessor.writer.setRules(tagName, rule);
 	}-*/;
 	
+	public final native void pushProtectedSource(String regexString)
+	/*-{
+	    var regex = @org.vaadin.openesignforms.ckeditor.widgetset.client.ui.CKEditorService::convertJavaScriptStringToObject(Ljava/lang/String;)(regexString);
+		this.config.protectedSource.push( regex );
+	}-*/;
+	
 	public final native void setWriterIndentationChars(String indentationChars)
 	/*-{
 		this.dataProcessor.writer.indentationChars = indentationChars;

@@ -92,6 +92,14 @@ public class CKEditorTextField extends AbstractField
 			if ( config.hasWriterIndentationChars() ) {
 				target.addAttribute(VCKEditorTextField.ATTR_WRITER_INDENTATIONCHARS, config.getWriterIndentationChars());
 			}
+			
+			if ( config.hasProtectedSource() ) {
+				int i = 0;
+				for( String protectedSourceRegex : config.getProtectedSource() ) {
+					target.addAttribute(VCKEditorTextField.ATTR_PROTECTED_SOURCE+i, protectedSourceRegex);
+					++i;
+				}
+			}
 		}
 		
 		target.addAttribute(VCKEditorTextField.ATTR_PROTECTED_BODY, protectedBody);
