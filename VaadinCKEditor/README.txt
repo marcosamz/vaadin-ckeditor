@@ -57,7 +57,7 @@ under the Creative Commons Attribution 3.0 License.
   CHANGELOG
   =========
   
-1.7.0 (20 November 2012)
+1.7.0 (29 November 2012)
 - Upgraded to CKEditor 4.0, full package.
 - Reworked VaadinSave plugin for 4.0.
 - Because CKEditor 4.0 doesn't have the 'tableresize' plugin anymore, we removed CKEditorConfig.enableTableResizePlugin().
