@@ -118,25 +118,6 @@ public class CKEditorTextField extends AbstractField
     public void changeVariables(Object source, Map<String, Object> variables) {
         super.changeVariables(source, variables);
 
-        // Sets the text
-        if (variables.containsKey(VCKEditorTextField.VAR_TEXT) && ! isReadOnly()) {
-            // Only do the setting if the string representation of the value has been updated
-        	Object newVarTextObject = variables.get(VCKEditorTextField.VAR_TEXT);
-            String newValue = newVarTextObject == null ? "" : newVarTextObject.toString();
-
-            Object currValueObject = getValue();
-            final String oldValue = currValueObject == null ? "" : currValueObject.toString();
-            if ( ! newValue.equals(oldValue) ) {
-                boolean wasModified = isModified();
-                setValue(newValue, true);
-
-                // If the modified status changes repaint is needed after all.
-                if (wasModified != isModified()) {
-                    requestRepaint();
-                }
-            }
-        }
-
         // Sets the CKEditor version
         if (variables.containsKey(VCKEditorTextField.VAR_VERSION)) {
         	version = (String)variables.get(VCKEditorTextField.VAR_VERSION);
@@ -147,6 +128,19 @@ public class CKEditorTextField extends AbstractField
         }
         if (variables.containsKey(BlurEvent.EVENT_ID)) {
             fireEvent(new BlurEvent(this));
+        }
+
+        // Sets the text
+        if (variables.containsKey(VCKEditorTextField.VAR_TEXT) && ! isReadOnly()) {
+            // Only do the setting if the string representation of the value has been updated
+        	Object newVarTextObject = variables.get(VCKEditorTextField.VAR_TEXT);
+            String newValue = newVarTextObject == null ? "" : newVarTextObject.toString();
+
+            Object currValueObject = getValue();
+            final String oldValue = currValueObject == null ? "" : currValueObject.toString();
+            if ( ! newValue.equals(oldValue) ) {
+                setValue(newValue, true);
+            }
         }
     }
 
