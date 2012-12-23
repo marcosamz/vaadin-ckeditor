@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 29 November 2012
+Last updated: 22 December 2012
 
   USING CKEDITOR FOR VAADIN IN YOUR APPLICATION
   =============================================
@@ -56,6 +56,16 @@ under the Creative Commons Attribution 3.0 License.
   
   CHANGELOG
   =========
+
+1.7.1 (22 December 2012)
+- Changed CKEditorTextField's changeVariables() method that handles receiving changes from the client-side
+  to no longer repaint as the contents received are what the editor already has. This avoids two quick
+  changes on the client side from getting lost when the server sends back the first change. In particular
+  we saw this on FF, Chrome and Safari browsers with a PASTE operation that caused CKEditor to insert
+  temporarily a <body id="cke_pastbin...>&nbsp;</body> and one or two <span style="display:none;">&nbsp;</span>
+  tags. If these are accepted and then sent back, the final change after the PASTE is lost and the
+  editor then contains bad "interim" contents. IE and Opera do not seem to show this oddity on PASTE.
+- Upgraded to Vaadin 6.8.7.
   
 1.7.0 (29 November 2012)
 - Upgraded to CKEditor 4.0, full package.
