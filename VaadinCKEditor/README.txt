@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 22 December 2012
+Last updated: 23 December 2012
 
   USING CKEDITOR FOR VAADIN IN YOUR APPLICATION
   =============================================
@@ -56,6 +56,9 @@ under the Creative Commons Attribution 3.0 License.
   
   CHANGELOG
   =========
+
+1.7.2 (23 December 2012)
+- Fixed Open eSignForms toolbar configuration.
 
 1.7.1 (22 December 2012)
 - Changed CKEditorTextField's changeVariables() method that handles receiving changes from the client-side

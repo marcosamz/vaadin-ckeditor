@@ -71,10 +71,12 @@ public class CKEditorTextField extends AbstractField
 		super.paintContent(target);
 		
 		Object currValueObject = getValue();
-		target.addVariable(this, VCKEditorTextField.VAR_TEXT, currValueObject == null ? "" : currValueObject.toString());
-
+		String currValue = currValueObject == null ? "" : currValueObject.toString();
+		target.addVariable(this, VCKEditorTextField.VAR_TEXT, currValue);
+		
 		target.addAttribute(VCKEditorTextField.ATTR_READONLY, isReadOnly());
 		target.addAttribute(VCKEditorTextField.ATTR_VIEW_WITHOUT_EDITOR, isViewWithoutEditor());
+		//System.out.println("*** TRACE paintContent() - sending value to browser (" + currValue.length() + ") >>>" + currValue + "<<<");
 		
 		if (config != null) {
 			target.addAttribute(VCKEditorTextField.ATTR_INPAGECONFIG, config.getInPageConfig());
@@ -124,9 +126,11 @@ public class CKEditorTextField extends AbstractField
         }
         
         if (variables.containsKey(FocusEvent.EVENT_ID)) {
+    		//System.out.println("*** TRACE changeVariables() - FOCUS");
             fireEvent(new FocusEvent(this));
         }
         if (variables.containsKey(BlurEvent.EVENT_ID)) {
+    		//System.out.println("*** TRACE changeVariables() - BLUR");
             fireEvent(new BlurEvent(this));
         }
 
@@ -139,6 +143,7 @@ public class CKEditorTextField extends AbstractField
             Object currValueObject = getValue();
             final String oldValue = currValueObject == null ? "" : currValueObject.toString();
             if ( ! newValue.equals(oldValue) ) {
+        		//System.out.println("*** TRACE changeVariables() - new value (" + newValue.length() + ") >>>" + newValue + "<<<");
                 setValue(newValue, true);
             }
         }

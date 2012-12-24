@@ -412,18 +412,19 @@ public class CKEditorConfig implements java.io.Serializable {
 	 * Convenience method for the Open eSignForms project sponsors to set the plugins and configuration in a common way needed.
 	 */
 	public void setupForOpenESignForms(String contextPath, String ckeditorContextIdInSession, String bodyCssClass, String... extraCssFiles) {
-		addCustomToolbarLine("{ name: 'styles', items: ['Styles','Format','Bold','Italic','Underline','TextColor','BGColor'] }," +
-				             "{ name: 'fonts', items: ['Font','FontSize'] }," +
-				             "{ name: 'align', items: ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'] }");
-		addCustomToolbarLine("{ name: 'clipboard', items: ['Cut','Copy','Paste','PasteText','PasteFromWord'] }," +
-							 "{ name: 'search', items: ['Find','Replace'] }," +
-							 "{ name: 'undo', items: ['Undo','Redo'] }," +
-							 "{ name: 'lists', items: ['NumberedList','BulletedList'] }," +
-							 "{ name: 'indent', items: ['Outdent','Indent','CreateDiv'] }," +
-							 "{ name: 'table', items: ['Table','HorizontalRule','PageBreak','SpecialChar'] }," +
-							 "{ name: 'links', items: ['Image','Link'] }," +
-							 "{ name: 'source', items: ['Source','ShowBlocks'] }");
-		
+		addCustomToolbarLine("{ items: ['Styles','Format','Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat'] }," +
+							 "{ items: ['TextColor','BGColor'] }," +
+	                         "{ items: ['Font','FontSize'] }," +
+	             			 "{ items: ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'] }"); // all wrong icons
+		addCustomToolbarLine("{ items: ['Cut','Copy','Paste','PasteText','PasteFromWord'] }," + // paste word wrong
+				 			 "{ items: ['Find','Replace'] }," + 
+				 			 "{ items: ['Undo','Redo'] }," +
+				 			 "{ items: ['NumberedList','BulletedList'] }," + 
+				 			 "{ items: ['Outdent','Indent','CreateDiv'] }," + 
+				 			 "{ items: ['Table','HorizontalRule','PageBreak','SpecialChar'] }," +
+				 			 "{ items: ['Image','Link','Unlink'] }," +
+				 			 "{ items: ['Source','ShowBlocks'] }");
+
 		setHeight("300px");
 		setBaseFloatZIndex(32000);
 		setTabSpaces(4);
