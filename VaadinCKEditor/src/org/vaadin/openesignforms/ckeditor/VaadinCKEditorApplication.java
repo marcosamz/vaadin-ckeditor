@@ -36,10 +36,9 @@ public class VaadinCKEditorApplication extends Application {
 		mainWindow.addComponent(new Button("Hit server"));
 
 
-		/* This is how the default Full toolbar is defined, showing you all the options available for defining your toolbar.
-		 * See: http://docs.cksource.com/CKEditor_3.x/Developers_Guide/Toolbar
+		/* This is the full list as we know it in CKEditor 4.x
 	[
-    { name: 'document', items : [ 'Source','-','Save','NewPage','DocProps','Preview','Print','-','Templates' ] },
+    { name: 'document', items : [ 'Source','-','NewPage','Preview','Print','-','Templates' ] },
 	{ name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },
 	{ name: 'editing', items : [ 'Find','Replace','-','SelectAll','-','SpellChecker', 'Scayt' ] },
 	{ name: 'forms', items : [ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField' ] },
@@ -191,6 +190,9 @@ public class VaadinCKEditorApplication extends Application {
                     config.disableElementsPath();
                     config.disableSpellChecker();
                     config.enableVaadinSavePlugin();
+                    // set BaseFloatZIndex 1000 higher than CKEditor's default of 10000; probably a result of an editor opening
+                    // in a window that's on top of the main two editors of this demo app
+                    config.setBaseFloatZIndex(11000); 
                     config.setHeight("150px");
                     
                     final CKEditorTextField ckEditorTextField = new CKEditorTextField(config);
@@ -205,8 +207,8 @@ public class VaadinCKEditorApplication extends Application {
                     sub.addComponent(ckEditorTextField);
                     
                     sub.setWidth("80%");
-                    sub.center();
                     sub.setModal(true);
+                    sub.center();
                     
                     event.getButton().getWindow().addWindow(sub);
             }
@@ -217,7 +219,7 @@ public class VaadinCKEditorApplication extends Application {
 
 			@Override
 	        public void buttonClick(ClickEvent event) {
-	                Window sub = new Window("Subwindow non-modal");
+	                Window sub = new Window("Subwindow non-modal 100% height");
 	                sub.setWidth("80%");
 	                sub.setHeight(500, Sizeable.UNITS_PIXELS);
 
@@ -229,6 +231,9 @@ public class VaadinCKEditorApplication extends Application {
 	                config.disableElementsPath();
 	                config.disableSpellChecker();
 	                config.enableVaadinSavePlugin();
+                    // set BaseFloatZIndex 1000 higher than CKEditor's default of 10000; probably a result of an editor opening
+                    // in a window that's on top of the main two editors of this demo app
+                    config.setBaseFloatZIndex(11000); 
 	                
 	                final CKEditorTextField ckEditorTextField = new CKEditorTextField(config);
 	                ckEditorTextField.setHeight(100, Sizeable.UNITS_PERCENTAGE);
@@ -236,7 +241,7 @@ public class VaadinCKEditorApplication extends Application {
 						private static final long serialVersionUID = 8232630568806322179L;
 
 						public void valueChange(ValueChangeEvent event) {
-	        				getMainWindow().showNotification("CKEditor v" + ckEditorTextField2.getVersion() + " - POPUP NON-MODAL contents: " + event.getProperty().toString().replaceAll("<", "&lt;"));
+	        				getMainWindow().showNotification("CKEditor v" + ckEditorTextField2.getVersion() + " - POPUP NON-MODAL 100% HEIGHT contents: " + event.getProperty().toString().replaceAll("<", "&lt;"));
 	        			}
 	        		});
 	                layout.addComponent(ckEditorTextField);
@@ -247,7 +252,7 @@ public class VaadinCKEditorApplication extends Application {
 						private static final long serialVersionUID = -8819755603233116234L;
 
 						public void valueChange(ValueChangeEvent event) {
-	        				getMainWindow().showNotification("TextField - POPUP NON-MODAL contents: " + event.getProperty().toString());
+	        				getMainWindow().showNotification("TextField - POPUP NON-MODAL 100% HEIGHT contents: " + event.getProperty().toString());
 	        			}
 	        		});
 	                layout.addComponent(textField);
@@ -261,7 +266,7 @@ public class VaadinCKEditorApplication extends Application {
 	
 	@Override
 	public String getVersion() {
-		return "1.7.3";
+		return "1.7.4";
 	}
 
 }
