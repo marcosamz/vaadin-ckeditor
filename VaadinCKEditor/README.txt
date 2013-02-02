@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 11 January 2013
+Last updated: 1 February 2013
 
   USING CKEDITOR FOR VAADIN IN YOUR APPLICATION
   =============================================
@@ -19,7 +19,7 @@ However, we remove the following files from the standard CKEditor distribution a
    ckeditor/samples
 If you are compiling yourself, you will need to install CKEditor code into your project
 as we do not check in the CKEditor code in our source code system.
-1) Download the latest ZIP file from ckeditor.com.
+1) Download the latest ZIP file from ckeditor.com. We include the Full Editor version.
 2) Unzip/extract the contents -- you should have a 'ckeditor' folder.
 3) Copy the 'ckeditor' folder to src/org/vaadin/openesignforms/ckeditor/widgetset/public.
 4) If you want to use the Vaadin Save button plugin, copy ckeditor/plugins/vaadinsave
@@ -56,6 +56,16 @@ under the Creative Commons Attribution 3.0 License.
   
   CHANGELOG
   =========
+
+1.7.4 (1 February 2013)
+- Updated the sample app to set the BaseFloatZIndex to 11000 in the popup windows so that the editor
+  can maximize and not show the Vaadin subwindow as a grayed out box (it's lost focus). Oddly, this
+  works for that issue, but when you minimize the editor that's in a non-modal Vaadin subwindow that you do not
+  reposition on the screen when it's created, it doesn't regain the focus. Interestingly, if you do move the subwindow
+  even a bit before maximizing the editor, minimize works fine.  And just as interesting is that in a modal Vaadin subwindow, 
+  it appears to work fine regardless of repositioning the subwindow.
+- Changed from forceblur scheme to reducing the blur delay from 200msecs to just 70msecs.
+- Upgraded to Vaadin 6.8.8.
 
 1.7.3 (11 January 2013)
 - Upgraded to CKEditor 4.0.1.
