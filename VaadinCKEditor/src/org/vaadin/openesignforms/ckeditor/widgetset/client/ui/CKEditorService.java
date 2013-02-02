@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2012 Yozons, Inc.
+// Copyright (C) 2010-2013 Yozons, Inc.
 // CKEditor for Vaadin - Widget linkage for using CKEditor within a Vaadin application.
 //
 // This software is released under the Apache License 2.0 <http://www.apache.org/licenses/LICENSE-2.0.html>
@@ -39,7 +39,7 @@ public class CKEditorService {
 				@Override
 				public boolean execute() {
 					if (libraryReady()) {
-						overrideBlurToForceBlur();
+						reduceBlurDelay();
 						for (ScheduledCommand sc: afterLoadedStack) {
 							sc.execute();
 						}
@@ -106,18 +106,21 @@ public class CKEditorService {
 		return $wnd.CKEDITOR.version;
 	}-*/;
 	
-	public native static void overrideBlurToForceBlur()
+	// This is a hack attempt to resolve issues with Vaadin when the CKEditorTextField widget is set with BLUR and FOCUS listeners.
+	// In particular, the Safari browser could not deal well with PASTE, right clicking in a table cell, etc.
+	// because those operations resulted in BLUR then FOCUS events in rapid succession, causing the UI to update.
+	// But the 200 value is too long and we find that often the button acts faster than the BLUR can fire from CKEditor
+	// so Vaadin doesn't get the latest contents.
+	public native static void reduceBlurDelay()
 	/*-{
-		$wnd.CKEDITOR.focusManager.prototype.orig_blur = $wnd.CKEDITOR.focusManager.prototype.blur;
-		$wnd.CKEDITOR.focusManager.prototype.blur = function() { $wnd.CKEDITOR.focusManager.prototype.orig_blur.call(this,true); };
+		$wnd.CKEDITOR.focusManager._.blurDelay = 70; // the default is 200 even if the documentation says it's only 100
 	}-*/;
-	
 	
 	/**
 	 * Returns a javascript CKEDITOR.editor instance for given id.
 	 * 
 	 * @param id the String id of the editor instance
-	 * @return the overlay for CKEDITOR.editor or null in not yet initialized
+	 * @return the overlay for CKEDITOR.editor or null if not yet initialized
 	 */
 	public native static CKEditor get(String id)
 	/*-{
