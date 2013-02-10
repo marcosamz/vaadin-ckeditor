@@ -113,7 +113,7 @@ public class CKEditorService {
 	// so Vaadin doesn't get the latest contents.
 	public native static void reduceBlurDelay()
 	/*-{
-		$wnd.CKEDITOR.focusManager._.blurDelay = 70; // the default is 200 even if the documentation says it's only 100
+		$wnd.CKEDITOR.focusManager._.blurDelay = 20; // the default is 200 even if the documentation says it's only 100
 	}-*/;
 	
 	/**

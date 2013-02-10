@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2012 Yozons, Inc.
+// Copyright (C) 2010-2013 Yozons, Inc.
 // CKEditor for Vaadin- Widget linkage for using CKEditor within a Vaadin application.
 //
 // This software is released under the Apache License 2.0 <http://www.apache.org/licenses/LICENSE-2.0.html>
@@ -231,7 +231,7 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	// Listener callback
 	@Override
 	public void onSave() {
-		if ( ckEditorIsReady ) {
+		if ( ckEditorIsReady && ! readOnly ) {
 			// Called if the user clicks the Save button. 
 			String data = ckEditor.getData();
 			if ( ! data.equals(dataBeforeEdit) ) {
@@ -252,13 +252,15 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	            clientToServer.updateVariable(paintableId, EventId.BLUR, "", false);
 			}
 			
-			String data = ckEditor.getData();
-			if ( ! data.equals(dataBeforeEdit) ) {
-				clientToServer.updateVariable(paintableId, VAR_TEXT, data, false);
-	            if (immediate) {
-	            	sendToServer = true;
-	            	dataBeforeEdit = data; // let's only update our image if we're going to send new data to the server
-	            }
+			if (  ! readOnly ) {
+				String data = ckEditor.getData();
+				if ( ! data.equals(dataBeforeEdit) ) {
+					clientToServer.updateVariable(paintableId, VAR_TEXT, data, false);
+		            if (immediate) {
+		            	sendToServer = true;
+		            	dataBeforeEdit = data; // let's only update our image if we're going to send new data to the server
+		            }
+				}
 			}
 			
 	        if (sendToServer) {
@@ -356,7 +358,7 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 
 	@Override
 	public void onChange() {
-		if ( ckEditor != null ) {
+		if ( ckEditor != null && ! readOnly ) {
 			String data = ckEditor.getData();
 			if ( ! data.equals(dataBeforeEdit) ) {
 				clientToServer.updateVariable(paintableId, VAR_TEXT, data, false);
@@ -370,12 +372,14 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	@Override
 	public void onModeChange(String mode) {
 		if ( ckEditor != null ) {
-			String data = ckEditor.getData();
-			if ( ! data.equals(dataBeforeEdit) ) {
-				clientToServer.updateVariable(paintableId, VAR_TEXT, data, false);
-	            if (immediate) {
-	            	dataBeforeEdit = data; // let's only update our image if we're going to send new data to the server
-	            }
+			if ( ! readOnly ) {
+				String data = ckEditor.getData();
+				if ( ! data.equals(dataBeforeEdit) ) {
+					clientToServer.updateVariable(paintableId, VAR_TEXT, data, false);
+		            if (immediate) {
+		            	dataBeforeEdit = data; // let's only update our image if we're going to send new data to the server
+		            }
+				}
 			}
 			
 			if ("wysiwyg".equals(mode)) {

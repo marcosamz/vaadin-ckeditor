@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 1 February 2013
+Last updated: 10 February 2013
 
   USING CKEDITOR FOR VAADIN IN YOUR APPLICATION
   =============================================
@@ -56,6 +56,14 @@ under the Creative Commons Attribution 3.0 License.
   
   CHANGELOG
   =========
+
+1.7.5 (10 February 2013)
+- Reducing the blur delay from 70msecs to 20msecs to see if this works any more reliably (sometimes we don't get the latest editor contents), but
+  not so quick that we get interim editor contents (like bogus span and body tags that are added during PASTE and replace text operations).
+  If we go too low, and if you add a BLUR listener to the editor in Vaadin, we find that Safari users cannot easily right-click in a TABLE CELL
+  because the BLUR event causes the buffer to be sent to the server, which then updates the editor and causes the editor's popup dialog to close.
+  For Safari with BLUR/FOCUS listeners, we see the editor sometimes gets out of sync with a blur event fired while still in the editor, so for now
+  we recommend if you need Safari support, do not add BLUR/FOCUS listeners to the widget.
 
 1.7.4 (1 February 2013)
 - Updated the sample app to set the BaseFloatZIndex to 11000 in the popup windows so that the editor
