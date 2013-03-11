@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2012 Yozons, Inc.
+// Copyright (C) 2010-2013 Yozons, Inc.
 // CKEditor for Vaadin - Widget linkage for using CKEditor within a Vaadin application.
 //
 // This software is released under the Apache License 2.0 <http://www.apache.org/licenses/LICENSE-2.0.html>
@@ -76,7 +76,7 @@ public class CKEditorTextField extends AbstractField
 		
 		target.addAttribute(VCKEditorTextField.ATTR_READONLY, isReadOnly());
 		target.addAttribute(VCKEditorTextField.ATTR_VIEW_WITHOUT_EDITOR, isViewWithoutEditor());
-		//System.out.println("*** TRACE paintContent() - sending value to browser (" + currValue.length() + ") >>>" + currValue + "<<<");
+		//System.out.println("*** TRACE FROM SERVER paintContent() - sending value to browser (" + currValue.length() + ") >>>" + currValue + "<<< " + System.currentTimeMillis());
 		
 		if (config != null) {
 			target.addAttribute(VCKEditorTextField.ATTR_INPAGECONFIG, config.getInPageConfig());
@@ -126,11 +126,12 @@ public class CKEditorTextField extends AbstractField
         }
         
         if (variables.containsKey(FocusEvent.EVENT_ID)) {
-    		//System.out.println("*** TRACE changeVariables() - FOCUS");
+			//System.out.println("------------------------------");
+    		//System.out.println("*** TRACE FROM CLIENT changeVariables() - FOCUS - " + System.currentTimeMillis());
             fireEvent(new FocusEvent(this));
         }
         if (variables.containsKey(BlurEvent.EVENT_ID)) {
-    		//System.out.println("*** TRACE changeVariables() - BLUR");
+    		//System.out.println("*** TRACE FROM CLIENT changeVariables() - BLUR - " + System.currentTimeMillis());
             fireEvent(new BlurEvent(this));
         }
 
@@ -143,7 +144,7 @@ public class CKEditorTextField extends AbstractField
             Object currValueObject = getValue();
             final String oldValue = currValueObject == null ? "" : currValueObject.toString();
             if ( ! newValue.equals(oldValue) ) {
-        		//System.out.println("*** TRACE changeVariables() - new value (" + newValue.length() + ") >>>" + newValue + "<<<");
+        		//System.out.println("*** TRACE FROM CLIENT changeVariables() - new value (" + newValue.length() + ") >>>" + newValue + "<<< " + System.currentTimeMillis());
                 setValue(newValue, true);
             }
         }
