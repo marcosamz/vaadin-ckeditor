@@ -73,7 +73,7 @@ public class VaadinCKEditorApplication extends Application {
 			private static final long serialVersionUID = 54555014513845952L;
 
 			public void valueChange(ValueChangeEvent event) {
-				getMainWindow().showNotification("CKEditor v" + ckEditorTextField1.getVersion() + " - #1 contents: " + event.getProperty().toString().replaceAll("<", "&lt;"));
+				getMainWindow().showNotification("CKEditor v" + ckEditorTextField1.getVersion() + "/" + getVersion() + " - #1 contents: " + event.getProperty().toString().replaceAll("<", "&lt;"));
 			}
 		});
 		
@@ -139,7 +139,7 @@ public class VaadinCKEditorApplication extends Application {
 			private static final long serialVersionUID = 5261774097251439369L;
 
 			public void valueChange(ValueChangeEvent event) {
-				getMainWindow().showNotification("CKEditor v" + ckEditorTextField2.getVersion() + " - #2 contents: " + event.getProperty().toString().replaceAll("<", "&lt;"));
+				getMainWindow().showNotification("CKEditor v" + ckEditorTextField2.getVersion() + "/" + getVersion() + " - #2 contents: " + event.getProperty().toString().replaceAll("<", "&lt;"));
 			}
 		});
 		
@@ -200,7 +200,7 @@ public class VaadinCKEditorApplication extends Application {
 						private static final long serialVersionUID = 3363878288276305352L;
 
 						public void valueChange(ValueChangeEvent event) {
-	        				getMainWindow().showNotification("CKEditor v" + ckEditorTextField2.getVersion() + " - POPUP MODAL contents: " + event.getProperty().toString().replaceAll("<", "&lt;"));
+	        				getMainWindow().showNotification("CKEditor v" + ckEditorTextField2.getVersion() + "/" + getVersion() + " - POPUP MODAL contents: " + event.getProperty().toString().replaceAll("<", "&lt;"));
 	        			}
 	        		});
                     
@@ -241,7 +241,7 @@ public class VaadinCKEditorApplication extends Application {
 						private static final long serialVersionUID = 8232630568806322179L;
 
 						public void valueChange(ValueChangeEvent event) {
-	        				getMainWindow().showNotification("CKEditor v" + ckEditorTextField2.getVersion() + " - POPUP NON-MODAL 100% HEIGHT contents: " + event.getProperty().toString().replaceAll("<", "&lt;"));
+	        				getMainWindow().showNotification("CKEditor v" + ckEditorTextField2.getVersion() + "/" + getVersion() + " - POPUP NON-MODAL 100% HEIGHT contents: " + event.getProperty().toString().replaceAll("<", "&lt;"));
 	        			}
 	        		});
 	                layout.addComponent(ckEditorTextField);
@@ -266,7 +266,7 @@ public class VaadinCKEditorApplication extends Application {
 	
 	@Override
 	public String getVersion() {
-		return "1.7.5";
+		return "1.7.6";
 	}
 
 }

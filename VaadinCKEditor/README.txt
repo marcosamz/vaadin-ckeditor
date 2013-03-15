@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 10 February 2013
+Last updated: 15 March 2013
 
   USING CKEDITOR FOR VAADIN IN YOUR APPLICATION
   =============================================
@@ -50,12 +50,20 @@ under the Creative Commons Attribution 3.0 License.
 
   TODO
   ====
+  * Port to Vaadin 7.
 
   KNOWN ISSUES
   ============
+  * Need a better mechanism than the blur event to detect editor changes.
+    Apparently, CKEditor will support an official onchange event in the 4.2 release (http://dev.ckeditor.com/ticket/9794) 
+    that we hope will resolve this.
   
   CHANGELOG
   =========
+
+1.7.6 (15 March 2013)
+- Upgraded to CKEditor 4.0.2.
+- Upgraded to Vaadin 6.8.9.
 
 1.7.5 (10 February 2013)
 - Reducing the blur delay from 70msecs to 20msecs to see if this works any more reliably (sometimes we don't get the latest editor contents), but
