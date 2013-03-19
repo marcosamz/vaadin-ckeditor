@@ -33,6 +33,7 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	/** Set the CSS class name to allow styling. */
 	public static final String CLASSNAME = "v-ckeditortextfield";
 	
+	public static final String ATTR_FOCUS = "focus";
 	public static final String ATTR_IMMEDIATE = "immediate";
 	public static final String ATTR_READONLY = "readonly";
 	public static final String ATTR_VIEW_WITHOUT_EDITOR = "viewWithoutEditor";
@@ -71,6 +72,7 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	
 	private int tabIndex;
 	private boolean setFocusAfterReady;
+	private boolean setTabIndexAfterReady;
 	
 	/**
 	 * The constructor should first call super() to initialize the component and
@@ -157,6 +159,10 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 			
 			writerIndentationChars = uidl.hasAttribute(ATTR_WRITER_INDENTATIONCHARS) ? uidl.getStringAttribute(ATTR_WRITER_INDENTATIONCHARS) : null;
 			
+			if ( uidl.hasAttribute(ATTR_FOCUS) ) {
+				setFocus(uidl.getBooleanAttribute(ATTR_FOCUS));
+			}
+			
 			// See if we have any writer rules
 			int i = 0;
 			while( true ) {
@@ -223,6 +229,10 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 			
 			if (uidl.hasAttribute(ATTR_INSERT_TEXT)) {
 				ckEditor.insertText(uidl.getStringAttribute(ATTR_INSERT_TEXT));
+			}
+
+			if ( uidl.hasAttribute(ATTR_FOCUS) ) {
+				setFocus(uidl.getBooleanAttribute(ATTR_FOCUS));
 			}
 		}
 		
@@ -312,7 +322,11 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 		ckEditor.setReadOnly(readOnly);
 		
 		if (setFocusAfterReady) {
-			ckEditor.focus();
+			setFocus(true);
+		}
+		
+		if ( setTabIndexAfterReady ) {
+			setTabIndex(tabIndex);
 		}
 		
 		doResize();
@@ -405,6 +419,16 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 	}
 
 	@Override
+	public void setTabIndex(int tabIndex) {
+		if (ckEditorIsReady) {
+			ckEditor.setTabIndex(tabIndex);
+		} else {
+			setTabIndexAfterReady = true;
+		}
+		this.tabIndex = tabIndex;
+	}
+
+	@Override
 	public void setAccessKey(char arg0) {
 		return;
 	}
@@ -416,15 +440,9 @@ public class VCKEditorTextField extends Widget implements Paintable, CKEditorSer
 				ckEditor.focus();
 			else
 				setFocusAfterReady = true;
+		} else {
+			setFocusAfterReady = false;
 		}
-	}
-
-	@Override
-	public void setTabIndex(int tabIndex) {
-		if (ckEditorIsReady) {
-			ckEditor.setTabIndex(tabIndex);
-		} 
-		this.tabIndex = tabIndex;
 	}
 
 }

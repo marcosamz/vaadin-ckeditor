@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2012 Yozons, Inc.
+// Copyright (C) 2010-2013 Yozons, Inc.
 // CKEditor for Vaadin - Widget linkage for using CKEditor within a Vaadin application.
 //
 // This software is released under the Apache License 2.0 <http://www.apache.org/licenses/LICENSE-2.0.html>
@@ -17,7 +17,7 @@ import java.util.Set;
  * tested/common options, or just set the options using a JavaScript/JSON string as you prefer.
  */
 public class CKEditorConfig implements java.io.Serializable {
-	private static final long serialVersionUID = 5966138001983585432L;
+	private static final long serialVersionUID = 7283917233815016498L;
 
 	// If this is set, we'll just use it and ignore everything else.
 	private String inPageConfig;
@@ -48,6 +48,7 @@ public class CKEditorConfig implements java.io.Serializable {
 	private Integer tabSpaces = null;
 	private Boolean pasteFromWordNumberedHeadingToList = null;
 	private String startupMode = null; // either "source" or "wysiwyg" (defaults to wysiwyg, so generally only used if you'd like to startup in source mode)
+	private Boolean startupFocus = null;
 	private String[] contentsCssFiles = null;
 	private String fontNames = null;
 	private String stylesSet = null;
@@ -56,6 +57,9 @@ public class CKEditorConfig implements java.io.Serializable {
 	private Boolean toolbarStartupExpanded = null;
 	private LinkedList<String> templates_files = null;
 	private Boolean templates_replaceContent = null;
+	
+	private String allowedContent = null; // Advanced content filtering added in CKEditor 4.1
+	private String extraAllowedContent = null;
 	
 	private String filebrowserBrowseUrl = null;
 	private String filebrowserUploadUrl = null;
@@ -187,6 +191,10 @@ public class CKEditorConfig implements java.io.Serializable {
 			appendJSONConfig(config, "startupMode : '" + startupMode + "'");
 		}
 
+		if ( startupFocus != null ) {
+			appendJSONConfig(config, "startupFocus : " + startupFocus);
+		}
+
 		if ( skin != null ) {
 			appendJSONConfig(config, "skin : '" + skin + "'");
 		}
@@ -313,6 +321,18 @@ public class CKEditorConfig implements java.io.Serializable {
 			}
 		}
 
+		// Advanced content filtering was added in CKEditor 4.1
+		if ( allowedContent != null ) {
+			if ( "true".equals(allowedContent) ) 
+				appendJSONConfig(config, "allowedContent : true"); // basically allows all content and disables ACF
+			else
+				appendJSONConfig(config, "allowedContent : '" + allowedContent + "'");
+		}
+
+		if ( extraAllowedContent != null ) {
+			appendJSONConfig(config, "extraAllowedContent : '" + extraAllowedContent + "'");
+		}
+		
 		config.append(" }");
 		return config.toString();
 	}
@@ -606,6 +626,10 @@ public class CKEditorConfig implements java.io.Serializable {
 		startupMode = "wysiwyg";
 	}
 	
+	public void setStartupFocus(boolean v) {
+		startupFocus = v;
+	}
+
 	/**
 	 * Sets the file or list of files for the contents to be applied to the editor.  Used to set the styles that will
 	 * be used in the page where the HTML will actually be rendered.
@@ -895,6 +919,21 @@ public class CKEditorConfig implements java.io.Serializable {
     
     public List<String> getProtectedSource() {
 		return protectedSource;
+    }
+
+    // Advanced content filtering added in CKEditor 4.1
+    public void setAllowedContent(String acfSpec)
+    {
+    	allowedContent = acfSpec;
+    }
+    // Basically allows all content and disables ACF
+    public void setAllowedContentAll() {
+    	allowedContent = "true";
+    }
+    
+    public void setExtraAllowedContent(String acfSpec)
+    {
+    	extraAllowedContent = acfSpec;
     }
 
 }

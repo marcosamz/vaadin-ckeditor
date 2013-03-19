@@ -74,6 +74,7 @@ public class VaadinCKEditorApplication extends Application {
 
 			public void valueChange(ValueChangeEvent event) {
 				getMainWindow().showNotification("CKEditor v" + ckEditorTextField1.getVersion() + "/" + getVersion() + " - #1 contents: " + event.getProperty().toString().replaceAll("<", "&lt;"));
+				ckEditorTextField1.focus();
 			}
 		});
 		
@@ -203,6 +204,7 @@ public class VaadinCKEditorApplication extends Application {
 	        				getMainWindow().showNotification("CKEditor v" + ckEditorTextField2.getVersion() + "/" + getVersion() + " - POPUP MODAL contents: " + event.getProperty().toString().replaceAll("<", "&lt;"));
 	        			}
 	        		});
+	                ckEditorTextField.focus();
                     
                     sub.addComponent(ckEditorTextField);
                     
@@ -234,6 +236,7 @@ public class VaadinCKEditorApplication extends Application {
                     // set BaseFloatZIndex 1000 higher than CKEditor's default of 10000; probably a result of an editor opening
                     // in a window that's on top of the main two editors of this demo app
                     config.setBaseFloatZIndex(11000); 
+                    config.setStartupFocus(true);
 	                
 	                final CKEditorTextField ckEditorTextField = new CKEditorTextField(config);
 	                ckEditorTextField.setHeight(100, Sizeable.UNITS_PERCENTAGE);
@@ -266,7 +269,7 @@ public class VaadinCKEditorApplication extends Application {
 	
 	@Override
 	public String getVersion() {
-		return "1.7.6";
+		return "1.7.7";
 	}
 
 }

@@ -22,15 +22,16 @@ import com.vaadin.event.FieldEvents.FocusListener;
 import com.vaadin.terminal.PaintException;
 import com.vaadin.terminal.PaintTarget;
 import com.vaadin.ui.AbstractField;
+import com.vaadin.ui.Component;
 
 /**
  * Server side component for the VCKEditorTextField widget.  
  */
 @com.vaadin.ui.ClientWidget(VCKEditorTextField.class)
 public class CKEditorTextField extends AbstractField 
-	implements FieldEvents.BlurNotifier, FieldEvents.FocusNotifier  {
+	implements FieldEvents.BlurNotifier, FieldEvents.FocusNotifier, Component.Focusable  {
 	
-	private static final long serialVersionUID = -7046683247580097506L;
+	private static final long serialVersionUID = -37444047694136727L;
 
 	private CKEditorConfig config;
 	private String version = "unknown";
@@ -38,6 +39,7 @@ public class CKEditorTextField extends AbstractField
 	private String insertHtml = null;
 	private boolean protectedBody = false;
 	private boolean viewWithoutEditor = false;
+	private boolean focusRequested = false;
 
 	public CKEditorTextField() {
 		super.setValue("");
@@ -114,6 +116,12 @@ public class CKEditorTextField extends AbstractField
 			target.addAttribute(VCKEditorTextField.ATTR_INSERT_TEXT, insertText);
 			insertText = null;
 		}	
+		
+		if ( focusRequested ) {
+			target.addAttribute(VCKEditorTextField.ATTR_FOCUS, true);
+			focusRequested = false;
+		}
+		
 	}
 	
     @Override
@@ -191,6 +199,14 @@ public class CKEditorTextField extends AbstractField
 	public void detach() {
 		super.detach();
 	}
+	
+	// Part of Focusable
+	@Override
+    public void focus() {
+		super.focus();
+		focusRequested = true;
+		requestRepaint();
+    }
 	
 	public boolean isViewWithoutEditor() {
 		return viewWithoutEditor;

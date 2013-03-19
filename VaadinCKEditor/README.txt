@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 15 March 2013
+Last updated: 19 March 2013
 
   USING CKEDITOR FOR VAADIN IN YOUR APPLICATION
   =============================================
@@ -60,6 +60,16 @@ under the Creative Commons Attribution 3.0 License.
   
   CHANGELOG
   =========
+
+1.8.0 (?? April 2013)
+- Upgraded to CKEditor 4.1.0.
+- Added ability to set allowedContent for advanced content filtering (ACF): config.setAllowedContent(String acfSpec).
+- Added ability to disable advanced content filtering (ACF) by setting allowedContent to true: config.setAllowedContentAll().
+- Added ability to set extraAllowedContent for advanced content filtering (ACF): config.setExtraAllowedContent(String acfSpec).
+
+1.7.7 (19 March 2013)
+- Added ability to set startupFocus in CKEditorConfig: config.setStartupFocus(boolean v).
+- Added support for the CKEditorTextField.focus() method to be called.
 
 1.7.6 (15 March 2013)
 - Upgraded to CKEditor 4.0.2.
