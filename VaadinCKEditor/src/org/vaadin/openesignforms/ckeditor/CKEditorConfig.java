@@ -17,78 +17,80 @@ import java.util.Set;
  * tested/common options, or just set the options using a JavaScript/JSON string as you prefer.
  */
 public class CKEditorConfig implements java.io.Serializable {
-	private static final long serialVersionUID = 7283917233815016498L;
+	private static final long serialVersionUID = -3675920093002174427L;
 
 	// If this is set, we'll just use it and ignore everything else.
-	private String inPageConfig;
+	protected String inPageConfig;
 	
 	// Hack to allow a caller to add any line to the inPageConfig. Of course, if they specify it wrong or overwrite our API standard ones
 	// that will just be their own issue. This is not recommended and we prefer that if you have an option to set, let us know and
 	// we'll get it added to the API. We know most CKEDITOR.config options are never set by regular users, but those that are, we'd like
 	// to document them as part of the API.
-	private LinkedList<String> extraConfigLines = null;
+	protected LinkedList<String> extraConfigLines = null;
 
 	// Otherwise, we'll build the config based on settings contained here
-	private HashMap<String,String> writerRules = null;
-	private String writerIndentationChars = null;
-	private LinkedList<String> extraPlugins = null;
-	private LinkedList<String> removePlugins = null;
-	private LinkedList<String> customToolbarLines = null;
-	private Boolean toolbarCanCollapse = null;
-	private Boolean disableNativeSpellChecker = null;
-	private Boolean resizeEnabled = null;
-	private String resizeDir = null;
-	private Integer resizeMinWidth = null;
-	private Integer resizeMaxWidth = null;
-	private Integer resizeMinHeight = null;
-	private Integer resizeMaxHeight = null;
-	private String width = null;
-	private String height = null;
-	private Integer baseFloatZIndex = null;
-	private Integer tabSpaces = null;
-	private Boolean pasteFromWordNumberedHeadingToList = null;
-	private String startupMode = null; // either "source" or "wysiwyg" (defaults to wysiwyg, so generally only used if you'd like to startup in source mode)
-	private Boolean startupFocus = null;
-	private String[] contentsCssFiles = null;
-	private String fontNames = null;
-	private String stylesSet = null;
-	private String bodyClass = null;
-	private String skin = null;
-	private Boolean toolbarStartupExpanded = null;
-	private LinkedList<String> templates_files = null;
-	private Boolean templates_replaceContent = null;
+	protected HashMap<String,String> writerRules = null;
+	protected String writerIndentationChars = null;
+	protected LinkedList<String> extraPlugins = null;
+	protected LinkedList<String> removePlugins = null;
+	protected LinkedList<String> customToolbarLines = null;
+	protected Boolean toolbarCanCollapse = null;
+	protected Boolean disableNativeSpellChecker = null;
+	protected Boolean resizeEnabled = null;
+	protected String resizeDir = null;
+	protected Integer resizeMinWidth = null;
+	protected Integer resizeMaxWidth = null;
+	protected Integer resizeMinHeight = null;
+	protected Integer resizeMaxHeight = null;
+	protected String width = null;
+	protected String height = null;
+	protected Integer baseFloatZIndex = null;
+	protected Integer tabSpaces = null;
+	protected Boolean pasteFromWordNumberedHeadingToList = null;
+	protected Boolean pasteFromWordRemoveFontStyles = null;
+	protected Boolean pasteFromWordRemoveStyles = null;
+	protected String startupMode = null; // either "source" or "wysiwyg" (defaults to wysiwyg, so generally only used if you'd like to startup in source mode)
+	protected Boolean startupFocus = null;
+	protected String[] contentsCssFiles = null;
+	protected String fontNames = null;
+	protected String stylesSet = null;
+	protected String bodyClass = null;
+	protected String skin = null;
+	protected Boolean toolbarStartupExpanded = null;
+	protected LinkedList<String> templates_files = null;
+	protected Boolean templates_replaceContent = null;
 	
-	private String allowedContent = null; // Advanced content filtering added in CKEditor 4.1
-	private String extraAllowedContent = null;
+	protected String allowedContent = null; // Advanced content filtering added in CKEditor 4.1
+	protected String extraAllowedContent = null;
 	
-	private String filebrowserBrowseUrl = null;
-	private String filebrowserUploadUrl = null;
-	private String filebrowserWindowWidth = null; // defaults to 80% width
-	private String filebrowserWindowHeight = null; // defaults to 70% height
+	protected String filebrowserBrowseUrl = null;
+	protected String filebrowserUploadUrl = null;
+	protected String filebrowserWindowWidth = null; // defaults to 80% width
+	protected String filebrowserWindowHeight = null; // defaults to 70% height
 	
-	private String filebrowserImageBrowseUrl = null;
-	private String filebrowserImageUploadUrl = null;
-	private String filebrowserImageWindowWidth = null; // defaults to 80% width
-	private String filebrowserImageWindowHeight = null; // defaults to 70% height
-    private String filebrowserImageBrowseLinkUrl = null;
+	protected String filebrowserImageBrowseUrl = null;
+	protected String filebrowserImageUploadUrl = null;
+	protected String filebrowserImageWindowWidth = null; // defaults to 80% width
+	protected String filebrowserImageWindowHeight = null; // defaults to 70% height
+	protected String filebrowserImageBrowseLinkUrl = null;
 	
-	private String filebrowserFlashBrowseUrl = null;
-	private String filebrowserFlashUploadUrl = null;
-	private String filebrowserFlashBrowseLinkUrl = null; // available? Not in CKEditor JS docs
+	protected String filebrowserFlashBrowseUrl = null;
+	protected String filebrowserFlashUploadUrl = null;
+	protected String filebrowserFlashBrowseLinkUrl = null; // available? Not in CKEditor JS docs
 
-	private String filebrowserLinkBrowseUrl = null; // available? Not in CKEditor JS docs
+	protected String filebrowserLinkBrowseUrl = null; // available? Not in CKEditor JS docs
 	
-	private Integer enterMode = null;
-	private Integer shiftEnterMode = null;
-	private Boolean forceEnterMode = null;
-	private Boolean forcePasteAsPlainText = null;
+	protected Integer enterMode = null;
+	protected Integer shiftEnterMode = null;
+	protected Boolean forceEnterMode = null;
+	protected Boolean forcePasteAsPlainText = null;
 	
-	private Boolean fullPage = null;
+	protected Boolean fullPage = null;
 	
-	private String language = null;
+	protected String language = null;
 	
 	// Sent separately since cannot make it work with inPageConfig
-	private LinkedList<String> protectedSource = null;
+	protected LinkedList<String> protectedSource = null;
 
 	
 	public CKEditorConfig() {
@@ -185,6 +187,14 @@ public class CKEditorConfig implements java.io.Serializable {
 		
 		if ( pasteFromWordNumberedHeadingToList != null ) {
 			appendJSONConfig(config, "pasteFromWordNumberedHeadingToList : " + pasteFromWordNumberedHeadingToList);
+		}
+		
+		if ( pasteFromWordRemoveFontStyles != null ) {
+			appendJSONConfig(config, "pasteFromWordRemoveFontStyles : " + pasteFromWordRemoveFontStyles);
+		}
+		
+		if ( pasteFromWordRemoveStyles != null ) {
+			appendJSONConfig(config, "pasteFromWordRemoveStyles : " + pasteFromWordRemoveStyles);
 		}
 		
 		if ( startupMode != null ) {
@@ -337,7 +347,7 @@ public class CKEditorConfig implements java.io.Serializable {
 		return config.toString();
 	}
 	
-	private StringBuilder appendJSONConfig(StringBuilder configBuf, String oneOptions) {
+	protected StringBuilder appendJSONConfig(StringBuilder configBuf, String oneOptions) {
 		if ( configBuf.length() > 2 )
 			configBuf.append(", ");
 		configBuf.append(oneOptions);
@@ -446,7 +456,7 @@ public class CKEditorConfig implements java.io.Serializable {
 				 			 "{ items: ['Source','ShowBlocks'] }");
 
 		setHeight("300px");
-		setBaseFloatZIndex(32000);
+		setBaseFloatZIndex(20000);
 		setTabSpaces(4);
 		
 		disableSpellChecker();
@@ -483,6 +493,7 @@ public class CKEditorConfig implements java.io.Serializable {
 		setFilebrowserImageBrowseUrl(contextPath + "/ckeditorImageBrowser.jsp?ccid="+ckeditorContextIdInSession);
 		setFilebrowserImageWindowWidth("600");
 		setFilebrowserImageWindowHeight("500");
+		setAllowedContentAll(); // turn off ACF introduced in CKEditor 4.1 since people can enter whatever they want via the editor SOURCE mode.
 		addProtectedSource("/<%.*%>/g"); // allow JSP code like <%=(new java.util.Date())%> or <% any java code you want %>
 		addProtectedSource("/<[a-z]*:.*\\/>/g"); // allow JSP tags like <esf:out value="Test"/>
 	}
@@ -617,6 +628,16 @@ public class CKEditorConfig implements java.io.Serializable {
 		pasteFromWordNumberedHeadingToList = v;
 	}
 
+	public void setPasteFromWordRemoveFontStyles(boolean v)
+	{
+		pasteFromWordRemoveFontStyles = v;
+	}
+
+	public void setPasteFromWordRemoveStyles(boolean v)
+	{
+		pasteFromWordRemoveStyles = v;
+	}
+	
 	public void setStartupModeSource()
 	{
 		startupMode = "source";
