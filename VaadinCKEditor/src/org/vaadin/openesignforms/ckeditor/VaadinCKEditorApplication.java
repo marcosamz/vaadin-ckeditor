@@ -119,20 +119,13 @@ public class VaadinCKEditorApplication extends Application {
 			"<p>Here is editor #2.</p><h1>Hope you find this useful in your Vaadin projects.</h1>";
 
 		final CKEditorTextField ckEditorTextField2 = new CKEditorTextField();
+		ckEditorTextField2.setWidth(600,Sizeable.UNITS_PIXELS);
 		mainWindow.addComponent(ckEditorTextField2);
 		
 		CKEditorConfig config2 = new CKEditorConfig();
-		config2.setInPageConfig(
-				"{ " +
-				    "width: '600px'," +  // example to show you can use CKEditor's width setting too in the config if CSS is not wanted
-				    "extraPlugins: 'vaadinsave'," + // add this if using the editor's VaadinSave button
-				    "removePlugins: 'scayt'," + // use this to remove the built in spell checker
-					"toolbar : 'Custom'," +
-					"toolbar_Custom : [" +
-						"['Source','Styles','-','VaadinSave']" +
-									 "]" +
-				" }" 
-				     			);
+		config2.addCustomToolbarLine("{ items : ['Source','Styles','Bold','VaadinSave','-','Undo','Redo','-','NumberedList','BulletedList'] }");
+		config2.enableVaadinSavePlugin();
+		config2.addToRemovePlugins("scayt");
 		ckEditorTextField2.setConfig(config2);
 		ckEditorTextField2.setValue(editor2InitialValue);
 		

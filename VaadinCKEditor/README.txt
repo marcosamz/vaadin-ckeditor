@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 15 April 2013
+Last updated: 17 April 2013
 
   USING CKEDITOR FOR VAADIN IN YOUR APPLICATION
   =============================================
@@ -61,7 +61,7 @@ under the Creative Commons Attribution 3.0 License.
   CHANGELOG
   =========
 
-1.8.1 (15 April 2013)
+1.8.1 (17 April 2013)
 - Added ability to set pasteFromWordRemoveFontStyles: config.setPasteFromWordRemoveFontStyles(boolean). Use with caution since seems to cause
   CKEditor stability issues.
 - Added ability to set pasteFromWordRemoveStyles: config.setPasteFromWordRemoveStyles(boolean). Use with caution since seems to cause
