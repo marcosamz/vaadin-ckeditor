@@ -49,6 +49,7 @@ public class CKEditorConfig implements java.io.Serializable {
 	protected Boolean pasteFromWordNumberedHeadingToList = null;
 	protected Boolean pasteFromWordRemoveFontStyles = null;
 	protected Boolean pasteFromWordRemoveStyles = null;
+	protected Boolean pasteFromWordPromptCleanup = null;
 	protected String startupMode = null; // either "source" or "wysiwyg" (defaults to wysiwyg, so generally only used if you'd like to startup in source mode)
 	protected Boolean startupFocus = null;
 	protected String[] contentsCssFiles = null;
@@ -195,6 +196,10 @@ public class CKEditorConfig implements java.io.Serializable {
 		
 		if ( pasteFromWordRemoveStyles != null ) {
 			appendJSONConfig(config, "pasteFromWordRemoveStyles : " + pasteFromWordRemoveStyles);
+		}
+		
+		if ( pasteFromWordPromptCleanup != null ) {
+			appendJSONConfig(config, "pasteFromWordPromptCleanup : " + pasteFromWordPromptCleanup);
 		}
 		
 		if ( startupMode != null ) {
@@ -463,6 +468,9 @@ public class CKEditorConfig implements java.io.Serializable {
 		setDisableNativeSpellChecker(false);
 		disableResizeEditor();
 		setPasteFromWordNumberedHeadingToList(true);
+		//setPasteFromWordRemoveFontStyles(false); -- sadly, we want font color to be kept, but having this creates too much HTML mess
+		setPasteFromWordRemoveStyles(false);
+		setPasteFromWordPromptCleanup(true);
 		
 		useCompactTags();
 		addWriterRules("script", "{indent : false, breakBeforeOpen : true, breakAfterOpen : true, breakBeforeClose : true, breakAfterClose : true}" );
@@ -636,6 +644,11 @@ public class CKEditorConfig implements java.io.Serializable {
 	public void setPasteFromWordRemoveStyles(boolean v)
 	{
 		pasteFromWordRemoveStyles = v;
+	}
+	
+	public void setPasteFromWordPromptCleanup(boolean v)
+	{
+		pasteFromWordPromptCleanup = v;
 	}
 	
 	public void setStartupModeSource()

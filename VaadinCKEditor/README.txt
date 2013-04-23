@@ -1,5 +1,5 @@
 File: VaadinCKEditor/README.txt
-Last updated: 17 April 2013
+Last updated: 23 April 2013
 
   USING CKEDITOR FOR VAADIN IN YOUR APPLICATION
   =============================================
@@ -61,11 +61,15 @@ under the Creative Commons Attribution 3.0 License.
   CHANGELOG
   =========
 
+1.8.2 (23 April 2013)
+- Upgraded to CKEditor 4.1.1. This patch allows previous pasteFromWord* settings to work.
+- Added ability to set pasteFromWordPromptCleanup: config.setPasteFromWordPromptCleanup(boolean)
+
 1.8.1 (17 April 2013)
 - Added ability to set pasteFromWordRemoveFontStyles: config.setPasteFromWordRemoveFontStyles(boolean). Use with caution since seems to cause
-  CKEditor stability issues.
+  CKEditor stability issues. (CKEditor fixed this in 4.1.1)
 - Added ability to set pasteFromWordRemoveStyles: config.setPasteFromWordRemoveStyles(boolean). Use with caution since seems to cause
-  CKEditor stability issues.
+  CKEditor stability issues. (CKEditor fixed this in 4.1.1)
 - Changed Open eSignForms config to turn off ACF.
 - Upgraded to Vaadin 6.8.10.
 
